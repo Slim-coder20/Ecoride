@@ -25,6 +25,7 @@ final class RegistrationController extends AbstractController
             $plainPassword = $form->get('plainPassword')->getData();
 
             if ($plainPassword) {
+                // Hashage du mot de passe
                 $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
             }
@@ -36,9 +37,11 @@ final class RegistrationController extends AbstractController
             // Ajout d'un message flash
             $this->addFlash('success', 'Votre compte a été créé avec succès. Connectez-vous pour accéder à votre espace personnel.');
 
+            // Redirection vers la page de connexion
             return $this->redirectToRoute('app_login');
         }
 
+        // Affichage du formulaire d'inscription
         return $this->render('registration/index.html.twig', [
             'registerForm' => $form->createView(),
         ]);
