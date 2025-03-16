@@ -20,10 +20,10 @@ class User
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Firstname = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Lastname = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 20)]
     private ?string $telephone = null;
@@ -57,26 +57,26 @@ class User
         return $this;
     }
 
-    public function getFirstname(): ?string
+    public function getfirstName(): ?string
     {
-        return $this->Firstname;
+        return $this->firstName;
     }
 
-    public function setFirstname(string $Firstname): static
+    public function setfirstName(string $firstName): static
     {
-        $this->Firstname = $Firstname;
-
+        $this->firstName = $firstName;
+    
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getlastName(): ?string
     {
-        return $this->Lastname;
+        return $this->lastName;
     }
 
-    public function setLastname(string $Lastname): static
+    public function setlastName(string $lastName): static
     {
-        $this->Lastname = $Lastname;
+        $this->lastName = $lastName;
 
         return $this;
     }
