@@ -9,81 +9,182 @@
 		</title>
 
 		<!-- Bootstrap CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> {% block stylesheets %}{% endblock %}
-		</head>
-		<body>
+		{% block stylesheets %}{% endblock %}
 
-			<!-- Barre de navigation -->
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container">
-					<a class="navbar-brand" href="{{ path('homepage') }}">EcoRide</a>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+		{{ encore_entry_link_tags('app_styles') }}
 
-					<!-- Formulaire de recherche -->
-					<form class="d-flex ms-auto" action="{{ path('trajet_recherche') }}" method="GET">
-						<input class="form-control me-2" type="search" name="depart" placeholder="Départ" aria-label="Départ">
-						<input class="form-control me-2" type="search" name="arrivee" placeholder="Arrivée" aria-label="Arrivée">
-						<button class="btn btn-outline-success" type="submit">Rechercher</button>
-					</form>
+	</head>
+	<body>
 
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-						<span class="navbar-toggler-icon"></span>
-					</button>
+		<!-- Barre de navigation -->
+		<nav class="navbar navbar-expand-lg">
+			<div class="container">
+				<a class="navbar-brand text-white fw-bold" href="{{ path('app_home') }}">
+					<i class="fa-solid fa-car"></i>
+					EcoRide
+				</a>
 
-					<div class="collapse navbar-collapse" id="navbarNav">
-						<ul class="navbar-nav ms-auto">
-							{% if app.user %}
-								<li class="nav-item">
-									<a class="nav-link" href="{{ path('profile') }}">Accueil</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="{{ path('trajets') }}">Rechercher</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="{{ path('app_logout') }}">Contact</a>
-								</li>
-							{% else %}
-								<li class="nav-item">
-									<a class="nav-link" href="{{ path('register') }}">Connexion</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="{{ path('app_login') }}">Inscription</a>
-								</li>
-							{% endif %}
-						</ul>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#">Rechercher</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#">Contact</a>
+						</li>
+						{% if app.user %}
+							<li class="nav-item">
+								<a class="nav-link text-white" href="#">
+									<i class="fas fa-sign-out-alt"></i>
+									Déconnexion
+								</a>
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a class="nav-link text-white" href="#">
+									<i class="fas fa-user"></i>
+									Connexion
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-white" href="app_registration">
+									<i class="fas fa-user-plus"></i>
+									Inscription
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Section Hero avec Carrousel -->
+		<section
+			id="hero" class="position-relative">
+			<!-- Carrousel Bootstrap -->
+			<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<img src="{{ asset('images/covoiturage1.jpg') }}" class="d-block w-100 hero-img" alt="Covoiturage">
+					</div>
+					<div class="carousel-item">
+						<img src="{{ asset('images/covoiturage2.jpg') }}" class="d-block w-100 hero-img" alt="Covoiturage">
+					</div>
+					<div class="carousel-item">
+						<img src="{{ asset('images/covoiturage3.jpg') }}" class="d-block w-100 hero-img" alt="Covoiturage">
 					</div>
 				</div>
-			</nav>
+				<button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Précédent</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Suivant</span>
+				</button>
+			</div>
 
-			<div class="container mt-4"> {% block body %}{% endblock %}
+			<!-- Formulaire en superposition -->
+			<div class="hero-overlay">
+				<div class="container text-center text-white">
+					<h1 class="display-4">Voyagez écologique avec EcoRide</h1>
+					<p class="lead">Trouvez ou proposez des trajets en covoiturage et contribuez à réduire l’empreinte carbone</p>
+
+					<form class="row g-2 justify-content-center mt-4" action="#" method="GET">
+						<div class="col-md-3">
+							<input type="text" class="form-control" name="depart" placeholder="Ville de départ">
+						</div>
+						<div class="col-md-3">
+							<input type="text" class="form-control" name="arrivee" placeholder="Ville d'arrivée">
+						</div>
+						<div class="col-md-2">
+							<input type="date" class="form-control" name="date">
+						</div>
+						<div class="col-md-1">
+							<input type="number" class="form-control" name="places" min="1" placeholder="1">
+						</div>
+						<div class="col-md-2">
+							<button type="submit" class="btn btn-success w-100">Rechercher</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+
+
+		<!-- Contenu de la page -->
+		<div class="container mt-4"> {% block body %}{% endblock %}
+			</div>
+
+			<!-- Pied de page -->
+			<footer class="bg-dark text-white text-center py-4 mt-5 ">
+				<div class="row">
+					<div class="col-md-4">
+						<h5 class="fw-bold">
+							<i class="fa-solid fa-car"></i>
+							EcoRide
+						</h5>
+
+						<hr>
+						<p class="my-5">&copy; 2025 EcoRide. Tous droits réservés.</p>
+
+
+					</div>
+					<div class="col-md-4">
+						<h5 class="fw-bold">Liens rapides</h5>
+						<ul class="list-unstyled">
+							<li>
+								<a href="{{ path('app_home') }}" class="text-white text-decoration-none">Accueil</a>
+							</li>
+							<li>
+								<a href="#" class="text-white text-decoration-none">Rechercher un trajet</a>
+							</li>
+							<li>
+								<a href="#" class="text-white text-decoration-none">Proposer un trajet</a>
+							</li>
+							<li>
+								<a href="#" class="text-white text-decoration-none">Contact</a>
+							</li>
+						</ul>
+
+
+					</div>
+					<!-- Colonne 3 : Contact -->
+					<div class="col-md-4">
+						<h5 class="fw-bold">Contact</h5>
+						<p>
+							<i class="fas fa-map-marker-alt"></i>
+							123 Rue de charonne, 75011 Paris
+						</p>
+						<p>
+							<i class="fas fa-phone"></i>
+							+33 1 23 45 67 89
+						</p>
+						<p>
+							<i class="fas fa-envelope"></i>
+							contact@ecoride.fr
+						</p>
+					</div>
+					<!-- Mentions légales -->
+					<div class="row mt-3">
+						<div class="col text-center">
+							<a href="#" class="text-white text-decoration-none me-3">Mentions légales</a>
+							<a href="#" class="text-white text-decoration-none me-3">Politique de confidentialité</a>
+							<a href="#" class="text-white text-decoration-none">CGU</a>
+						</div>
+					</div>
 				</div>
 
-				<!-- Pied de page -->
-				<footer class="bg-dark text-white text-center py-3 mt-5 d-flex justify-content-space-between">
-					<p>EcoRide</p><br>
-					Voyager de manière écologique et économique
-					<br><br>
-					Lien rapides
-					<br>
-					<a href="{{ path('homepage') }}">Accueil</a>
-					-
-					<a href="{{ path('trajets') }}">Rechercher un trajet</a>
-					-
-					<a href="{{ path('app_logout') }}">proposer un trajet</a>-
-					<a href="{{ path('app_login') }}">Contact</a>
-					<br><br>
-					<p>Contact</p>
-					123 rue de la liberté, 75000 Paris
-					<br>
-					01 23 45 67 89
-					<br>
-					contact@ecoride.com
-
-					<p>&copy; 2024 EcoRide - Tous droits réservés.</p>
-				</footer>
-
-				<!-- Bootstrap JS -->
-				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-				{% block javascripts %}{% endblock %}
-			</body>
-		</html>
+			</div>
+		</body>
+	</html>
+</body></html></footer><!-- Bootstrap JS --><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>{% block javascripts %}{% endblock %}{{ encore_entry_script_tags('app') }}</body></html>

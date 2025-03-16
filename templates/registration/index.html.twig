@@ -2,24 +2,3 @@
 
 {% block title %}Inscription - Ecoride
 {% endblock %}
-
-{% block body %}
-	<div class="container mt-5">
-		<h2 class="text-center">Inscription</h2>
-		// Formulaire d'inscription
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success">{{ message }}</div>
-		{% endfor %}
-		{% for message in app.flashes('error') %}
-			<div class="alert alert-danger">{{ message }}</div>
-		{% endfor %}
-
-		<div class="card p-4 mt-3 shadow">
-            
-        
-        
-        </div>
-
-
-	</div>
-{% endblock %}
