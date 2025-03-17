@@ -21,7 +21,7 @@ security:
                 check_path: app_login
                 default_target_path: app_home
                 enable_csrf: true
-            logpout:
+            logout:
                 path: app_logout
                 target: app_home
                 
