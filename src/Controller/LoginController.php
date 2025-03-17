@@ -18,7 +18,7 @@ final class LoginController extends AbstractController
         // Récupération du dernier identifiant saisi (email)
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('login/index.html.twig', [
+        return $this->render('login/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
