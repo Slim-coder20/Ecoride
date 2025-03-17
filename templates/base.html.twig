@@ -43,7 +43,7 @@
 						</li>
 						{% if app.user %}
 							<li class="nav-item">
-								<a class="nav-link text-white" href="#">
+								<a class="nav-link text-white" href="{{ path('app_logout')}}">
 									<i class="fas fa-sign-out-alt"></i>
 									Déconnexion
 								</a>
@@ -74,10 +74,10 @@
 			<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						<img src="{{ asset('images/covoiturage1.jpg') }}" class="d-block w-100 hero-img" alt="Covoiturage">
+						<img src="{{ asset('images/covoiturage1.jpg') }}" class="d-block w-100  hero-img" alt="Covoiturage">
 					</div>
 					<div class="carousel-item">
-						<img src="{{ asset('images/covoiturage2.jpg') }}" class="d-block w-100 hero-img" alt="Covoiturage">
+						<img src="{{ asset('images/covoiturage2.jpg') }}" class="d-block w-100  hero-img" alt="Covoiturage">
 					</div>
 					<div class="carousel-item">
 						<img src="{{ asset('images/covoiturage3.jpg') }}" class="d-block w-100 hero-img" alt="Covoiturage">
