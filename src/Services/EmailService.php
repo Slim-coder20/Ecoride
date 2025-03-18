@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -11,10 +12,11 @@ class EmailService
     private $mailer; 
     private $params;
 
-    public function __construct(MailerInterface $mailer, ParameterBagInterface $params)
+    public function __construct(ParameterBagInterface $params)
     {
-        $this->mailer = $mailer;
         $this->params = $params;
+        $transport = Transport::fromDsn($this->params->get('MAILER_DSN'));
+        $this->mailer = new Mailer($transport);
     }
 
     public function sendContactEmail(string $from, string $subject, string $message): void
@@ -26,6 +28,7 @@ class EmailService
             ->text($message);
         $this->mailer->send($email);
     }
+
     public function sendNotificationEmail(string $to, string $subject, string $message): void
     {
         $email = (new Email())
