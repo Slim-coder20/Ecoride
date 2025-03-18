@@ -3,17 +3,23 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
+use App\Services\EmailService; // Ensure this class exists in the specified namespace
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 
 final class ContactController extends AbstractController
 {
+    private $emailService;
+
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
+
     #[Route('/contact', name: 'app_contact')]
-    public function index(Request $request, MailerInterface $mailer): Response
+    public function index(Request $request): Response
     {
         // Création du formulaire de contact à partir de la classe ContactType
         $form = $this->createForm(ContactType::class);
@@ -24,12 +30,7 @@ final class ContactController extends AbstractController
             // Récupération des données du formulaire
             $data = $form->getData();
             // Envoi du mail
-            $email = (new Email())
-                ->from($data['email'])
-                ->to('contact.ecoride9@gmail.com')
-                ->subject($data['subject'])
-                ->text($data['message']);
-            $mailer->send($email);
+            $this->emailService->sendContactEmail($data['email'], $data['subject'], $data['message']);
 
             // Ajout d'un message flash
             $this->addFlash('success', 'Votre message a bien été envoyé.');
