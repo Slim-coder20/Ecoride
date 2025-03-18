@@ -24,7 +24,11 @@ final class ContactController extends AbstractController
             // Récupération des données du formulaire
             $data = $form->getData();
             // Envoi du mail
-            $email = (new Email())
+            // Debugging the form data
+            $email = (new Email());
+           
+
+            $email = $email
                 ->from($data['email'])
                 ->to('contact.ecoride9@gmail.com')
                 ->subject($data['subject'])
@@ -43,27 +47,3 @@ final class ContactController extends AbstractController
     }
 }
 
-namespace App\Form;
-
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-
-class ContactType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('email', EmailType::class)
-            ->add('subject', TextType::class)
-            ->add('message', TextareaType::class);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([]);
-    }
-}
