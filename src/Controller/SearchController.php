@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Form\SearchType;
 use App\Repository\RideRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SearchController extends AbstractController
@@ -34,7 +34,7 @@ class SearchController extends AbstractController
             // Si aucun trajet trouvé, proposer des alternatives
             if (empty($rides)) {
                 $rides = $rideRepository->findClosestRides($data['date']);
-                $this->addFlash('info', 'Aucun trajet trouvé. Voici les trajets les plus proches de votre recherche.');
+                $this->addFlash('info', 'Aucun trajet trouvé. Voici les trajets les plus proches.');
             }
         }
 

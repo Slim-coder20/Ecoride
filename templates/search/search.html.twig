@@ -1,21 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SearchController!
+{% block title %}Recherche de trajets
 {% endblock %}
 
 {% block body %}
 	<h1>Rechercher un trajet</h1>
-	{{ form_start(form.departure) }}
-	{{ form_start(form.destination) }}
-	{{ form_start(form.date) }}
-	{{ form_start(form.passengers) }}
-	{{ form_start(form.smokers) }}
-	{{ form_start(form.animals) }}
-	{{ form_start(form.fuelType) }}
-	{{ form_start(form.vehicleType) }}
 
+	{{ form_start(form) }}
+	{{ form_row(form.departure) }}
+	{{ form_row(form.destination) }}
+	{{ form_row(form.date) }}
+	{{ form_row(form.passengers) }}
+	{{ form_row(form.smokers) }}
+	{{ form_row(form.animals) }}
+	{{ form_row(form.fuelType) }}
+	{{ form_row(form.vehicleType) }}
 
 	{{ form_end(form) }}
 
-	<h2>Trajets dipsonibles</h2>
+	<h2>Trajets disponibles</h2>
+
+	{% if rides is empty %}
+		<p>Aucun trajet trouvé.</p>
+	{% else %}
+		<ul>
+			{% for ride in rides %}
+				<li>
+					<strong>Chauffeur :
+						{{ ride.driver.firstName }}
+						{{ ride.driver.lastName }}</strong>
+					<p>Départ :
+						{{ ride.departureCity }}
+						- Destination :
+						{{ ride.destinationCity }}</p>
+					<p>Date :
+						{{ ride.departureDate|date('d/m/Y H:i') }}</p>
+					<p>Places restantes :
+						{{ ride.remainingSeats }}</p>
+					<p>Prix :
+						{{ ride.price }}
+						€</p>
+					<p>Écologique :
+						{{ ride.isEcological ? 'Oui' : 'Non' }}</p>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 {% endblock %}
