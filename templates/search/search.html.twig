@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchController!
+{% endblock %}
+
+{% block body %}
+	<h1>Rechercher un trajet</h1>
+    {{ form_start(form.departure) }}
+    {{ form_start(form.destination) }}
+    {{ form_start(form.date) }}
+    {{ form_start(form.passengers) }}
+    {{ form_start(form.smokers) }}
+    {{ form_start(form.animals) }}
+    {{ form_start(form.fuelType) }}
+    {{ form_start(form.vehicleType) }}
+
+    <button type="submit">{{ form_widget(form.serach)}}</button>
+    <button type="submit">{{ form_widget(form.reset)}}</button>
+
+    {{ form_end(form) }}
+
+   <h2>Trajets dipsonibles</h2>
+{% endblock %}
