@@ -8,8 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoicesType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -43,14 +41,13 @@ class SearchType extends AbstractType
                     'placeholder' => 'Saisir le nombre de passagers'
                 ]
             ])
-            ->add('smokers', ChoicesType::class,[
+            ->add('smokers', ChoiceType::class, [
                 'choices' => [
-                    'Indifféren' => 'indifferent',
+                    'Indifférent' => 'indifferent',
                     'Oui' => 'yes',
                     'Non' => 'no'
                 ],
                 'label' => 'Fumeurs',
-
             ])
             ->add('animals', ChoiceType::class, [
                 'choices' => [
@@ -60,7 +57,6 @@ class SearchType extends AbstractType
                 ],
                 'label' => 'Animaux',
             ])
-
             ->add('fuelType', ChoiceType::class, [
                 'choices' => [
                     'Tous' => 'all',
@@ -80,15 +76,12 @@ class SearchType extends AbstractType
                 ],
                 'label' => 'Type de véhicule',
             ])
-
             ->add('search', SubmitType::class, [
                 'label' => 'Rechercher',
             ])
             ->add('reset', SubmitType::class, [
                 'label' => 'Réinitialiser',
             ]);
-
-        
     }
 
     public function configureOptions(OptionsResolver $resolver): void
