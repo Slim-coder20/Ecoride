@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SearchController extends AbstractController
 {
-    #[Route('/rechercher', name: 'app_search')]
+    #[Route('/home/rechercher', name: 'app_search')]
     public function index(Request $request, RideRepository $rideRepository): Response
     {
         // Création du formulaire de recherche

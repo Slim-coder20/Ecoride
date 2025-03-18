@@ -16,28 +16,64 @@ class RideRepository extends ServiceEntityRepository
         parent::__construct($registry, Ride::class);
     }
 
-    //    /**
-    //     * @return Ride[] Returns an array of Ride objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    
+   /**
+    * Recherche des trajets correspondant aux critères de depart et de destination et de la date
 
-    //    public function findOneBySomeField($value): ?Ride
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    * @param string  $departure
+    * @param string  $destination
+    * @param \DateTimeInterface $date
+    * @return Ride[]
+    */
+    public function findRidesByCriteria(string $departure, string $destination, \DateTimeInterface $date): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.departure = :departure')
+            ->andWhere('r.destination = :destination')
+            ->andWhere('r.date = :date')
+            ->setParameter('departure', $departure)
+            ->setParameter('destination', $destination)
+            ->setParameter('date', $date->format('Y-m-d'))
+            ->orderBy('r.departureDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    /**
+     * Recherche des trajets les plus proches de la date de départ
+     * @param \DateTimeInterface $date
+     * @return Ride[]
+     */
+    public function findClosestRides(\DateTimeInterface $date): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.departureDate > :date')
+            ->andWhere('r.remainingSeats > 0')
+            ->setParameter('date', $date->format('Y-m-d H:i:s'))
+            ->orderBy('r.departureDate', 'ASC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
