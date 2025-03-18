@@ -31,7 +31,7 @@ final class ContactController extends AbstractController
             // Récupération des données du formulaire
             $data = $form->getData();
             // Envoi du mail
-            // Debugging the form data
+           
             $email = (new Email());
            
 
