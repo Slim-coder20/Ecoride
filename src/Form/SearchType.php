@@ -78,9 +78,16 @@ class SearchType extends AbstractType
             ])
             ->add('search', SubmitType::class, [
                 'label' => 'Rechercher',
+                'attr' => [
+                    'class' => 'btn-success',
+                ]
+                
             ])
             ->add('reset', SubmitType::class, [
                 'label' => 'Réinitialiser',
+                'attr' => [
+                    'class' => 'btn-suceess',
+                ]
             ]);
     }
 
