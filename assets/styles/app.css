@@ -82,6 +82,9 @@ body {
   }
 }
 
+/* Home Page  */ 
+
+
 /* Carrousel pleine largeur et pleine hauteur */
 #hero {
   position: relative;
@@ -141,3 +144,5 @@ body {
     width: 90%;
   }
 }
+
+
