@@ -1,16 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - EcoRide
-{% endblock %}
+{% block title %}Accueil - EcoRide{% endblock %}
 
 {% block body %}
-	<div class="container text-center mt-5">
-		<h1>Bienvenue sur EcoRide</h1>
-		<p class="lead">La plateforme de covoiturage écologique</p>
+    <div class="container mt-5">
+        <h2 class="text-center">À propos de EcoRide</h2>
+        <p class="text-center">
+            EcoRide est une plateforme de covoiturage dédiée à la promotion de la mobilité durable. 
+            Notre mission est de réduire l'empreinte carbone en facilitant le partage de trajets entre particuliers. 
+            Rejoignez notre communauté et contribuez à un avenir plus vert en partageant vos trajets quotidiens.
+        </p>
+    </div>
 
-		<a href="{{ path('app.search')}}" class="btn btn-success btn-lg mt-3">
-			Trouver un trajet
-		</a>
-	</div>
-
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ asset('images/eco_ride_1.jpg') }}" class="img-fluid" alt="Ecoride image 1">
+            </div>
+            <div class="col-md-4">
+                <img src="{{ asset('images/eco_ride_2.jpg') }}" class="img-fluid" alt="Ecoride image 2">
+            </div>
+            <div class="col-md-4">
+                <img src="{{ asset('images/eco_ride_3.jpg') }}" class="img-fluid" alt="Ecoride image 3">
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="{{ path('app_search') }}" class="btn btn-success btn-lg mt-3">
+                Trouver un trajet
+            </a>
+        </div>
+    </div>
 {% endblock %}
