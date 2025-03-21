@@ -16,6 +16,15 @@ class DriverInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('isChauffeur', ChoiceType::class, [
+                'choices' => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'label' => 'Êtes-vous chauffeur ?',
+            ])
             ->add('licensePlate', TextType::class, [
                 'required' => false,
                 'label' => "Plaque d'immatriculation",
@@ -46,7 +55,7 @@ class DriverInfoType extends AbstractType
                     'Fumeur' => 'fumeur',
                     'Non-fumeur' => 'non_fumeur',
                     'Animal accepté' => 'animal',
-                    'Pas d\'animal' => 'no_animal',
+                    "Pas d'animal" => 'no_animal',
                 ],
                 'expanded' => true,
                 'multiple' => true,

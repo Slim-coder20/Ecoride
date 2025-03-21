@@ -32,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    #[Assert\NotBlank(message: 'La plaque d\'immatriculation est obligatoire pour les chauffeurs.')]
+    #[Assert\NotBlank(message: "La plaque d'immatriculation est obligatoire pour les chauffeurs.")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $licensePlate = null;
 
@@ -53,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?array $preferences = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isChauffeur = false;
 
     public function __construct()
     {
@@ -228,6 +231,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPreferences(?array $preferences): static
     {
         $this->preferences = $preferences;
+
+        return $this;
+    }
+
+    public function getIsChauffeur(): bool
+    {
+        return $this->isChauffeur;
+    }
+
+    public function setIsChauffeur(bool $isChauffeur): static
+    {
+        $this->isChauffeur = $isChauffeur;
 
         return $this;
     }
