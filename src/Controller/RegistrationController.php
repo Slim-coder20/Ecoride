@@ -21,14 +21,9 @@ final class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupération et hash du mot de passe
-            $plainPassword = $form->get('plainPassword')->getData();
-
-            if ($plainPassword) {
-                // Hashage du mot de passe
-                $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
-                $user->setPassword($hashedPassword);
-            }
+            // Hashage du mot de passe
+            $hashedPassword = $userPasswordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
 
             // Sauvegarde en base de données
             $em->persist($user);
