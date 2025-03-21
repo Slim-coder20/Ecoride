@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,7 +18,7 @@ class User
     #[ORM\Column(length: 50)]
     private ?string $pseudo = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -25,10 +27,13 @@ class User
     #[ORM\Column]
     private ?int $credits = 20;
 
-    
+    #[ORM\Column]
+    private array $roles = [];
+
     public function __construct()
     {
         $this->credits = 20;
+        $this->roles = ['ROLE_USER']; // Rôle par défaut
     }
 
     public function getId(): ?int
@@ -82,5 +87,40 @@ class User
         $this->credits = $credits;
 
         return $this;
+    }
+
+    // Implémentation de UserInterface
+
+    public function getRoles(): array
+    {
+        // Garantir que chaque utilisateur a au moins un rôle
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getSalt(): ?string
+    {
+        // Pas nécessaire avec bcrypt ou sodium
+        return null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // Utilisez l'email comme identifiant unique
+        return $this->email;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Si vous stockez des données sensibles temporaires, nettoyez-les ici
     }
 }
