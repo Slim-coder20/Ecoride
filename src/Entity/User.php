@@ -18,19 +18,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 8)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $firstName = null;
+    #[ORM\Column(length: 50, unique: true)]
+    private ?string $pseudo = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $lastName = null;
+    #[ORM\Column(type: 'integer')]
+    private int $credits = 20;
 
-    #[ORM\Column(length: 20)]
-    private ?string $telephone = null;
+    #[ORM\Column(type: 'boolean')]
+    private bool $isChauffeur = false;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isPassager = false;
 
     /**
      * @var Collection<int, Ride>
@@ -38,14 +45,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Ride::class, mappedBy: 'driver')]
     private Collection $rides;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Vehicle::class, cascade: ['persist', 'remove'])]
+    private Collection $vehicles;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
+    private Collection $preferences;
+
     public function __construct()
     {
         $this->rides = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
+        $this->preferences = new ArrayCollection();
+        $this->credits = 20;// Valeur par déffaut à chaque inscription utilisateur 
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): static
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -72,38 +99,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): static
-    {
-        $this->firstName = $firstName;
     
+
+    public function getCredits(): int
+    {
+        return $this->credits;
+    }
+
+    public function setCredits(int $credits): static
+    {
+        $this->credits = $credits;
+
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function isChauffeur(): bool
     {
-        return $this->lastName;
+        return $this->isChauffeur;
     }
 
-    public function setLastName(string $lastName): static
+    public function setChauffeur(bool $isChauffeur): static
     {
-        $this->lastName = $lastName;
+        $this->isChauffeur = $isChauffeur;
 
         return $this;
     }
 
-    public function getTelephone(): ?string
+    public function isPassager(): bool
     {
-        return $this->telephone;
+        return $this->isPassager;
     }
 
-    public function setTelephone(string $telephone): static
+    public function setPassager(bool $isPassager): static
     {
-        $this->telephone = $telephone;
+        $this->isPassager = $isPassager;
 
         return $this;
     }
@@ -158,6 +187,64 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($ride->getDriver() === $this) {
                 $ride->setDriver(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vehicle>
+     */
+    public function getVehicles(): Collection
+    {
+        return $this->vehicles;
+    }
+
+    public function addVehicle(Vehicle $vehicle): static
+    {
+        if (!$this->vehicles->contains($vehicle)) {
+            $this->vehicles->add($vehicle);
+            $vehicle->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicle(Vehicle $vehicle): static
+    {
+        if ($this->vehicles->removeElement($vehicle)) {
+            if ($vehicle->getUser() === $this) {
+                $vehicle->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Preference>
+     */
+    public function getPreferences(): Collection
+    {
+        return $this->preferences;
+    }
+
+    public function addPreference(Preference $preference): static
+    {
+        if (!$this->preferences->contains($preference)) {
+            $this->preferences->add($preference);
+            $preference->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePreference(Preference $preference): static
+    {
+        if ($this->preferences->removeElement($preference)) {
+            if ($preference->getUser() === $this) {
+                $preference->setUser(null);
             }
         }
 
