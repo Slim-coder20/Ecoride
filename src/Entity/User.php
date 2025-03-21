@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -29,6 +31,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];
+
+    #[Assert\NotBlank(message: 'La plaque d\'immatriculation est obligatoire pour les chauffeurs.')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $licensePlate = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $registrationDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $model = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $color = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $brand = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $seat = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $preferences = null;
 
     public function __construct()
     {
@@ -122,5 +146,89 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // Si vous stockez des données sensibles temporaires, nettoyez-les ici
+    }
+
+    public function getLicensePlate(): ?string
+    {
+        return $this->licensePlate;
+    }
+
+    public function setLicensePlate(?string $licensePlate): static
+    {
+        $this->licensePlate = $licensePlate;
+
+        return $this;
+    }
+
+    public function getRegistrationDate(): ?\DateTimeInterface
+    {
+        return $this->registrationDate;
+    }
+
+    public function setRegistrationDate(?\DateTimeInterface $registrationDate): static
+    {
+        $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+
+    public function getModel(): ?string
+    {
+        return $this->model;
+    }
+
+    public function setModel(?string $model): static
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?string $brand): static
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getSeat(): ?int
+    {
+        return $this->seat;
+    }
+
+    public function setSeat(?int $seat): static
+    {
+        $this->seat = $seat;
+
+        return $this;
+    }
+
+    public function getPreferences(): ?array
+    {
+        return $this->preferences;
+    }
+
+    public function setPreferences(?array $preferences): static
+    {
+        $this->preferences = $preferences;
+
+        return $this;
     }
 }

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon espace utilisateur
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<div class="card" style="width: 18rem;">
+			<img src="{{ asset('images/covoiturage3.jpg') }}" class="card-img-top" alt="...">
+			<div class="card-body">
+				<h5 class="card-title">Bienvenue,
+					{{user.pseudo}}</h5>
+
+				<p>Email :
+					{{ user.email }}</p>
+				<p>Crédits :
+					{{ user.credits }}</p>
+
+			</div>
+		</div>
+		<h2>Informations de chauffeur</h2>
+		{{ form_start(form) }}
+		{{ form_row(form.isChauffeur) }}
+		{% if form.licensePlate is defined %}
+			{{ form_row(form.licensePlate) }}
+			{{ form_row(form.registrationDate) }}
+			{{ form_row(form.model) }}
+			{{ form_row(form.color) }}
+			{{ form_row(form.brand) }}
+			{{ form_row(form.seat) }}
+			{{ form_row(form.preferences) }}
+		{% endif %}
+		<button type="submit" class="btn btn-success mt-3">Mettre à jour</button>
+		{{ form_end(form) }}
+
+
+	</div>
+
+{% endblock %}
