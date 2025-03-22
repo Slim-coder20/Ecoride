@@ -10,6 +10,7 @@
 }
 
 body {
+  
   background-color: var(--primary-color);
   font-family: var(--Roboto);
   font-size: var(--font-size);
