@@ -43,16 +43,22 @@ final class CovoiturageController extends AbstractController
         $depart = $request->query->get('depart');
         $arrivee = $request->query->get('arrivee');
         $date = $request->query->get('date');
-
+    
         $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
-
+    
+        if (!$dateObj) {
+            $this->addFlash('error', 'La date saisie est invalide.');
+            return $this->redirectToRoute('app_covoiturage');
+        }
+    
         $resultats = $doctrine->getRepository(Trajet::class)
-            ->findByRecherche($depart, $arrivee, $dateObj);
-
+            ->findByRecherche($depart, $arrivee, $dateObj); // ← ici on envoie bien $dateObj
+    
         return $this->render('covoiturage/resultats.html.twig', [
             'resultats' => $resultats,
         ]);
     }
+    
 
     // c'est une route qui va nous  rmettre de voir les détails d'un trajet // 
     
