@@ -18,6 +18,7 @@
         "build": "./node_modules/.bin/encore production --progress"
     },
     "dependencies": {
+        "aos": "^2.3.4",
         "bootstrap": "^5.3.3"
     }
 }

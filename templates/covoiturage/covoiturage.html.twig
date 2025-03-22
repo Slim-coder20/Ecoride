@@ -1,29 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div class="covoiturage-container">
-		<div class="covoiturage-image">
-			<img src="{{ asset('images/covoiturage1.jpg') }}" alt="Image covoiturage" class="img-cover">
+	<div
+		class="covoiturage-container d-flex justify-content-between align-items-center flex-wrap my-5 px-3">
+
+		<!-- Colonne image -->
+		<div class="covoiturage-image" data-aos="fade-right">
+			<img src="{{ asset('images/covoiturage1.jpg') }}" alt="Image covoiturage" class="img-cover mb-3">
 			<img src="{{ asset('images/covoiturage2.jpg') }}" alt="Image voiture" class="img-cover">
 		</div>
 
-		<div class="covoiturage-form">
-			<h2 class="form-title">🚘 Trouvez votre trajet</h2>
+		<!-- Colonne formulaire -->
+		<div class="covoiturage-form bg-white p-4 rounded shadow" data-aos="fade-left">
+			<h2 class="form-title text-center text-primary mb-4">🚘 Trouvez votre trajet</h2>
 
 			{{ form_start(form) }}
-			<div class="form-group">
+			<div class="form-group mb-3" data-aos="fade-up" data-aos-delay="100">
 				{{ form_row(form.depart) }}
 			</div>
-			<div class="form-group">
+			<div class="form-group mb-3 " data-aos="fade-up" data-aos-delay="200">	
 				{{ form_row(form.arrivee) }}
 			</div>
-			<div class="form-group">
+			<div class="form-group mb-3" data-aos="fade-up" data-aos-delay="300">
 				{{ form_row(form.date) }}
 			</div>
-			<div class="form-group">
-				<button class="btn btn-primary w-100">Rechercher</button>
+			<div class="form-group text-center">
+				<button class="btn btn-success w-100">Rechercher</button>
 			</div>
 			{{ form_end(form) }}
 		</div>
+
 	</div>
 {% endblock %}

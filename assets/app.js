@@ -9,3 +9,12 @@
 import './styles/app.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+// initialisation de AOS 
+AOS.init({
+    duration: 1000,
+    once: true 
+
+});
