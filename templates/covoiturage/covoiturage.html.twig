@@ -1,34 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CovoiturageController!
-{% endblock %}
-
 {% block body %}
-	<div class="container mt-5">
-		<h1>Rechercher un trajet
-		</h1>
-		{{ form_start(form) }}
-		<div class="mb-3">
-			{{ form_label(form.depart) }}
-			{{ form_widget(form.depart, {'attr': {'class': 'form-control'}}) }}
-			{{ form_errors(form.depart) }}
+	<div class="covoiturage-container">
+		<div class="covoiturage-image">
+			<img src="{{ asset('images/covoiturage1.jpg') }}" alt="Image covoiturage" class="img-cover">
+			<img src="{{ asset('images/covoiturage2.jpg') }}" alt="Image voiture" class="img-cover">
 		</div>
 
-		<div class="mb-3">
-			{{ form_label(form.arrivee) }}
-			{{ form_widget(form.arrivee, {'attr': {'class': 'form-control'}}) }}
-			{{ form_errors(form.arrivee) }}
-		</div>
+		<div class="covoiturage-form">
+			<h2 class="form-title">🚘 Trouvez votre trajet</h2>
 
-		<div class="mb-3">
-			{{ form_label(form.date) }}
-			{{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
-			{{ form_errors(form.date) }}
+			{{ form_start(form) }}
+			<div class="form-group">
+				{{ form_row(form.depart) }}
+			</div>
+			<div class="form-group">
+				{{ form_row(form.arrivee) }}
+			</div>
+			<div class="form-group">
+				{{ form_row(form.date) }}
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary w-100">Rechercher</button>
+			</div>
+			{{ form_end(form) }}
 		</div>
-
-		<button type="submit" class="btn btn-success">Rechercher</button>
-		{{ form_end(form) }}
 	</div>
-
-
-</div>{% endblock %}
+{% endblock %}

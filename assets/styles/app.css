@@ -10,7 +10,6 @@
 }
 
 body {
-  
   background-color: var(--primary-color);
   font-family: var(--Roboto);
   font-size: var(--font-size);
@@ -83,11 +82,10 @@ body {
   }
 }
 
-/* Home Page  */ 
-
+/* Home Page  */
 
 /* Carrousel pleine largeur  */
-#heroCarousel{
+#heroCarousel {
   position: relative;
   width: 100%;
   height: 60vh; /* Réduire la hauteur */
@@ -146,7 +144,6 @@ body {
   }
 }
 
-
 .img-fluid {
   max-width: 100%;
   height: auto;
@@ -203,4 +200,63 @@ body {
 
 .result-button .btn:hover {
   background-color: #255cb0;
+}
+
+/*  style Covoiturage.html.twig  */
+
+.covoiturage-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 40px;
+  gap: 40px;
+  background-color: var(--secondary-color);
+  flex-wrap: wrap;
+}
+
+.covoiturage-image {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.img-cover {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.covoiturage-form {
+  flex: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  color: var(--title-color);
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .covoiturage-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .img-cover {
+    height: 200px;
+  }
 }
