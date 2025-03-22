@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du trajet
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1>📝 Détails du trajet</h1>
+
+		<p>
+			<strong>Chauffeur :</strong>
+			{{ trajet.chauffeur.pseudo }}</p>
+		<p>
+			<strong>Note :</strong>
+			{{ trajet.chauffeur.note }}</p>
+
+		<h2>🚗 Véhicule</h2>
+		<p>
+			<strong>Marque :</strong>
+			{{ trajet.voiture.marque }}</p>
+		<p>
+			<strong>Modèle :</strong>
+			{{ trajet.voiture.modele }}</p>
+		<p>
+			<strong>Énergie :</strong>
+			{{ trajet.voiture.energie }}</p>
+		<p>
+			<strong>Écologique :</strong>
+			{{ trajet.voiture.ecologique ? 'Oui' : 'Non' }}</p>
+
+		<h2>📋 Préférences du conducteur</h2>
+		<p>{{ trajet.chauffeur.preferences }}</p>
+
+		<h2>🌟 Avis du conducteur</h2>
+		<ul>
+			{% for avis in trajet.chauffeur.avis %}
+				<li>{{ avis.commentaire }}
+					- Note :
+					{{ avis.note }}</li>
+			{% else %}
+				<li>Aucun avis pour ce conducteur.</li>
+			{% endfor %}
+		</ul>
+
+		<a href="{{ path('covoiturage') }}" class="btn btn-secondary mt-3">Retour à la recherche</a>
+	</div>
+{% endblock %}

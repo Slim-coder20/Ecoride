@@ -1,11 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CovoiturageController!{% endblock %}
+{% block title %}Hello CovoiturageController!
+{% endblock %}
 
 {% block body %}
+	<div class="container mt-5">
+		<h1>Rechercher un trajet
+		</h1>
+		{{ form_start(form) }}
+		<div class="mb-3">
+			{{ form_label(form.depart) }}
+			{{ form_widget(form.depart, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.depart) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.arrivee) }}
+			{{ form_widget(form.arrivee, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.arrivee) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.date) }}
+			{{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.date) }}
+		</div>
+
+		<button type="submit" class="btn btn-success">Rechercher</button>
+		{{ form_end(form) }}
+	</div>
 
 
-<div class="example-wrapper">
-    <h1>Trouver un trajet</h1>
-
-{% endblock %}
+</div>{% endblock %}

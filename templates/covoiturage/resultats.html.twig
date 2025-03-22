@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de votre recherche
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1>🛣️ Résultats de votre recherche</h1>
+
+		{% if resultats is empty %}
+			<p>Aucun trajet trouvé selon vos critères.</p>
+		{% else %}
+			{% for trajet in resultats %}
+				<div class="card my-4 p-3 shadow-sm">
+					<p>
+						<strong>Chauffeur :</strong>
+						{{ trajet.chauffeur.pseudo }}</p>
+					<p>
+						<strong>Places restantes :</strong>
+						{{ trajet.placesRestantes }}</p>
+					<p>
+						<strong>Prix :</strong>
+						{{ trajet.prix }}
+						€</p>
+					<p>
+						<strong>Départ :</strong>
+						{{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
+					<p>
+						<strong>Arrivée :</strong>
+						{{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
+					<p>
+						<strong>Écologique :</strong>
+						{{ trajet.voiture.ecologique ? 'Oui' : 'Non' }}</p>
+
+					<a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-primary mt-2">Détails</a>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+{% endblock %}
