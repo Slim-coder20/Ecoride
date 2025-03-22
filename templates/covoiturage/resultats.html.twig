@@ -1,43 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultats de votre recherche
-{% endblock %}
-
 {% block body %}
-	<div class="container mt-5">
-		<h1>🛣️ Résultats de votre recherche</h1>
+  <section class="results-section">
+    <h2 class="section-title text-center">📍 Résultats de votre recherche</h2>
 
-		{% if resultats is empty %}
-			<p>Aucun trajet trouvé selon vos critères.</p>
-		{% else %}
-			{% for trajet in resultats %}
-				<div class="card my-4 p-3 shadow-sm">
-					<p>
-						<strong>Chauffeur :</strong>
-						{{ trajet.chauffeur.pseudo }}</p>
-					<p>
-						<strong>Places restantes :</strong>
-						{{ trajet.placesRestantes }}</p>
-					<p>
-						<strong>Prix :</strong>
-						{{ trajet.prix }}
-						€</p>
-					<p>
-						<strong>Départ :</strong>
-						{{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
-					<p>
-						<strong>Arrivée :</strong>
-						{{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
-					<p>
-						<strong>Écologique :</strong>
-						{{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
-					<p>
-						<strong>Confort :</strong>
-						{{ trajet.chauffeur.energie ? 'Oui' :  'Non' }}</p>
-
-					<a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-success mt-2">Détails</a>
-				</div>
-			{% endfor %}
-		{% endif %}
-	</div>
+    {% if resultats is empty %}
+      <div class="alert alert-warning text-center">
+        Aucun trajet trouvé pour ces critères.
+      </div>
+    {% else %}
+      {% for trajet in resultats %}
+        <div class="result-card">
+          <h5>🚗 Trajet proposé par <strong>{{ trajet.chauffeur.pseudo }}</strong></h5>
+          <div class="result-info">
+            <p><strong>Places restantes :</strong> {{ trajet.placesRestantes }}</p>
+            <p><strong>Prix :</strong> {{ trajet.prix }} €</p>
+            <p><strong>Départ :</strong> {{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
+            <p><strong>Arrivée :</strong> {{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
+            <p><strong>Écologique :</strong> {{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
+            <p><strong>Confort :</strong> {{ trajet.chauffeur.energie ?? 'Non renseigné' }}</p>
+          </div>
+          <div class="result-button">
+            <a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-primary">Détails</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </section>
 {% endblock %}

@@ -152,3 +152,55 @@ body {
   height: auto;
   border: 1px solid #327ceb;
 }
+
+/* Page Resultats.html.twig  */
+
+.results-section {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.result-card {
+  background-color: var(--secondary-color);
+  color: #333;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  transition: transform 0.3s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-5px);
+}
+
+.result-card h5 {
+  color: var(--title-color);
+  margin-bottom: 15px;
+}
+
+.result-info p {
+  margin: 5px 0;
+}
+
+.result-info strong {
+  color: #555;
+}
+
+.result-button {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.result-button .btn {
+  background-color: var(--title-color);
+  border: none;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.result-button .btn:hover {
+  background-color: #255cb0;
+}
