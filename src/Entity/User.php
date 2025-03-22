@@ -71,6 +71,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'utilisateur')]
     private Collection $avis;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $energie = null;
+
+    #[ORM\Column]
+    private ?bool $ecologique = null;
+
     public function __construct()
     {
         $this->credits = 20;
@@ -319,6 +325,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $avi->setUtilisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEnergie(): ?string
+    {
+        return $this->energie;
+    }
+
+    public function setEnergie(?string $energie): static
+    {
+        $this->energie = $energie;
+
+        return $this;
+    }
+
+    public function isEcologique(): ?bool
+    {
+        return $this->ecologique;
+    }
+
+    public function setEcologique(bool $ecologique): static
+    {
+        $this->ecologique = $ecologique;
 
         return $this;
     }

@@ -22,6 +22,9 @@ class AppFixtures extends Fixture
         $chauffeur->setModel('208');
         $chauffeur->setLicensePlate('AB-123-CD');
         $chauffeur->setSeat(4);
+        $chauffeur->setEnergie('électrique');
+        $chauffeur->setEcologique(true);
+
         
         $manager->persist($chauffeur);
 
