@@ -40,9 +40,7 @@
 						<li class="nav-item">
 							<a class="nav-link text-white" href="#">Covoiturage</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('app_contact') }}">Contact</a>
-						</li>
+
 						{% if app.user %}
 							<li class="nav-item">
 								<a class="nav-link text-white" href="{{ path('app_logout') }}">
@@ -57,13 +55,11 @@
 									Connexion
 								</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link text-white" href="#">
-									<i class="fas fa-user-plus"></i>
-									Inscription
-								</a>
-							</li>
+
 						{% endif %}
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_contact') }}">Contact</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -117,7 +113,7 @@
 								<a href="#" class="text-white text-decoration-none">Proposer un trajet</a>
 							</li>
 							<li>
-								<a href="#" class="text-white text-decoration-none">Contact</a>
+								<a href="{{path('app_contact')}}" class="text-white text-decoration-none">Contact</a>
 							</li>
 						</ul>
 					</div>
