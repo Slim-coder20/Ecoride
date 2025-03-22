@@ -38,7 +38,7 @@
 							<a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-white" href="#">Covoiturage</a>
+							<a class="nav-link text-white" href="{{path('app_covoiturage')}}">Covoiturage</a>
 						</li>
 
 						{% if app.user %}
@@ -107,7 +107,7 @@
 								<a href="{{ path('app_home') }}" class="text-white text-decoration-none">Accueil</a>
 							</li>
 							<li>
-								<a href="#" class="text-white text-decoration-none">Rechercher un trajet</a>
+								<a href="{{path('app_covoiturage')}}" class="text-white text-decoration-none">Rechercher un trajet</a>
 							</li>
 							<li>
 								<a href="#" class="text-white text-decoration-none">Proposer un trajet</a>
