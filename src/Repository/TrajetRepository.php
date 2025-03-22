@@ -16,6 +16,27 @@ class TrajetRepository extends ServiceEntityRepository
         parent::__construct($registry, Trajet::class);
     }
 
+
+    public function findByRecherche(string $depart, string $arrivee, \DateTimeInterface $date): array
+    {
+        return $this->createQueryBuilder('t')
+        ->andWhere('t.depart LIKE :depart')
+        ->andWhere('t.arrivee LIKE :arrivee')
+        ->andWhere('DATE(t.dateDepart) = :date')
+        ->setParameter('depart', '%' . $depart . '%')
+        ->setParameter('arrivee', '%' . $arrivee . '%')
+        ->setParameter('date', $date->format('Y-m-d'))
+        ->orderBy('t.dateDepart', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+    }
+
+
+
+
+
+
     //    /**
     //     * @return Trajet[] Returns an array of Trajet objects
     //     */
