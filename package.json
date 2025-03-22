@@ -13,9 +13,9 @@
     "private": true,
     "scripts": {
         "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "dev": "./node_modules/.bin/encore dev ",
+        "watch": "./node_modules/.bin/encore dev --watch",
+        "build": "./node_modules/.bin/encore production --progress"
     },
     "dependencies": {
         "bootstrap": "^5.3.3"
