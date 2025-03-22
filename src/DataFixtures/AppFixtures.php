@@ -30,7 +30,7 @@ class AppFixtures extends Fixture
 
         // Création de plusieurs trajets pour les tests // 
 
-        for($i = 0; $i < 10; $i++){
+        for($i = 0; $i < 20; $i++){
             $trajet = new Trajet();
             $trajet->setDepart('Paris');
             $trajet->setArrivee('Lyon');
