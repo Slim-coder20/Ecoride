@@ -30,7 +30,10 @@
 						{{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
 					<p>
 						<strong>Écologique :</strong>
-						{{ trajet.voiture.ecologique ? 'Oui' : 'Non' }}</p>
+						{{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
+					<p>
+						<strong>Confort :</strong>
+						{{ trajet.chauffeur.energie ? 'Oui' :  'Non' }}</p>
 
 					<a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-primary mt-2">Détails</a>
 				</div>
