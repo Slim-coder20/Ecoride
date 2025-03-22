@@ -40,6 +40,7 @@ class AppFixtures extends Fixture
             $manager->persist($trajet);
         }
 
+        
 
 
         $manager->flush();
