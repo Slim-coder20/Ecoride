@@ -24,6 +24,7 @@ class AppFixtures extends Fixture
         $chauffeur->setSeat(4);
         $chauffeur->setEnergie('électrique');
         $chauffeur->setEcologique(true);
+        $chauffeur->setNote(4.5);
 
         
         $manager->persist($chauffeur);

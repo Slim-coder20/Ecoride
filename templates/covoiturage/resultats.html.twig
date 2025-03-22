@@ -35,7 +35,7 @@
 						<strong>Confort :</strong>
 						{{ trajet.chauffeur.energie ? 'Oui' :  'Non' }}</p>
 
-					<a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-primary mt-2">Détails</a>
+					<a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-success mt-2">Détails</a>
 				</div>
 			{% endfor %}
 		{% endif %}

@@ -12,21 +12,21 @@
 			{{ trajet.chauffeur.pseudo }}</p>
 		<p>
 			<strong>Note :</strong>
-			{{ trajet.chauffeur.note }}</p>
+			{{ trajet.chauffeur.note ?? 'Non noté'}}</p>
 
 		<h2>🚗 Véhicule</h2>
 		<p>
 			<strong>Marque :</strong>
-			{{ trajet.voiture.marque }}</p>
+			{{ trajet.chauffeur.brand }}</p>
 		<p>
 			<strong>Modèle :</strong>
-			{{ trajet.voiture.modele }}</p>
+			{{ trajet.chauffeur.model}}</p>
 		<p>
 			<strong>Énergie :</strong>
-			{{ trajet.voiture.energie }}</p>
+			{{ trajet.chauffeur.energie }}</p>
 		<p>
 			<strong>Écologique :</strong>
-			{{ trajet.voiture.ecologique ? 'Oui' : 'Non' }}</p>
+			{{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
 
 		<h2>📋 Préférences du conducteur</h2>
 		<p>{{ trajet.chauffeur.preferences }}</p>
@@ -42,6 +42,6 @@
 			{% endfor %}
 		</ul>
 
-		<a href="{{ path('covoiturage') }}" class="btn btn-secondary mt-3">Retour à la recherche</a>
+		<a href="{{ path('app_covoiturage') }}" class="btn btn-secondary mt-3">Retour à la recherche</a>
 	</div>
 {% endblock %}

@@ -77,6 +77,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $ecologique = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $note = null;
+
     public function __construct()
     {
         $this->credits = 20;
@@ -349,6 +352,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEcologique(bool $ecologique): static
     {
         $this->ecologique = $ecologique;
+
+        return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): static
+    {
+        $this->note = $note;
 
         return $this;
     }
