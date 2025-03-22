@@ -38,7 +38,7 @@
 							<a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('app_search') }}">Rechercher</a>
+							<a class="nav-link text-white" href="{{ path('app_search') }}">Covoiturage</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link text-white" href="{{ path('app_contact') }}">Contact</a>
@@ -68,7 +68,28 @@
 				</div>
 			</div>
 		</nav>
-
+		<!-- Messages Flash -->
+		<div class="container mt-3">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
+		<!-- Messages Flash -->
+		<div class="container mt-3">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
 		<!-- Contenu de la page -->
 		<div class="container mt-4"> {% block body %}{% endblock %}
 			</div>
