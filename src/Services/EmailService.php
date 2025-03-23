@@ -22,7 +22,8 @@ class EmailService
     public function sendContactEmail(string $from, string $subject, string $message): void
     {
         $email = (new Email())
-            ->from($from)
+            ->from($this->params->get('CONTACT_EMAIL'))
+            ->replyTo($from)
             ->to($this->params->get('CONTACT_EMAIL'))
             ->subject($subject)
             ->text($message);
