@@ -19,7 +19,7 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 3; $i++) {
             $chauffeur = new User();
-            $chauffeur->setPseudo('chauffeur' . $i);
+            $chauffeur->setPseudo('JeanYves32' . $i);
             $chauffeur->setPhoto($photos[$i]);
             $chauffeur->setEmail('chauffeur' . $i . '@ecoride.com');
             $chauffeur->setPassword('password');
@@ -34,11 +34,20 @@ class AppFixtures extends Fixture
 
             $manager->persist($chauffeur);
 
+          
+            
             // 💡 Crée 5 trajets par chauffeur
+            $photovoiture = [
+                'images/voiture_1.jpg',
+                'images/voiture_2.jpg',
+                'images/voiture_3.jpg'
+            ];
+            
             for ($j = 0; $j < 5; $j++) {
                 $trajet = new Trajet();
                 $trajet->setDepart('Paris');
                 $trajet->setArrivee('Lyon');
+                $trajet->setPhotoVoiture($photovoiture[$i]);
                 $trajet->setDateDepart(new \DateTime("+$j days 08:00"));
                 $trajet->setDateArrivee(new \DateTime("+$j days 12:00"));
                 $trajet->setPrix(20 + $j * 5);

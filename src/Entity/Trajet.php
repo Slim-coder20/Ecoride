@@ -36,6 +36,9 @@ class Trajet
     #[ORM\JoinColumn(nullable: false)]
     private ?User $chauffeur = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $photoVoiture = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +124,18 @@ class Trajet
     public function setChauffeur(?User $chauffeur): static
     {
         $this->chauffeur = $chauffeur;
+
+        return $this;
+    }
+
+    public function getPhotoVoiture(): ?string
+    {
+        return $this->photoVoiture;
+    }
+
+    public function setPhotoVoiture(string $photoVoiture): static
+    {
+        $this->photoVoiture = $photoVoiture;
 
         return $this;
     }

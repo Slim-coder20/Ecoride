@@ -262,7 +262,9 @@ body {
 }
 
 
-/*  Style détails.html.twig  */
+/*  Style rsultats.html.twig  */
+
+
 
 .chauffeur-photo img {
   object-fit: cover;
