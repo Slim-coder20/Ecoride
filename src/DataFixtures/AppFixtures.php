@@ -11,41 +11,43 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // création d'un utilisateur chauffeur pour les tests // 
+        $photos = [
+            'images/chauffeur_1.jpg',
+            'images/chauffeur_2.jpg',
+            'images/chauffeur_3.jpg'
+        ];
 
-        $chauffeur = new User();
-        $chauffeur->setPseudo('chauffeur');
-        $chauffeur->setEmail('JeanChauffeur'); 
-        $chauffeur->setPassword('password');
-        $chauffeur->setIsChauffeur(true);
-        $chauffeur->setBrand('Peugeot');
-        $chauffeur->setModel('208');
-        $chauffeur->setLicensePlate('AB-123-CD');
-        $chauffeur->setSeat(4);
-        $chauffeur->setEnergie('électrique');
-        $chauffeur->setEcologique(true);
-        $chauffeur->setNote(4.5);
+        for ($i = 0; $i < 3; $i++) {
+            $chauffeur = new User();
+            $chauffeur->setPseudo('chauffeur' . $i);
+            $chauffeur->setPhoto($photos[$i]);
+            $chauffeur->setEmail('chauffeur' . $i . '@ecoride.com');
+            $chauffeur->setPassword('password');
+            $chauffeur->setIsChauffeur(true);
+            $chauffeur->setBrand('Peugeot');
+            $chauffeur->setModel('208');
+            $chauffeur->setLicensePlate('AB-12' . $i . '-CD');
+            $chauffeur->setSeat(4);
+            $chauffeur->setEnergie('électrique');
+            $chauffeur->setEcologique(true);
+            $chauffeur->setNote(4.5 - $i * 0.3);
 
-        
-        $manager->persist($chauffeur);
+            $manager->persist($chauffeur);
 
-        // Création de plusieurs trajets pour les tests // 
+            // 💡 Crée 5 trajets par chauffeur
+            for ($j = 0; $j < 5; $j++) {
+                $trajet = new Trajet();
+                $trajet->setDepart('Paris');
+                $trajet->setArrivee('Lyon');
+                $trajet->setDateDepart(new \DateTime("+$j days 08:00"));
+                $trajet->setDateArrivee(new \DateTime("+$j days 12:00"));
+                $trajet->setPrix(20 + $j * 5);
+                $trajet->setPlacesRestantes(3 - ($j % 3));
+                $trajet->setChauffeur($chauffeur);
 
-        for($i = 0; $i < 20; $i++){
-            $trajet = new Trajet();
-            $trajet->setDepart('Paris');
-            $trajet->setArrivee('Lyon');
-            $trajet->setDateDepart(new \DateTime("+{$i} days 08:00"));
-            $trajet->setDateArrivee(new \DateTime("+{$i} days 12:00"));
-            $trajet->setPrix(20 + $i * 5);
-            $trajet->setPlacesRestantes(3 - ($i % 3));
-            $trajet->setChauffeur($chauffeur);
-
-            $manager->persist($trajet);
+                $manager->persist($trajet);
+            }
         }
-
-        
-
 
         $manager->flush();
     }

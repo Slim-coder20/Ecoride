@@ -1,30 +1,34 @@
-{% extends 'base.html.twig' %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">📍 Résultats de votre recherche</h2>
 
-{% block body %}
-  <section class="results-section">
-    <h2 class="section-title text-center">📍 Résultats de votre recherche</h2>
+  {% for trajet in resultats %}
+    <div class="bg-light p-4 rounded shadow-lg mb-4 d-flex align-items-center justify-content-between gap-4" data-aos="fade-up">
 
-    {% if resultats is empty %}
-      <div class="alert alert-warning text-center">
-        Aucun trajet trouvé pour ces critères.
+      <!-- PHOTO CHAUFFEUR -->
+      <div class="chauffeur-photo">
+        <img src="{{ asset(trajet.chauffeur.photo) }}" alt="Photo du chauffeur" class="rounded-circle" width="100" height="100">
       </div>
-    {% else %}
-      {% for trajet in resultats %}
-        <div class="result-card">
-          <h5>🚗 Trajet proposé par <strong>{{ trajet.chauffeur.pseudo }}</strong></h5>
-          <div class="result-info">
-            <p><strong>Places restantes :</strong> {{ trajet.placesRestantes }}</p>
-            <p><strong>Prix :</strong> {{ trajet.prix }} €</p>
-            <p><strong>Départ :</strong> {{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
-            <p><strong>Arrivée :</strong> {{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
-            <p><strong>Écologique :</strong> {{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
-            <p><strong>Confort :</strong> {{ trajet.chauffeur.energie ?? 'Non renseigné' }}</p>
-          </div>
-          <div class="result-button">
-            <a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-primary">Détails</a>
-          </div>
-        </div>
-      {% endfor %}
-    {% endif %}
-  </section>
-{% endblock %}
+
+      <!-- INFOS TRAJET -->
+      <div class="flex-grow-1">
+        <p class="mb-1">
+          🚗 <strong>Trajet proposé par</strong>
+          <span class="text-primary fw-bold">{{ trajet.chauffeur.pseudo }}</span>
+        </p>
+        <p><strong>🪑 Places restantes :</strong> {{ trajet.placesRestantes }}</p>
+        <p><strong>💰 Prix :</strong> {{ trajet.prix }} €</p>
+        <p><strong>📅 Départ :</strong> {{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
+        <p><strong>🛬 Arrivée :</strong> {{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
+        <p><strong>🌱 Écologique :</strong> {{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
+        <p><strong>⚡ Confort :</strong> {{ trajet.chauffeur.energie }}</p>
+      </div>
+
+      <!-- BOUTON -->
+      <div>
+        <a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-outline-success">Détails</a>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-center">Aucun trajet trouvé.</p>
+  {% endfor %}
+</div>

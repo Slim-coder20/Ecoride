@@ -191,7 +191,7 @@ body {
 }
 
 .result-button .btn {
-  background-color: var(--title-color);
+  background-color: var(--primary-color);
   border: none;
   color: white;
   font-weight: bold;
@@ -262,4 +262,10 @@ body {
 }
 
 
-/*  Style contact.html.twig  */
+/*  Style détails.html.twig  */
+
+.chauffeur-photo img {
+  object-fit: cover;
+  border: 3px solid #327ceb;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
