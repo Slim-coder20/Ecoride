@@ -20,8 +20,8 @@ class TrajetRepository extends ServiceEntityRepository
     public function findByRecherche(string $depart, string $arrivee, \DateTimeInterface $date): array
     {
         // On crée une plage de 00:00:00 à 23:59:59 pour couvrir toute la journée
-        $startOfDay = (clone $date)->setTime(0, 0, 0);
-        $endOfDay = (clone $date)->setTime(23, 59, 59);
+        $startOfDay = (clone \DateTime::createFromInterface($date))->setTime(0, 0, 0);
+        $endOfDay = (clone \DateTime::createFromInterface($date))->setTime(23, 59, 59);
     
         return $this->createQueryBuilder('t')
             ->andWhere('t.depart LIKE :depart')

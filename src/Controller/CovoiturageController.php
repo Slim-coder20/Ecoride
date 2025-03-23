@@ -36,30 +36,64 @@ final class CovoiturageController extends AbstractController
     }
 
     // c'est une route qui va nous permettre de voir les résultats de la recherche //
-
     #[Route('/covoiturage/recherche', name: 'covoiturage_resultats')]
     public function resultats(Request $request, ManagerRegistry $doctrine): Response
-    {
-        $depart = $request->query->get('depart');
-        $arrivee = $request->query->get('arrivee');
-        $date = $request->query->get('date');
-    
-        $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
-    
-        if (!$dateObj) {
-            $this->addFlash('error', 'La date saisie est invalide.');
-            return $this->redirectToRoute('app_covoiturage');
-        }
-    
-        $resultats = $doctrine->getRepository(Trajet::class)
-            ->findByRecherche($depart, $arrivee, $dateObj); // ← ici on envoie bien $dateObj
-    
-        return $this->render('covoiturage/resultats.html.twig', [
-            'resultats' => $resultats,
-        ]);
-    }
-    
+{
+    $depart = $request->query->get('depart');
+    $arrivee = $request->query->get('arrivee');
+    $date = $request->query->get('date');
 
+    // Filtres supplémentaires
+    $prixMax = $request->query->get('prix_max');
+    $dureeMax = $request->query->get('duree_max'); // en heures
+    $noteMin = $request->query->get('note_min');
+    $ecologique = $request->query->get('ecologique');
+
+    $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
+
+    if (!$dateObj) {
+        $this->addFlash('error', 'La date saisie est invalide.');
+        return $this->redirectToRoute('app_covoiturage');
+    }
+
+    $qb = $doctrine->getRepository(Trajet::class)->createQueryBuilder('t')
+        ->join('t.chauffeur', 'c')
+        ->addSelect('c');
+
+    // Filtres de base
+    $qb->andWhere('t.depart = :depart')->setParameter('depart', $depart);
+    $qb->andWhere('t.arrivee = :arrivee')->setParameter('arrivee', $arrivee);
+   $qb->andWhere('t.dateDepart BETWEEN :startDate AND :endDate')
+        ->setParameter('startDate', (clone $dateObj)->setTime(0, 0, 0))
+        ->setParameter('endDate', (clone $dateObj)->setTime(23, 59, 59));
+
+    // Filtres avancés
+    if ($prixMax) {
+        $qb->andWhere('t.prix <= :prixMax')->setParameter('prixMax', $prixMax);
+    }
+
+    if ($dureeMax) {
+        $minutes = intval($dureeMax) * 60;
+        $qb->andWhere('TIMESTAMPDIFF(MINUTE, t.dateDepart, t.dateArrivee) <= :maxDuree')
+            ->setParameter('maxDuree', $minutes);
+    }
+
+    if ($noteMin) {
+        $qb->andWhere('c.note >= :noteMin')->setParameter('noteMin', $noteMin);
+    }
+
+    if ($ecologique) {
+        $qb->andWhere('c.ecologique = true');
+    }
+
+    $resultats = $qb->getQuery()->getResult();
+
+    return $this->render('covoiturage/resultats.html.twig', [
+        'resultats' => $resultats,
+    ]);
+}
+
+    
     // c'est une route qui va nous  rmettre de voir les détails d'un trajet // 
     
     #[Route('/covoiturage/{id}', name: 'covoiturage_details')]
