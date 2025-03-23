@@ -1,34 +1,58 @@
-<div class="container my-5">
-  <h2 class="text-center mb-4">📍 Résultats de votre recherche</h2>
+{% extends 'base.html.twig' %}
 
-  {% for trajet in resultats %}
-    <div class="bg-light p-4 rounded shadow-lg mb-4 d-flex align-items-center justify-content-between gap-4" data-aos="fade-up">
+{% block title %}Résultats de votre recherche
+{% endblock %}
 
-      <!-- PHOTO CHAUFFEUR -->
-      <div class="chauffeur-photo">
-        <img src="{{ asset(trajet.chauffeur.photo) }}" alt="Photo du chauffeur" class="rounded-circle" width="100" height="100">
-      </div>
+{% block body %}
 
-      <!-- INFOS TRAJET -->
-      <div class="flex-grow-1">
-        <p class="mb-1">
-          🚗 <strong>Trajet proposé par</strong>
-          <span class="text-primary fw-bold">{{ trajet.chauffeur.pseudo }}</span>
-        </p>
-        <p><strong>🪑 Places restantes :</strong> {{ trajet.placesRestantes }}</p>
-        <p><strong>💰 Prix :</strong> {{ trajet.prix }} €</p>
-        <p><strong>📅 Départ :</strong> {{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
-        <p><strong>🛬 Arrivée :</strong> {{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
-        <p><strong>🌱 Écologique :</strong> {{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
-        <p><strong>⚡ Confort :</strong> {{ trajet.chauffeur.energie }}</p>
-      </div>
+	<div class="container my-5">
+		<h2 class="text-center mb-4">📍 Résultats de votre recherche</h2>
 
-      <!-- BOUTON -->
-      <div>
-        <a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-outline-success">Détails</a>
-      </div>
-    </div>
-  {% else %}
-    <p class="text-center">Aucun trajet trouvé.</p>
-  {% endfor %}
-</div>
+		{% for trajet in resultats %}
+			<div
+				class="bg-light text-dark p-4 rounded shadow-lg mb-4 d-flex align-items-center justify-content-between gap-4" data-aos="fade-up">
+
+				<!-- PHOTO CHAUFFEUR -->
+				<div class="chauffeur-photo">
+					<img src="{{ asset(trajet.chauffeur.photo) }}" alt="Photo du chauffeur" class="rounded-circle" width="100" height="100">
+				</div>
+
+				<!-- INFOS TRAJET -->
+				<div class="flex-grow-1">
+					<p class="mb-1">
+						🚗
+						<strong>Trajet proposé par</strong>
+						<span class="text-primary fw-bold">{{ trajet.chauffeur.pseudo }}</span>
+					</p>
+					<p>
+						<strong>🪑 Places restantes :</strong>
+						{{ trajet.placesRestantes }}</p>
+					<p>
+						<strong>💰 Prix :</strong>
+						{{ trajet.prix }}
+						€</p>
+					<p>
+						<strong>📅 Départ :</strong>
+						{{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
+					<p>
+						<strong>🛬 Arrivée :</strong>
+						{{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
+					<p>
+						<strong>🌱 Écologique :</strong>
+						{{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
+					<p>
+						<strong>⚡ Confort :</strong>
+						{{ trajet.chauffeur.energie }}</p>
+				</div>
+
+				<!-- BOUTON -->
+				<div>
+					<a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-outline-success">Détails</a>
+				</div>
+			</div>
+		{% else %}
+			<p class="text-center">Aucun trajet trouvé.</p>
+		{% endfor %}
+	</div>
+
+{% endblock %}
