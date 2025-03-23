@@ -32,15 +32,11 @@ final class ContactController extends AbstractController
             $data = $form->getData();
             // Envoi du mail
            
-            $email = (new Email());
-           
-
-            $email = $email
-                ->from($data['email'])
-                ->to('contact.ecoride9@gmail.com')
-                ->subject($data['subject'])
-                ->text($data['message']);
-            $mailer->send($email);
+            $this->emailService->sendContactEmail(
+                $data['email'],
+                $data['subject'],
+                $data['message']
+            );
 
             // Ajout d'un message flash
             $this->addFlash('success', 'Votre message a bien été envoyé.');

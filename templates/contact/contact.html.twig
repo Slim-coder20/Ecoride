@@ -1,59 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact{% endblock %}
-
-{% block body %}
-<div class="bg-light py-5">
-    <div class="container">
-        <div class="row align-items-center justify-content-between gap-4">
-
-            <!-- Bloc Image -->
-            <div class="col-md-6" data-aos="zoom-in">
-                <img src="{{ asset('images/eco_ride_1.jpg') }}" class="img-fluid rounded shadow mb-4" alt="Contact image 1">
-                <img src="{{ asset('images/eco_ride_2.jpg') }}" class="img-fluid rounded shadow" alt="Contact image 2">
-            </div>
-
-            <!-- Bloc Formulaire -->
-            <div class="col-md-5 bg-white p-5 rounded-4 shadow" data-aos="fade-left">
-                <h2 class="text-primary text-center mb-4" data-aos="fade-up">📨 Contactez-nous</h2>
-
-                {{ form_start(formContact) }}
-
-                    <div class="form-group mb-3" data-aos="fade-up" data-aos-delay="100">
-                        {{ form_row(formContact.firstname) }}
-                    </div>
-
-                    <div class="form-group mb-3" data-aos="fade-up" data-aos-delay="200">
-                        {{ form_row(formContact.lastname) }}
-                    </div>
-
-                    <div class="form-group mb-3" data-aos="fade-up" data-aos-delay="300">
-                        {{ form_row(formContact.email) }}
-                    </div>
-
-                    <div class="form-group mb-3" data-aos="fade-up" data-aos-delay="400">
-                        {{ form_row(formContact.subject) }}
-                    </div>
-
-                    <div class="form-group mb-3" data-aos="fade-up" data-aos-delay="500">
-                        {{ form_row(formContact.message) }}
-                    </div>
-
-                    <div class="text-center" data-aos="fade-up" data-aos-delay="600">
-                        <button type="submit" class="btn btn-success px-4">Envoyer</button>
-                    </div>
-
-                {{ form_end(formContact) }}
-
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success mt-3">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-
-        </div>
-    </div>
-</div>
+{% block title %}Contact
 {% endblock %}
 
+{% block body %}
+	<div class="bg-light py-5">
+		<div class="container">
+			<div
+				class="row justify-content-center align-items-start g-4">
+
+				<!-- Colonne images -->
+				<div class="col-lg-6" data-aos="zoom-in">
+					<img src="{{ asset('images/eco_ride_1.jpg') }}" class="img-fluid rounded shadow mb-3" alt="Contact image 1">
+					<img src="{{ asset('images/eco_ride_2.jpg') }}" class="img-fluid rounded shadow mb-3" alt="Contact image 2">
+				</div>
+
+				<!-- Colonne formulaire -->
+				<div class="col-lg-5 bg-white p-5 rounded-4 shadow" data-aos="fade-left">
+					<h2 class="text-success text-center mb-4" data-aos="fade-up">📨 Contactez-nous</h2>
+
+					{{ form_start(formContact) }}
+
+					<div class="form-group mb-3" data-aos="fade-up" data-aos-delay="100">
+						{{ form_row(formContact.firstname) }}
+					</div>
+
+					<div class="form-group mb-3" data-aos="fade-up" data-aos-delay="200">
+						{{ form_row(formContact.lastname) }}
+					</div>
+
+					<div class="form-group mb-3" data-aos="fade-up" data-aos-delay="300">
+						{{ form_row(formContact.email) }}
+					</div>
+
+					<div class="form-group mb-3" data-aos="fade-up" data-aos-delay="400">
+						{{ form_row(formContact.subject) }}
+					</div>
+
+					<div class="form-group mb-3" data-aos="fade-up" data-aos-delay="500">
+						{{ form_row(formContact.message) }}
+					</div>
+
+					<div class="text-center" data-aos="fade-up" data-aos-delay="600">
+						<button type="submit" class="btn btn-success w-100">Envoyer</button>
+					</div>
+
+					{{ form_end(formContact) }}
+
+					{% for message in app.flashes('success') %}
+						<div class="alert alert-success mt-3">
+							{{ message }}
+						</div>
+					{% endfor %}
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}
