@@ -38,7 +38,9 @@ final class CovoiturageController extends AbstractController
     // c'est une route qui va nous permettre de voir les résultats de la recherche //
     #[Route('/covoiturage/recherche', name: 'covoiturage_resultats')]
     public function resultats(Request $request, ManagerRegistry $doctrine): Response
-{
+{   
+    $resultats = [];
+
     $depart = $request->query->get('depart');
     $arrivee = $request->query->get('arrivee');
     $date = $request->query->get('date');
@@ -56,14 +58,22 @@ final class CovoiturageController extends AbstractController
         return $this->redirectToRoute('app_covoiturage');
     }
 
-    $qb = $doctrine->getRepository(Trajet::class)->createQueryBuilder('t')
+    $qb = $doctrine->getManager()->createQueryBuilder();
+        $qb->select('t', 'c')
+        ->from(Trajet::class, 't')
         ->join('t.chauffeur', 'c')
-        ->addSelect('c');
+        ->where('t.depart = :depart')
+        ->andWhere('t.arrivee = :arrivee')
+        ->andWhere('t.dateDepart BETWEEN :startDate AND :endDate')
+        ->setParameter('depart', $depart)
+        ->setParameter('arrivee', $arrivee)
+        ->setParameter('startDate', (clone $dateObj)->setTime(0, 0))
+         ->setParameter('endDate', (clone $dateObj)->setTime(23, 59));
 
     // Filtres de base
     $qb->andWhere('t.depart = :depart')->setParameter('depart', $depart);
     $qb->andWhere('t.arrivee = :arrivee')->setParameter('arrivee', $arrivee);
-   $qb->andWhere('t.dateDepart BETWEEN :startDate AND :endDate')
+    $qb->andWhere('t.dateDepart BETWEEN :startDate AND :endDate')
         ->setParameter('startDate', (clone $dateObj)->setTime(0, 0, 0))
         ->setParameter('endDate', (clone $dateObj)->setTime(23, 59, 59));
 
@@ -74,8 +84,14 @@ final class CovoiturageController extends AbstractController
 
     if ($dureeMax) {
         $minutes = intval($dureeMax) * 60;
-        $qb->andWhere('TIMESTAMPDIFF(MINUTE, t.dateDepart, t.dateArrivee) <= :maxDuree')
-            ->setParameter('maxDuree', $minutes);
+        $resultats = array_filter($resultats, function (Trajet $trajet) use ($dureeMax) {
+            
+            $depart = $trajet->getDateDepart();
+            $arrivee = $trajet->getDateArrivee();
+
+            $duree = ($arrivee->getTimestamp() - $depart->getTimestamp()) / 60;
+            return $duree <= $minutesMax;
+        });
     }
 
     if ($noteMin) {

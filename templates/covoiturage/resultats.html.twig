@@ -10,7 +10,11 @@
 
 		<!-- Formulaire de filtre  pour affiner la recherche utilisateur -->
 
-		<form action="{{ path('covoiturage_resultats')}}" class="bg-white p-4 rounded shadow mb-4">
+		<form method="get" action="{{ path('covoiturage_resultats')}}" class="bg-white p-4 rounded shadow mb-4">
+			<input type="hidden" name="depart" value="{{ app.request.get('depart') }}">
+			<input type="hidden" name="arrivee" value="{{ app.request.get('arrivee') }}">
+			<input type="hidden" name="date" value="{{ app.request.get('date') }}">
+			
 			<div class="row g-3 align-items-end">
 
 				<div class="col-md-3">
