@@ -35,7 +35,7 @@ final class CovoiturageController extends AbstractController
         ]);
     }
 
-    // c'est une route qui va nous permettre de voir les résultats de la recherche //
+    // c'est une route qui va nous permettre de voir les résultats de la recherche avec l'ajout de filtre pour peaufiner la selection du covoiturage //
     #[Route('/covoiturage/recherche', name: 'covoiturage_resultats')]
     public function resultats(Request $request, ManagerRegistry $doctrine): Response
 {   
@@ -90,7 +90,7 @@ final class CovoiturageController extends AbstractController
             $arrivee = $trajet->getDateArrivee();
 
             $duree = ($arrivee->getTimestamp() - $depart->getTimestamp()) / 60;
-            return $duree <= $minutesMax;
+            return $duree <= $dureeMax;
         });
     }
 
@@ -110,7 +110,7 @@ final class CovoiturageController extends AbstractController
 }
 
     
-    // c'est une route qui va nous  rmettre de voir les détails d'un trajet // 
+    // c'est une route qui va nous  permettre de voir les détails d'un trajet après sa séléction par l'utilisateur // 
     
     #[Route('/covoiturage/{id}', name: 'covoiturage_details')]
     public function details(Trajet $trajet): Response
