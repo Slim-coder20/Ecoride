@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,31 +33,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    //#[Assert\NotBlank(message: "La plaque d'immatriculation est obligatoire pour les chauffeurs.")]
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $licensePlate = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $registrationDate = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $model = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $color = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $brand = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $seat = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?array $preferences = null;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $isChauffeur = false;
-
     /**
      * @var Collection<int, Trajet>
      */
@@ -71,389 +45,109 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'utilisateur')]
     private Collection $avis;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $energie = null;
-
-    #[ORM\Column]
-    private ?bool $ecologique = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $note = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $photo = null;
-
     /**
      * @var Collection<int, Participation>
      */
     #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'user')]
     private Collection $participations;
 
+    // Ce champ est utilisé uniquement pour le formulaire (non stocké en base)
+    #[Assert\NotBlank(message: "Le mot de passe est requis.")]
+    private ?string $plainPassword = null;
+
     public function __construct()
     {
         $this->credits = 20;
-        $this->roles = ['ROLE_USER']; // Rôle par défaut
+        $this->roles = ['ROLE_USER'];
         $this->trajets = new ArrayCollection();
         $this->avis = new ArrayCollection();
         $this->participations = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    public function getId(): ?int { return $this->id; }
 
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
+    public function getPseudo(): ?string { return $this->pseudo; }
+    public function setPseudo(string $pseudo): static { $this->pseudo = $pseudo; return $this; }
 
-    public function setPseudo(string $pseudo): static
-    {
-        $this->pseudo = $pseudo;
+    public function getEmail(): ?string { return $this->email; }
+    public function setEmail(string $email): static { $this->email = $email; return $this; }
 
-        return $this;
-    }
+    public function getPassword(): ?string { return $this->password; }
+    public function setPassword(string $password): static { $this->password = $password; return $this; }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getCredits(): ?int
-    {
-        return $this->credits;
-    }
-
-    public function setCredits(int $credits): static
-    {
-        $this->credits = $credits;
-
-        return $this;
-    }
-
-    // Implémentation de UserInterface
+    public function getCredits(): ?int { return $this->credits; }
+    public function setCredits(int $credits): static { $this->credits = $credits; return $this; }
 
     public function getRoles(): array
     {
-        // Garantir que chaque utilisateur a au moins un rôle
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
+    public function setRoles(array $roles): static { $this->roles = $roles; return $this; }
 
-        return $this;
-    }
+    public function getUserIdentifier(): string { return $this->email; }
 
-    public function getSalt(): ?string
-    {
-        // Pas nécessaire avec bcrypt ou sodium
-        return null;
-    }
+    public function eraseCredentials(): void {}
 
-    public function getUserIdentifier(): string
-    {
-        // Utilisez l'email comme identifiant unique
-        return $this->email;
-    }
+    public function getPlainPassword(): ?string { return $this->plainPassword; }
+    public function setPlainPassword(?string $plainPassword): static { $this->plainPassword = $plainPassword; return $this; }
 
-    public function eraseCredentials(): void
-    {
-        // Si vous stockez des données sensibles temporaires, nettoyez-les ici
-    }
-
-    public function getLicensePlate(): ?string
-    {
-        return $this->licensePlate;
-    }
-
-    public function setLicensePlate(?string $licensePlate): static
-    {
-        $this->licensePlate = $licensePlate;
-
-        return $this;
-    }
-
-    public function getRegistrationDate(): ?\DateTimeInterface
-    {
-        return $this->registrationDate;
-    }
-
-    public function setRegistrationDate(?\DateTimeInterface $registrationDate): static
-    {
-        $this->registrationDate = $registrationDate;
-
-        return $this;
-    }
-
-    public function getModel(): ?string
-    {
-        return $this->model;
-    }
-
-    public function setModel(?string $model): static
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    public function setColor(?string $color): static
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    public function getBrand(): ?string
-    {
-        return $this->brand;
-    }
-
-    public function setBrand(?string $brand): static
-    {
-        $this->brand = $brand;
-
-        return $this;
-    }
-
-    public function getSeat(): ?int
-    {
-        return $this->seat;
-    }
-
-    public function setSeat(?int $seat): static
-    {
-        $this->seat = $seat;
-
-        return $this;
-    }
-
-    public function getPreferences(): ?array
-    {
-        return $this->preferences;
-    }
-
-    public function setPreferences(?array $preferences): static
-    {
-        $this->preferences = $preferences;
-
-        return $this;
-    }
-
-    public function getIsChauffeur(): bool
-    {
-        return $this->isChauffeur;
-    }
-
-    public function setIsChauffeur(bool $isChauffeur): static
-    {
-        $this->isChauffeur = $isChauffeur;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Trajet>
-     */
-    public function getTrajets(): Collection
-    {
-        return $this->trajets;
-    }
+    public function getTrajets(): Collection { return $this->trajets; }
 
     public function addTrajet(Trajet $trajet): static
     {
         if (!$this->trajets->contains($trajet)) {
-            $this->trajets->add($trajet);
+            $this->trajets[] = $trajet;
             $trajet->setChauffeur($this);
         }
-
         return $this;
     }
 
     public function removeTrajet(Trajet $trajet): static
     {
-        if ($this->trajets->removeElement($trajet)) {
-            // set the owning side to null (unless already changed)
-            if ($trajet->getChauffeur() === $this) {
-                $trajet->setChauffeur(null);
-            }
+        if ($this->trajets->removeElement($trajet) && $trajet->getChauffeur() === $this) {
+            $trajet->setChauffeur(null);
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Avis>
-     */
-    public function getAvis(): Collection
-    {
-        return $this->avis;
-    }
+    public function getAvis(): Collection { return $this->avis; }
 
     public function addAvi(Avis $avi): static
     {
         if (!$this->avis->contains($avi)) {
-            $this->avis->add($avi);
+            $this->avis[] = $avi;
             $avi->setUtilisateur($this);
         }
-
         return $this;
     }
 
     public function removeAvi(Avis $avi): static
     {
-        if ($this->avis->removeElement($avi)) {
-            // set the owning side to null (unless already changed)
-            if ($avi->getUtilisateur() === $this) {
-                $avi->setUtilisateur(null);
-            }
+        if ($this->avis->removeElement($avi) && $avi->getUtilisateur() === $this) {
+            $avi->setUtilisateur(null);
         }
-
         return $this;
     }
 
-    public function getEnergie(): ?string
-    {
-        return $this->energie;
-    }
-
-    public function setEnergie(?string $energie): static
-    {
-        $this->energie = $energie;
-
-        return $this;
-    }
-
-    public function isEcologique(): ?bool
-    {
-        return $this->ecologique;
-    }
-
-    public function setEcologique(bool $ecologique): static
-    {
-        $this->ecologique = $ecologique;
-
-        return $this;
-    }
-
-    public function getNote(): ?float
-    {
-        return $this->note;
-    }
-
-    public function setNote(?float $note): static
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
-    public function getPhoto(): ?string
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?string $photo): static
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Participation>
-     */
-    public function getParticipations(): Collection
-    {
-        return $this->participations;
-    }
+    public function getParticipations(): Collection { return $this->participations; }
 
     public function addParticipation(Participation $participation): static
     {
         if (!$this->participations->contains($participation)) {
-            $this->participations->add($participation);
+            $this->participations[] = $participation;
             $participation->setUser($this);
         }
-
         return $this;
     }
 
     public function removeParticipation(Participation $participation): static
     {
-        if ($this->participations->removeElement($participation)) {
-            // set the owning side to null (unless already changed)
-            if ($participation->getUser() === $this) {
-                $participation->setUser(null);
-            }
+        if ($this->participations->removeElement($participation) && $participation->getUser() === $this) {
+            $participation->setUser(null);
         }
-
         return $this;
     }
-
-    
-    private ?string $plainPassword = null;
-
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Chauffeur $chauffeur = null;
-
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(?string $plainPassword): static
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
-    }
-
-    public function getChauffeur(): ?Chauffeur
-    {
-        return $this->chauffeur;
-    }
-
-    public function setChauffeur(Chauffeur $chauffeur): static
-    {
-        // set the owning side of the relation if necessary
-        if ($chauffeur->getUser() !== $this) {
-            $chauffeur->setUser($this);
-        }
-
-        $this->chauffeur = $chauffeur;
-
-        return $this;
-    }
-
-
 }

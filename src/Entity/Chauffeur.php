@@ -45,6 +45,9 @@ class Chauffeur
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $photo = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,12 +65,12 @@ class Chauffeur
         return $this;
     }
 
-    public function getRegsitrationDate(): ?\DateTimeInterface
+    public function getRegistrationDate(): ?\DateTimeInterface
     {
         return $this->regsitrationDate;
     }
 
-    public function setRegsitrationDate(\DateTimeInterface $regsitrationDate): static
+    public function setRegistrationDate(\DateTimeInterface $regsitrationDate): static
     {
         $this->regsitrationDate = $regsitrationDate;
 
@@ -166,6 +169,18 @@ class Chauffeur
     public function setUser(User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(string $photo): static
+    {
+        $this->photo = $photo;
 
         return $this;
     }
