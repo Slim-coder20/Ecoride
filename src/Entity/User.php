@@ -34,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    #[Assert\NotBlank(message: "La plaque d'immatriculation est obligatoire pour les chauffeurs.")]
+    //#[Assert\NotBlank(message: "La plaque d'immatriculation est obligatoire pour les chauffeurs.")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $licensePlate = null;
 
@@ -419,4 +419,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    
+    private ?string $plainPassword = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Chauffeur $chauffeur = null;
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): static
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getChauffeur(): ?Chauffeur
+    {
+        return $this->chauffeur;
+    }
+
+    public function setChauffeur(Chauffeur $chauffeur): static
+    {
+        // set the owning side of the relation if necessary
+        if ($chauffeur->getUser() !== $this) {
+            $chauffeur->setUser($this);
+        }
+
+        $this->chauffeur = $chauffeur;
+
+        return $this;
+    }
+
+
 }
