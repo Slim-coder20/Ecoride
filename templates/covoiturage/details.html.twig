@@ -42,6 +42,19 @@
 			{% endfor %}
 		</ul>
 
+		{% if app.user %}
+			{% if trajet.placesRestantes > 0 and app.user.credits >= 1 %}
+				<form action="#" method="POST">
+					<button type="submit" class="btn btn-success">Participer</button>
+				</form>
+			{% else %}
+				<p class="text-danger">Vous n'avez pas assez de crédits ou il n'y a plus de places disponibles.</p>
+			{% endif %}
+		{% else %}
+			<a href="{{ path('app_login') }}" class="btn btn-success">Connectez-vous pour participer</a>
+		{% endif %}
+
+
 		<a href="{{ path('app_covoiturage') }}" class="btn btn-success mt-3">Retour à la recherche</a>
 	</div>
 {% endblock %}
