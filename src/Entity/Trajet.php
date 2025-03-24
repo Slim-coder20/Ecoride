@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use App\Repository\TrajetRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,6 +39,46 @@ class Trajet
 
     #[ORM\Column(length: 255)]
     private ?string $photoVoiture = null;
+
+
+    /**
+    * @var Collection<int, Participation>
+    */
+    #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'trajet')]
+    private Collection $participations;
+
+    public function __construct()
+    {
+    $this->participations = new ArrayCollection();
+    }
+
+    public function getParticipations(): Collection
+    {
+    return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): static
+    {
+    if (!$this->participations->contains($participation)) {
+        $this->participations[] = $participation;
+        $participation->setTrajet($this);
+    }
+
+    return $this;
+}
+
+    public function removeParticipation(Participation $participation): static
+    {
+    if ($this->participations->removeElement($participation)) {
+        // set the owning side to null (unless already changed)
+        if ($participation->getTrajet() === $this) {
+            $participation->setTrajet(null);
+        }
+    }
+
+    return $this;
+}
+
 
     public function getId(): ?int
     {

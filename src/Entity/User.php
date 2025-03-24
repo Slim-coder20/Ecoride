@@ -83,12 +83,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
+    /**
+     * @var Collection<int, Participation>
+     */
+    #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'user')]
+    private Collection $participations;
+
     public function __construct()
     {
         $this->credits = 20;
         $this->roles = ['ROLE_USER']; // Rôle par défaut
         $this->trajets = new ArrayCollection();
         $this->avis = new ArrayCollection();
+        $this->participations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -379,6 +386,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participation>
+     */
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): static
+    {
+        if (!$this->participations->contains($participation)) {
+            $this->participations->add($participation);
+            $participation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): static
+    {
+        if ($this->participations->removeElement($participation)) {
+            // set the owning side to null (unless already changed)
+            if ($participation->getUser() === $this) {
+                $participation->setUser(null);
+            }
+        }
 
         return $this;
     }
