@@ -1,60 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du trajet
-{% endblock %}
+{% block title %}Détails du trajet{% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		<h1>📝 Détails du trajet</h1>
+<div class="container mt-5">
+    <h1>📝 Détails du trajet</h1>
 
-		<p>
-			<strong>Chauffeur :</strong>
-			{{ trajet.chauffeur.pseudo }}</p>
-		<p>
-			<strong>Note :</strong>
-			{{ trajet.chauffeur.note ?? 'Non noté'}}</p>
+    <p>
+        <strong>Chauffeur :</strong>
+        {{ trajet.chauffeur.pseudo }}
+    </p>
 
-		<h2>🚗 Véhicule</h2>
-		<p>
-			<strong>Marque :</strong>
-			{{ trajet.chauffeur.brand }}</p>
-		<p>
-			<strong>Modèle :</strong>
-			{{ trajet.chauffeur.model}}</p>
-		<p>
-			<strong>Énergie :</strong>
-			{{ trajet.chauffeur.energie }}</p>
-		<p>
-			<strong>Écologique :</strong>
-			{{ trajet.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
+    <p>
+        <strong>Note :</strong>
+        {{ trajet.chauffeur.chauffeur ? trajet.chauffeur.chauffeur.note : 'Non noté' }}
+    </p>
 
-		<h2>📋 Préférences du conducteur</h2>
-		<p>{{ trajet.chauffeur.preferences }}</p>
+    <h2>🚗 Véhicule</h2>
+    <p>
+        <strong>Marque :</strong>
+        {{ trajet.chauffeur.chauffeur.brand }}
+    </p>
+    <p>
+        <strong>Modèle :</strong>
+        {{ trajet.chauffeur.note ?? 'Non noté' }}
+    </p>
+    <p>
+        <strong>Énergie :</strong>
+        {{ trajet.chauffeur.chauffeur.energie }}
+    </p>
+    <p>
+        <strong>Écologique :</strong>
+        {{ trajet.chauffeur.chauffeur.ecologique ? 'Oui' : 'Non' }}
+    </p>
 
-		<h2>🌟 Avis du conducteur</h2>
-		<ul>
-			{% for avis in trajet.chauffeur.avis %}
-				<li>{{ avis.commentaire }}
-					- Note :
-					{{ avis.note }}</li>
-			{% else %}
-				<li>Aucun avis pour ce conducteur.</li>
-			{% endfor %}
-		</ul>
+    <h2>📋 Préférences du conducteur</h2>
+    <ul>
+        {% for pref in trajet.chauffeur.chauffeur.preferences %}
+            <li>{{ pref }}</li>
+        {% else %}
+            <li>Aucune préférence renseignée.</li>
+        {% endfor %}
+    </ul>
 
-		{% if app.user %}
-			{% if trajet.placesRestantes > 0 and app.user.credits >= 1 %}
-				<form action="#" method="POST">
-					<button type="submit" class="btn btn-success">Participer</button>
-				</form>
-			{% else %}
-				<p class="text-danger">Vous n'avez pas assez de crédits ou il n'y a plus de places disponibles.</p>
-			{% endif %}
-		{% else %}
-			<a href="{{ path('app_login') }}" class="btn btn-success">Connectez-vous pour participer</a>
-		{% endif %}
+    <h2>🌟 Avis du conducteur</h2>
+    <ul>
+        {% for avis in trajet.chauffeur.avis %}
+            <li>{{ avis.commentaire }} - Note : {{ avis.note }}</li>
+        {% else %}
+            <li>Aucun avis pour ce conducteur.</li>
+        {% endfor %}
+    </ul>
 
+    {% if app.user %}
+        {% if trajet.placesRestantes > 0 and app.user.credits >= 1 %}
+            <form action="#" method="POST">
+                <button type="submit" class="btn btn-success">Participer</button>
+            </form>
+        {% else %}
+            <p class="text-danger">Vous n'avez pas assez de crédits ou il n'y a plus de places disponibles.</p>
+        {% endif %}
+    {% else %}
+        <a href="{{ path('app_login') }}" class="btn btn-success">Connectez-vous pour participer</a>
+    {% endif %}
 
-		<a href="{{ path('app_covoiturage') }}" class="btn btn-success mt-3">Retour à la recherche</a>
-	</div>
+    <a href="{{ path('app_covoiturage') }}" class="btn btn-success mt-3">Retour à la recherche</a>
+</div>
 {% endblock %}

@@ -69,7 +69,7 @@ class AppFixtures extends Fixture
                 $trajet->setDateArrivee(new \DateTime("+$j days 12:00"));
                 $trajet->setPrix(20 + $j * 5);
                 $trajet->setPlacesRestantes(3 - ($j % 3));
-                $trajet->setChauffeur($user); // 🚨 N'oublie pas que dans Trajet, le chauffeur est toujours un User
+                $trajet->setChauffeur($user); // On N'oublie pas que dans Trajet, le chauffeur est toujours un User
 
                 $manager->persist($trajet);
             }
