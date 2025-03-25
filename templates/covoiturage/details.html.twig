@@ -13,7 +13,7 @@
 
     <p>
         <strong>Note :</strong>
-        {{ trajet.chauffeur.chauffeur ? trajet.chauffeur.chauffeur.note : 'Non noté' }}
+        {{ trajet.chauffeur.note ?? 'Non noté' }}
     </p>
 
     <h2>🚗 Véhicule</h2>

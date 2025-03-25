@@ -72,7 +72,8 @@ final class CovoiturageController extends AbstractController
         }
 
         if ($noteMin) {
-            $qb->andWhere('c.note >= :noteMin')->setParameter('noteMin', $noteMin);
+            // ✅ la note est dans User, pas Chauffeur
+            $qb->andWhere('u.note >= :noteMin')->setParameter('noteMin', $noteMin);
         }
 
         if ($ecologique) {
@@ -81,6 +82,7 @@ final class CovoiturageController extends AbstractController
 
         $resultats = $qb->getQuery()->getResult();
 
+        // ⚠️ Ce filtre est appliqué après la requête (filtrage PHP)
         if ($dureeMax) {
             $resultats = array_filter($resultats, function (Trajet $trajet) use ($dureeMax) {
                 $depart = $trajet->getDateDepart();
