@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\UserType; 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,29 +17,27 @@ final class RegistrationController extends AbstractController
     public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user); 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // Récupération du mot de passe depuis le formulaire
-            $plainPassword = $form->get('plainPassword')->getData();
-            $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
+            // Hashage du mot de passe
+            $hashedPassword = $userPasswordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
 
-            // Date d'inscription
-            $user->setRegistrationDate(new \DateTime());
-
-            // Enregistrement en base
+            // Sauvegarde en base de données
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', 'Votre compte a été créé avec succès !');
+            // Ajout d'un message flash
+            $this->addFlash('success', 'Votre compte a été créé avec succès. Connectez-vous pour accéder à votre espace personnel.');
 
+            // Redirection vers la page de connexion
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('registration/registration.html.twig', [
+        // Affichage du formulaire d'inscription
+        return $this->render('registration/index.html.twig', [
             'registerForm' => $form->createView(),
         ]);
     }
