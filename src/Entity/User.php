@@ -57,6 +57,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: "Le mot de passe est requis.")]
     private ?string $plainPassword = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $note = null;
+
     public function __construct()
     {
         $this->credits = 20;
@@ -166,6 +169,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->participations->removeElement($participation) && $participation->getUser() === $this) {
             $participation->setUser(null);
         }
+        return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): static
+    {
+        $this->note = $note;
+
         return $this;
     }
 }
