@@ -21,9 +21,16 @@ final class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+          
+           $plainPassword = $form->get('plainPassword')->getData();
+            
             // Hashage du mot de passe
-            $hashedPassword = $userPasswordHasher->hashPassword($user, $user->getPassword());
-            $user->setPassword($hashedPassword);
+            if($plainPassword){
+                $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
+                $user->setPassword($hashedPassword);
+            
+            }
+        
 
             // Sauvegarde en base de données
             $em->persist($user);
@@ -37,7 +44,7 @@ final class RegistrationController extends AbstractController
         }
 
         // Affichage du formulaire d'inscription
-        return $this->render('registration/index.html.twig', [
+        return $this->render('registration/registration.html.twig', [
             'registerForm' => $form->createView(),
         ]);
     }

@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'user')]
     private Collection $participations;
 
-    #[Assert\NotBlank(message: "Le mot de passe est requis.")]
+    
     private ?string $plainPassword = null;
 
     #[ORM\Column(nullable: true)]

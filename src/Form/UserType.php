@@ -19,9 +19,11 @@ class UserType extends AbstractType
         $builder
             ->add('pseudo', TextType::class, [
                 'label' => "Nom d'utilisateur",
+                
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez saisir un pseudo.']),
                 ]
+
             ])
             ->add('email', EmailType::class, [
                 'label' => "Adresse email",
