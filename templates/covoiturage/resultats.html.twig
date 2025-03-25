@@ -47,7 +47,8 @@
                 <!-- Colonne gauche : Détails trajet -->
                 <div class="col-md-6">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="{{ asset(trajet.chauffeur.chauffeur.photo) }}" alt="Photo du chauffeur" class="rounded-circle border border-primary me-3" width="80" height="80">
+                        {% set chauffeur = trajet.chauffeur.chauffeur %}
+                        <img src="{{ asset(chauffeur.photo) }}" alt="Photo du chauffeur" class="rounded-circle border border-primary me-3" width="80" height="80">
                         <div>
                             <p class="mb-0">
                                 🚗
@@ -60,8 +61,8 @@
                     <p><strong>💰 Prix :</strong> {{ trajet.prix }} €</p>
                     <p><strong>📅 Départ :</strong> {{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
                     <p><strong>🛬 Arrivée :</strong> {{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
-                    <p><strong>🌱 Écologique :</strong> {{ trajet.chauffeur.chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
-                    <p><strong>⚡ Confort :</strong> {{ trajet.chauffeur.chauffeur.energie }}</p>
+                    <p><strong>🌱 Écologique :</strong> {{ chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
+                    <p><strong>⚡ Confort :</strong> {{ chauffeur.energie }}</p>
                     <a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-outline-success mt-3">Détails</a>
                 </div>
 

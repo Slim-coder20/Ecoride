@@ -18,7 +18,7 @@ class Chauffeur
     private ?string $licensePlate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $regsitrationDate = null;
+    private ?\DateTimeInterface $registrationDate = null;
 
     #[ORM\Column(length: 255)]
     private ?string $model = null;
@@ -41,12 +41,12 @@ class Chauffeur
     #[ORM\Column]
     private array $preferences = [];
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photo = null;
+
     #[ORM\OneToOne(inversedBy: 'chauffeur', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $photo = null;
 
     public function getId(): ?int
     {
@@ -61,19 +61,17 @@ class Chauffeur
     public function setLicensePlate(string $licensePlate): static
     {
         $this->licensePlate = $licensePlate;
-
         return $this;
     }
 
     public function getRegistrationDate(): ?\DateTimeInterface
     {
-        return $this->regsitrationDate;
+        return $this->registrationDate;
     }
 
-    public function setRegistrationDate(\DateTimeInterface $regsitrationDate): static
+    public function setRegistrationDate(\DateTimeInterface $registrationDate): static
     {
-        $this->regsitrationDate = $regsitrationDate;
-
+        $this->registrationDate = $registrationDate;
         return $this;
     }
 
@@ -85,7 +83,6 @@ class Chauffeur
     public function setModel(string $model): static
     {
         $this->model = $model;
-
         return $this;
     }
 
@@ -97,7 +94,6 @@ class Chauffeur
     public function setBrand(string $brand): static
     {
         $this->brand = $brand;
-
         return $this;
     }
 
@@ -109,7 +105,6 @@ class Chauffeur
     public function setColor(string $color): static
     {
         $this->color = $color;
-
         return $this;
     }
 
@@ -121,7 +116,6 @@ class Chauffeur
     public function setSeat(int $seat): static
     {
         $this->seat = $seat;
-
         return $this;
     }
 
@@ -133,7 +127,6 @@ class Chauffeur
     public function setEnergie(string $energie): static
     {
         $this->energie = $energie;
-
         return $this;
     }
 
@@ -145,7 +138,6 @@ class Chauffeur
     public function setEcologique(bool $ecologique): static
     {
         $this->ecologique = $ecologique;
-
         return $this;
     }
 
@@ -157,7 +149,17 @@ class Chauffeur
     public function setPreferences(array $preferences): static
     {
         $this->preferences = $preferences;
+        return $this;
+    }
 
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
         return $this;
     }
 
@@ -169,19 +171,6 @@ class Chauffeur
     public function setUser(User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getPhoto(): ?string
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(string $photo): static
-    {
-        $this->photo = $photo;
-
         return $this;
     }
 }

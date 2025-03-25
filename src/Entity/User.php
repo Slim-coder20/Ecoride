@@ -33,25 +33,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    /**
-     * @var Collection<int, Trajet>
-     */
     #[ORM\OneToMany(targetEntity: Trajet::class, mappedBy: 'chauffeur')]
     private Collection $trajets;
 
-    /**
-     * @var Collection<int, Avis>
-     */
     #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'utilisateur')]
     private Collection $avis;
 
-    /**
-     * @var Collection<int, Participation>
-     */
     #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'user')]
     private Collection $participations;
 
-    // Ce champ est utilisé uniquement pour le formulaire (non stocké en base)
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Chauffeur::class, cascade: ['persist', 'remove'])]
+    private ?Chauffeur $chauffeur = null;
+
+    // Utilisé uniquement pour le formulaire
     #[Assert\NotBlank(message: "Le mot de passe est requis.")]
     private ?string $plainPassword = null;
 
@@ -75,6 +69,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string { return $this->password; }
     public function setPassword(string $password): static { $this->password = $password; return $this; }
 
+    public function getPlainPassword(): ?string { return $this->plainPassword; }
+    public function setPlainPassword(?string $plainPassword): static { $this->plainPassword = $plainPassword; return $this; }
+
     public function getCredits(): ?int { return $this->credits; }
     public function setCredits(int $credits): static { $this->credits = $credits; return $this; }
 
@@ -90,9 +87,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string { return $this->email; }
 
     public function eraseCredentials(): void {}
-
-    public function getPlainPassword(): ?string { return $this->plainPassword; }
-    public function setPlainPassword(?string $plainPassword): static { $this->plainPassword = $plainPassword; return $this; }
 
     public function getTrajets(): Collection { return $this->trajets; }
 
@@ -148,6 +142,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->participations->removeElement($participation) && $participation->getUser() === $this) {
             $participation->setUser(null);
         }
+        return $this;
+    }
+
+    public function getChauffeur(): ?Chauffeur
+    {
+        return $this->chauffeur;
+    }
+
+    public function setChauffeur(?Chauffeur $chauffeur): static
+    {
+        $this->chauffeur = $chauffeur;
+
+        // Synchronisation bidirectionnelle
+        if ($chauffeur !== null && $chauffeur->getUser() !== $this) {
+            $chauffeur->setUser($this);
+        }
+
         return $this;
     }
 }
