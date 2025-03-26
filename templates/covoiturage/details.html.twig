@@ -61,11 +61,12 @@
             <p class="text-danger">Vous n'avez pas assez de crédits ou il n'y a plus de places disponibles.</p>
         {% endif %}
     {% else %}
-        <a href="{{ path('app_login') }}" class="btn btn-success">Connectez-vous pour participer</a>
+        <a href="{{ path('app_user_dashboard') }}" class="btn btn-success mt-3">Mon espace abonné</a>
+        <a href="{{ path('app_registration') }}" class="btn btn-success">Inscrivez-vous pour participer</a>
     {% endif %}
 
     <a href="{{ path('app_covoiturage') }}" class="btn btn-success mt-3">Retour à la recherche</a>
 </div>
-<a href="{{ path('app_user_dashboard') }}" class="btn btn-success mt-3">Mon espace abonné</a>
+
 
 {% endblock %}

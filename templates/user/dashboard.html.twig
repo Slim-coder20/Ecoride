@@ -9,11 +9,25 @@
 	<p class="text-success">Email :
 		{{user.email}}</p>
 	<p class="text-success">{{user.credits}}</p>
+	
+{% if app.session.get('trajet_selected') %}
+    <div class="alert alert-info d-flex justify-content-between align-items-center">
+        <div>
+            🚗 Vous avez un trajet sélectionné en attente. 
+            <a href="{{ path('covoiturage_details', { id: app.session.get('trajet_selected') }) }}" class="alert-link text-decoration-none btn btn-success">
+                Voir le trajet
+            </a>
+        </div>
+        <form method="post" action="{{ path('clear_selected_trajet') }}">
+            <button class="btn btn-sm btn-outline-danger">✖ Annuler</button>
+        </form>
+    </div>
+{% endif %}
 
 	<div class="mt-4">
 		<a href="{{ path('app_become_driver') }}" class="btn btn-success">🚗 Chauffeur</a>
 		<a href="{{ path('espace_passager')}}" class="btn btn-success">🧍 Passager</a>
-		<a href="espace_passager_chauffeur" class="btn btn-success">🚗🧍Les deux</a>
+		<a href="#" class="btn btn-success">🚗🧍Les deux</a>
 	</div>
 
 {% endblock %}

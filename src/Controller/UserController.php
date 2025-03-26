@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class UserController extends AbstractController
 {
@@ -97,6 +98,14 @@ final class UserController extends AbstractController
     {
     return $this->redirectToRoute('espace_devenir_chauffeur');
     }
-
-
+    
+    // cette route nous sert a afficher les trajets sélectionnés par l'utilisateur avant qu'il ne se connecte à travers la session qu'on a créé pour stocker sa recherche de trajet //
+    
+    #[Route('/mon-espace/clear-trajet', name: 'clear_selected_trajet', methods: ['POST'])]
+    public function clearSelectedTrajet(SessionInterface $session): Response
+{
+    $session->remove('trajet_selectionne');
+    $this->addFlash('info', 'Trajet sélectionné annulé.');
+    return $this->redirectToRoute('app_user_dashboard');
+}
 }
