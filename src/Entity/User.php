@@ -60,6 +60,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?float $note = null;
 
+    /**
+     * @var Collection<int, Vehicule>
+     */
+    #[ORM\OneToMany(targetEntity: Vehicule::class, mappedBy: 'chauffeur')]
+    private Collection $vehicules;
+
     public function __construct()
     {
         $this->credits = 20;
@@ -67,6 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->trajets = new ArrayCollection();
         $this->avis = new ArrayCollection();
         $this->participations = new ArrayCollection();
+        $this->vehicules = new ArrayCollection();
     }
 
     public function getId(): ?int { return $this->id; }
@@ -180,6 +187,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNote(?float $note): static
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vehicule>
+     */
+    public function getVehicules(): Collection
+    {
+        return $this->vehicules;
+    }
+
+    public function addVehicule(Vehicule $vehicule): static
+    {
+        if (!$this->vehicules->contains($vehicule)) {
+            $this->vehicules->add($vehicule);
+            $vehicule->setChauffeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicule(Vehicule $vehicule): static
+    {
+        if ($this->vehicules->removeElement($vehicule)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicule->getChauffeur() === $this) {
+                $vehicule->setChauffeur(null);
+            }
+        }
 
         return $this;
     }
