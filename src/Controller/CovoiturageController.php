@@ -97,9 +97,22 @@ final class CovoiturageController extends AbstractController
         ]);
     }
 
+    // cette route va nous permettre de recupérer la session de l'utilisateur et de la rediriger vers la page de détails du trajet sélectionné //
+
     #[Route('/covoiturage/{id}', name: 'covoiturage_details')]
-    public function details(Trajet $trajet): Response
+    public function details(Request $request , Trajet $trajet): Response
     {
+        // récupérer la session de l'utilisateur // 
+
+        $session = $request->getSession();
+
+        // Si l'utilisateur n'est pas connecté, on stock le trajet dans la session // 
+
+        if(!$this->getUser()){
+            $session->set('trajet_selected', $trajet->getId());    
+        
+        }
+        
         return $this->render('covoiturage/details.html.twig', [
             'trajet' => $trajet,
         ]);

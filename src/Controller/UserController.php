@@ -70,4 +70,33 @@ final class UserController extends AbstractController
         
         
     }
+    // c'est une route qui nous sert à redireger l'utilisateur vers la page de détails du trajet sélectionné //
+
+    #[Route('/mon-esapce/passager', name: 'espace_passager')]
+    public function passager(Request $request): Response
+    {
+        $session = $request->getSession();
+        $trajetId = $session->get('trajet_selected');  
+
+        if($trajetId){
+            return $this->redirectToRoute('covoiturage_details', ['id' => $trajetId]);
+        
+        }
+
+        // si pas de trajet sélectionné, on redirige l'utilisateur vers la page de recherche de covoiturage  //
+        $this->addFlash('warning', 'Aucun trajet sélectionné.');
+
+        return $this->redirectToRoute('app_covoiturage');
+        
+    }
+
+    // cette route permet de rediriger l'utilisateur vers la page de devenir chauffeur //
+
+    #[Route('/espace/passager-chauffeur', name: 'espace_passager_chauffeur')]
+    public function passagerChauffeur(): Response
+    {
+    return $this->redirectToRoute('espace_devenir_chauffeur');
+    }
+
+
 }
