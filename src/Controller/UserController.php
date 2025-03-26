@@ -2,51 +2,50 @@
 
 namespace App\Controller;
 
+use App\Entity\Chauffeur;
+use App\Form\DriverInfoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
-use App\Form\DriverInfoType;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 final class UserController extends AbstractController
 {
     #[Route('/mon-espace', name: 'app_user_dashboard')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
-        //Récupérer l'utilisateur connecté 
-        /** @var User $user */
-        $user= $this->getUser(); 
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
 
-        // vérification pour s'assurer que l'utilisateur est bien connecté 
-
-        if(!$user){
-        
+        if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
-        
         }
-        
-        
-        // formulaire pour les informations du chauffeur 
-        $form = $this->createForm(DriverInfoType::class, $user); 
+
+        // Si l'utilisateur n'a pas encore de profil chauffeur, on le crée
+        $chauffeur = $user->getChauffeur();
+        if (!$chauffeur) {
+            $chauffeur = new Chauffeur();
+            $chauffeur->setUser($user);
+            $user->setChauffeur($chauffeur);
+            $em->persist($chauffeur);
+        }
+
+        // Création et traitement du formulaire
+        $form = $this->createForm(DriverInfoType::class, $chauffeur);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $em->persist($user); 
-            $em->flush(); 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
 
-            $this->addFlash('success', 'Vos informations ont été mis à jour avec succès.');
+            $this->addFlash('success', 'Vos informations de chauffeur ont bien été mises à jour ✅');
 
-             // Redirection pour éviter une double soumission
-             return $this->redirectToRoute('app_user_dashboard');
+            return $this->redirectToRoute('app_user_dashboard');
         }
-        
-            
-            return $this->render('user/dashboard.html.twig', [
-            'user' => $user, 
-            'form' => $form->createView(), 
+
+        return $this->render('user/dashboard.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
         ]);
     }
 }
