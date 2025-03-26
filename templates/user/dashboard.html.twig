@@ -1,41 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon espace personnel{% endblock %}
+{% block title %}Mon espace personnel
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h2 class="mb-4">👋 Bienvenue {{ user.pseudo }}</h2>
+	<h1 class="text-success">Bienvenue
+		{{user.pseudo}}</h1>
+	<p class="text-success">Email :
+		{{user.email}}</p>
+	<p class="text-success">{{user.credits}}</p>
 
-    <div class="card p-4 mb-4">
-        <h4>📧 Email : {{ user.email }}</h4>
-        <h5>💳 Crédits : {{ user.credits }}</h5>
+	<div class="mt-4">
+		<a href="{{ path('app_become_driver') }}" class="btn btn-success">🚗 Chauffeur</a>
+		<a href="#" class="btn btn-success">🧍 Passager</a>
+		<a href="#" class="btn btn-success">🚗🧍Les deux</a>
+	</div>
 
-        {% if user.chauffeur %}
-            <span class="badge bg-success">✅ Vous êtes actuellement chauffeur</span>
-        {% else %}
-            <span class="badge bg-secondary">🚘 Vous n'êtes pas encore chauffeur</span>
-        {% endif %}
-    </div>
-
-    <div class="card p-4">
-        <h3>🚗 Informations chauffeur</h3>
-
-        {{ form_start(form) }}
-
-        {{ form_row(form.licensePlate) }}
-        {{ form_row(form.registrationDate) }}
-        {{ form_row(form.brand) }}
-        {{ form_row(form.model) }}
-        {{ form_row(form.color) }}
-        {{ form_row(form.seat) }}
-        {{ form_row(form.preferences) }}
-        {{ form_row(form.ecologique) }}
-        {{ form_row(form.energie) }}
-        {{ form_row(form.photo) }}
-
-        <button class="btn btn-success mt-3">Mettre à jour</button>
-
-        {{ form_end(form) }}
-    </div>
-</div>
 {% endblock %}
