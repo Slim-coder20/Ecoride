@@ -44,7 +44,7 @@ final class UserController extends AbstractController
             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
         }
 
-        // créations de l'objet chauffeur si inexistant //
+         // créations de l'objet chauffeur si inexistant //
 
         if (!$user->getChauffeur()) {
             $chauffeur = new Chauffeur();
@@ -96,7 +96,9 @@ final class UserController extends AbstractController
     #[Route('/espace/passager-chauffeur', name: 'espace_passager_chauffeur')]
     public function passagerChauffeur(): Response
     {
-    return $this->redirectToRoute('espace_devenir_chauffeur');
+        $this->addFlash('info', '🚀 Vous avez choisi d’être à la fois passager et chauffeur.');
+        
+        return $this->redirectToRoute('app_become_driver');
     }
     
     // cette route nous sert a afficher les trajets sélectionnés par l'utilisateur avant qu'il ne se connecte à travers la session qu'on a créé pour stocker sa recherche de trajet //
