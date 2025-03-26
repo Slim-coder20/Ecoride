@@ -203,7 +203,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->vehicules->contains($vehicule)) {
             $this->vehicules->add($vehicule);
-            $vehicule->setChauffeur($this);
+            if ($this->getChauffeur() !== null) {
+                $vehicule->setChauffeur($this->getChauffeur());
+            }
         }
 
         return $this;

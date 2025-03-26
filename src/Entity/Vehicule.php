@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Chauffeur;
 use App\Repository\VehiculeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,7 +44,7 @@ class Vehicule
 
     #[ORM\ManyToOne(inversedBy: 'vehicules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $chauffeur = null;
+    private ?Chauffeur $chauffeur = null;
 
     public function getId(): ?int
     {
@@ -158,15 +159,14 @@ class Vehicule
         return $this;
     }
 
-    public function getChauffeur(): ?User
+    public function getChauffeur(): ?Chauffeur
     {
         return $this->chauffeur;
     }
-
-    public function setChauffeur(?User $chauffeur): static
+    
+    public function setChauffeur(?Chauffeur $chauffeur): static
     {
         $this->chauffeur = $chauffeur;
-
         return $this;
     }
 }
