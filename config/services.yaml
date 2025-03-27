@@ -6,6 +6,8 @@
 parameters:
       CONTACT_EMAIL: '%env(CONTACT_EMAIL)%'
       MAILER_DSN: '%env(MAILER_DSN)%'
+      vehicule_photos_directory: '%kernel.project_dir%/public/uploads/vehicules'
+      
 
 
 services:

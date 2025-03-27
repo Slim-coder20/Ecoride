@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Vehicule;
 use App\Entity\Chauffeur;
-use App\Form\DriverInfoType;
+use App\Form\VehiculeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,12 +55,21 @@ final class UserController extends AbstractController
             $chauffeur = $user->getChauffeur();
         }
 
-        $form = $this->createForm(DriverInfoType::class, $chauffeur);
+        // création d'un vehicule vide // 
+
+        $vehicule = new Vehicule();
+        $vehicule->setChauffeur($chauffeur);
+
+        $form = $this->createForm(VehiculeType::class, $vehicule);
         $form->handleRequest($request);
 
+        // enregisrement des données du formulaire //
+
+
         if($form->isSubmitted() && $form->isValid()) {
+            $em->persist($vehicule);
             $em->flush();
-            $this->addFlash('success', 'Vos infos chauffeur ont bien été enregitrées.');
+            $this->addFlash('success', 'Véhicule enrgistré avec succès.  ');
             return $this->redirectToRoute('app_user_dashboard');
         }
 

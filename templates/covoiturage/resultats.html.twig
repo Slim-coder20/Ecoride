@@ -1,79 +1,116 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultats de votre recherche{% endblock %}
+{% block title %}Résultats de votre recherche
+{% endblock %}
 
 {% block body %}
-<div class="container-resultat my-5">
-    <h2 class="text-center mb-4 text-success">📍 Résultats de votre recherche</h2>
+	<div class="container-resultat my-5">
+		<h2 class="text-center mb-4 text-success">📍 Résultats de votre recherche</h2>
 
-    <!-- Formulaire de filtre  pour affiner la recherche utilisateur -->
-    <form method="get" action="{{ path('covoiturage_resultats')}}" class="bg-white p-4 rounded shadow mb-4">
-        <input type="hidden" name="depart" value="{{ app.request.get('depart') }}">
-        <input type="hidden" name="arrivee" value="{{ app.request.get('arrivee') }}">
-        <input type="hidden" name="date" value="{{ app.request.get('date') }}">
+		<!-- Formulaire de filtre -->
+		<form method="get" action="{{ path('covoiturage_resultats')}}" class="bg-white p-4 rounded shadow mb-4">
+			<input type="hidden" name="depart" value="{{ app.request.get('depart') }}">
+			<input type="hidden" name="arrivee" value="{{ app.request.get('arrivee') }}">
+			<input type="hidden" name="date" value="{{ app.request.get('date') }}">
 
-        <div class="row g-3 align-items-end">
-            <div class="col-md-3">
-                <label for="prix_max" class="form-label text-success">Prix maximum (€)</label>
-                <input type="number" name="prix_max" id="prix_max" class="form-control" value="{{ app.request.get('prix_max') }}">
-            </div>
+			<div class="row g-3 align-items-end">
+				<div class="col-md-3">
+					<label for="prix_max" class="form-label text-success">Prix maximum (€)</label>
+					<input type="number" name="prix_max" id="prix_max" class="form-control" value="{{ app.request.get('prix_max') }}">
+				</div>
 
-            <div class="col-md-3">
-                <label for="duree_max" class="form-label text-success">Durée maximum (h)</label>
-                <input type="number" name="duree_max" id="duree_max" class="form-control" value="{{ app.request.get('duree_max') }}">
-            </div>
+				<div class="col-md-3">
+					<label for="duree_max" class="form-label text-success">Durée maximum (h)</label>
+					<input type="number" name="duree_max" id="duree_max" class="form-control" value="{{ app.request.get('duree_max') }}">
+				</div>
 
-            <div class="col-md-3">
-                <label for="note_min" class="form-label text-success">Note minimale</label>
-                <input type="number" step="0.1" name="note_min" id="note_min" class="form-control" value="{{ app.request.get('note_min') }}">
-            </div>
+				<div class="col-md-3">
+					<label for="note_min" class="form-label text-success">Note minimale</label>
+					<input type="number" step="0.1" name="note_min" id="note_min" class="form-control" value="{{ app.request.get('note_min') }}">
+				</div>
 
-            <div class="col-md-2">
-                <div class="form-check mt-4">
-                    <input class="form-check-input" type="checkbox" name="ecologique" id="ecologique" {% if app.request.get('ecologique') %} checked {% endif %}>
-                    <label class="form-check-label text-success" for="ecologique">🌱 Écologique</label>
-                </div>
-            </div>
+				<div class="col-md-2">
+					<div class="form-check mt-4">
+						<input class="form-check-input" type="checkbox" name="ecologique" id="ecologique" {% if app.request.get('ecologique') %} checked {% endif %}>
+						<label class="form-check-label text-success" for="ecologique">🌱 Écologique</label>
+					</div>
+				</div>
 
-            <div class="col-md-1">
-                <button type="submit" class="btn btn-success w-100">Filtrer</button>
-            </div>
-        </div>
-    </form>
+				<div class="col-md-1">
+					<button type="submit" class="btn btn-success w-100">Filtrer</button>
+				</div>
+			</div>
+		</form>
 
-    {% for trajet in resultats %}
-        <div class="card-custom bg-light text-dark p-4 rounded shadow-lg mb-4" data-aos="fade-up">
-            <div class="row align-items-center">
-                <!-- Colonne gauche : Détails trajet -->
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center mb-3">
-                        {% set chauffeur = trajet.chauffeur.chauffeur %}
-                        <img src="{{ asset(chauffeur.photo) }}" alt="Photo du chauffeur" class="rounded-circle border border-primary me-3" width="80" height="80">
-                        <div>
-                            <p class="mb-0">
-                                🚗
-                                <strong>Trajet proposé par</strong>
-                                <span class="text-primary fw-bold">{{ trajet.chauffeur.pseudo }}</span>
-                            </p>
-                        </div>
-                    </div>
-                    <p><strong>🪑 Places restantes :</strong> {{ trajet.placesRestantes }}</p>
-                    <p><strong>💰 Prix :</strong> {{ trajet.prix }} €</p>
-                    <p><strong>📅 Départ :</strong> {{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
-                    <p><strong>🛬 Arrivée :</strong> {{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
-                    <p><strong>🌱 Écologique :</strong> {{ chauffeur.ecologique ? 'Oui' : 'Non' }}</p>
-                    <p><strong>⚡ Confort :</strong> {{ chauffeur.energie }}</p>
-                    <a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-outline-success mt-3">Détails</a>
-                </div>
+		{% for trajet in resultats %}
+			{% set vehicule = trajet.chauffeur.chauffeur.vehicules|first %}
+			<div class="card-custom bg-light text-dark p-4 rounded shadow-lg mb-4" data-aos="fade-up">
+				<div
+					class="row align-items-center">
+					<!-- Colonne gauche : Détails trajet -->
+					<div class="col-md-6">
+						<div class="d-flex align-items-center mb-3">
+							{% if vehicule and vehicule.photo %}
+								<img src="{{ asset('uploads/vehicules/' ~ vehicule.photo) }}" alt="Photo véhicule" class="rounded-circle border border-primary me-3" width="80" height="80">
+							{% else %}
+								<img src="{{ asset('images/default-car.png') }}" alt="Par défaut" class="rounded-circle border border-secondary me-3" width="80" height="80">
+							{% endif %}
 
-                <!-- Colonne droite : Image -->
-                <div class="col-md-6 text-center">
-                    <img src="{{ asset(trajet.photoVoiture) }}" alt="Voiture" class="img-fluid rounded-3 shadow-sm" style="max-height: 220px; object-fit: cover;">
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <p class="text-center">Aucun trajet trouvé.</p>
-    {% endfor %}
-</div>
+							<div>
+								<p class="mb-0">
+									🚗
+									<strong>Trajet proposé par</strong>
+									<span class="text-primary fw-bold">{{ trajet.chauffeur.pseudo }}</span>
+								</p>
+							</div>
+						</div>
+
+						<p>
+							<strong>🪑 Places restantes :</strong>
+							{{ trajet.placesRestantes }}</p>
+						<p>
+							<strong>💰 Prix :</strong>
+							{{ trajet.prix }}
+							€</p>
+						<p>
+							<strong>📅 Départ :</strong>
+							{{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
+						<p>
+							<strong>🛬 Arrivée :</strong>
+							{{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
+						{% if vehicule %}
+							<p>
+								<strong>🌱 Écologique :</strong>
+								{{ vehicule.ecologique ? 'Oui' : 'Non' }}</p>
+							<p>
+								<strong>⚡ Confort :</strong>
+								{{ vehicule.energie }}</p>
+						{% else %}
+							<p>
+								<strong>🌱 Écologique :</strong>
+								Non renseigné</p>
+							<p>
+								<strong>⚡ Confort :</strong>
+								Non renseigné</p>
+						{% endif %}
+
+						
+
+						<a href="{{ path('covoiturage_details', { id: trajet.id }) }}" class="btn btn-outline-success mt-3">Détails</a>
+					</div>
+
+					<!-- Colonne droite : Image -->
+					<div class="col-md-6 text-center">
+						{% if vehicule and vehicule.photo %}
+							<img src="{{ asset('uploads/vehicules/' ~ vehicule.photo) }}" alt="Voiture" class="img-fluid rounded-3 shadow-sm" style="max-height: 220px; object-fit: cover;">
+						{% else %}
+							<img src="{{ asset('images/default-car.png') }}" alt="Voiture par défaut" class="img-fluid rounded-3 shadow-sm" style="max-height: 220px; object-fit: cover;">
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<p class="text-center">Aucun trajet trouvé.</p>
+		{% endfor %}
+	</div>
 {% endblock %}

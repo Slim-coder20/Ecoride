@@ -8,7 +8,7 @@
 		<div class="alert alert-info">{{ message }}</div>
 	{% endfor %}
 	<div class="container mt-5">
-		<h2>🚗 Mes infos chauffeur</h2>
+		<h2 class="text-success">🚗 Mes infos chauffeur</h2>
 
 		{{ form_start(form) }}
 		{{ form_row(form.licensePlate) }}
@@ -17,7 +17,6 @@
 		{{ form_row(form.brand) }}
 		{{ form_row(form.color) }}
 		{{ form_row(form.seat) }}
-		{{ form_row(form.preferences) }}
 		<button class="btn btn-success">💾 Sauvegarder</button>
 		{{ form_end(form) }}
 		<a href="{{path('app_user_dashboard')}}" class="btn btn-success">Espace abonné</a>
