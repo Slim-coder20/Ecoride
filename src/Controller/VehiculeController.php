@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Vehicule;
 use App\Form\VehiculeType;
+use App\Entity\User;
 
 
-final class VehiculeController extends AbstractController
+class VehiculeController extends AbstractController
 {
     #[Route('/vehicule/ajouter', name: 'vehicule_ajouter')]
     public function index(Request $request, EntityManagerInterface $em ): Response

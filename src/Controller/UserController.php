@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use App\Entity\Vehicule;
 use App\Entity\Chauffeur;
 use App\Entity\Trajet;
