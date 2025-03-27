@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un Vehicule
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+	<h2 class="text-success">🚗 Ajouter un nouveau vehicule</h2>
+
+	{{ form_start(form) }}
+		{{ form_row(form.brand) }}
+		{{ form_row(form.model) }}
+		{{ form_row(form.color) }}
+		{{ form_row(form.licensePlate) }}
+		{{ form_row(form.registrationDate) }}
+		{{ form_row(form.seat) }}
+		{{ form_row(form.energie) }}
+		{{ form_row(form.ecologique) }}
+		{{ form_row(form.photo) }}
+		<button class="btn btn-success mt-3">Ajouter le vehicule</button>
+		<a href="{{ path('app_user_dashboard')}}" class="btn btn-success mt-3">Espace Abonné</a>
+	{{ form_end(form) }}
+
+
+</div>
+
+{% endblock %}
