@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un trajet
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="text-success">🛣️ Proposer un nouveau trajet</h1>
+
+		{{ form_start(form) }}
+
+		<div class="mb-3">
+			{{ form_label(form.depart) }}
+			{{ form_widget(form.depart, { 'attr': { 'class': 'form-control' } }) }}
+			{{ form_errors(form.depart) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.arrivee) }}
+			{{ form_widget(form.arrivee, { 'attr': { 'class': 'form-control' } }) }}
+			{{ form_errors(form.arrivee) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.dateDepart) }}
+			{{ form_widget(form.dateDepart, { 'attr': { 'class': 'form-control' } }) }}
+			{{ form_errors(form.dateDepart) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.dateArrivee) }}
+			{{ form_widget(form.dateArrivee, { 'attr': { 'class': 'form-control' } }) }}
+			{{ form_errors(form.dateArrivee) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.placesRestantes) }}
+			{{ form_widget(form.placesRestantes, { 'attr': { 'class': 'form-control' } }) }}
+			{{ form_errors(form.placesRestantes) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.prix) }}
+			{{ form_widget(form.prix, { 'attr': { 'class': 'form-control' } }) }}
+			{{ form_errors(form.prix) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.vehicule) }}
+			{{ form_widget(form.vehicule, { 'attr': { 'class': 'form-control' } }) }}
+			{{ form_errors(form.vehicule) }}
+		</div>
+
+		<button class="btn btn-success mt-3">🚀 Créer le trajet</button>
+
+		{{ form_end(form) }}
+
+		<a href="{{ path('app_user_dashboard') }}" class="btn btn-outline-secondary mt-3">Retour à mon espace</a>
+	</div>
+{% endblock %}
