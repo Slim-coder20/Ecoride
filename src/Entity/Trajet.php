@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Entity;
+
+use App\Repository\TrajetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Repository\TrajetRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,48 +38,17 @@ class Trajet
     #[ORM\JoinColumn(nullable: false)]
     private ?User $chauffeur = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $photoVoiture = null;
+    #[ORM\ManyToOne(inversedBy: 'trajets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Vehicule $vehicule = null;
 
-
-    /**
-    * @var Collection<int, Participation>
-    */
     #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'trajet')]
     private Collection $participations;
 
     public function __construct()
     {
-    $this->participations = new ArrayCollection();
+        $this->participations = new ArrayCollection();
     }
-
-    public function getParticipations(): Collection
-    {
-    return $this->participations;
-    }
-
-    public function addParticipation(Participation $participation): static
-    {
-    if (!$this->participations->contains($participation)) {
-        $this->participations[] = $participation;
-        $participation->setTrajet($this);
-    }
-
-    return $this;
-}
-
-    public function removeParticipation(Participation $participation): static
-    {
-    if ($this->participations->removeElement($participation)) {
-        // set the owning side to null (unless already changed)
-        if ($participation->getTrajet() === $this) {
-            $participation->setTrajet(null);
-        }
-    }
-
-    return $this;
-}
-
 
     public function getId(): ?int
     {
@@ -93,7 +63,6 @@ class Trajet
     public function setDepart(string $depart): static
     {
         $this->depart = $depart;
-
         return $this;
     }
 
@@ -105,7 +74,6 @@ class Trajet
     public function setArrivee(string $arrivee): static
     {
         $this->arrivee = $arrivee;
-
         return $this;
     }
 
@@ -117,7 +85,6 @@ class Trajet
     public function setDateDepart(\DateTimeInterface $dateDepart): static
     {
         $this->dateDepart = $dateDepart;
-
         return $this;
     }
 
@@ -129,7 +96,6 @@ class Trajet
     public function setDateArrivee(\DateTimeInterface $dateArrivee): static
     {
         $this->dateArrivee = $dateArrivee;
-
         return $this;
     }
 
@@ -141,7 +107,6 @@ class Trajet
     public function setPlacesRestantes(int $placesRestantes): static
     {
         $this->placesRestantes = $placesRestantes;
-
         return $this;
     }
 
@@ -153,7 +118,6 @@ class Trajet
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
-
         return $this;
     }
 
@@ -165,19 +129,41 @@ class Trajet
     public function setChauffeur(?User $chauffeur): static
     {
         $this->chauffeur = $chauffeur;
-
         return $this;
     }
 
-    public function getPhotoVoiture(): ?string
+    public function getVehicule(): ?Vehicule
     {
-        return $this->photoVoiture;
+        return $this->vehicule;
     }
 
-    public function setPhotoVoiture(string $photoVoiture): static
+    public function setVehicule(?Vehicule $vehicule): static
     {
-        $this->photoVoiture = $photoVoiture;
+        $this->vehicule = $vehicule;
+        return $this;
+    }
 
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): static
+    {
+        if (!$this->participations->contains($participation)) {
+            $this->participations[] = $participation;
+            $participation->setTrajet($this);
+        }
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): static
+    {
+        if ($this->participations->removeElement($participation)) {
+            if ($participation->getTrajet() === $this) {
+                $participation->setTrajet(null);
+            }
+        }
         return $this;
     }
 }
