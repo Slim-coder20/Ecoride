@@ -26,7 +26,8 @@ final class VehiculeController extends AbstractController
             $this->addFlash('danger', 'Vous devez être chauffeur pour accéder à cette page');
             return $this->redirectToRoute('app_user_dashboard');
         }
-
+        
+        // création de l'enité véhicule // 
         $vehicule = new Vehicule();
         $vehicule->setChauffeur($user->getChauffeur());
 
