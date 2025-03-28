@@ -1,7 +1,8 @@
 :root {
   --primary-color: #77df0f;
   --secondary-color: #d2f4b0;
-  --text-color: white;
+  --color-body: #c0f1c0;
+  --text-color: #0b0a0a;
   --title-color: #327ceb;
   --font-family: "Roboto", sans-serif;
   --font-size: 1.2rem;
@@ -10,7 +11,7 @@
 }
 
 body {
-  background-color: var(--primary-color);
+  background-color: var(--color-body);
   font-family: var(--Roboto);
   font-size: var(--font-size);
   font-weight: var(--font-weight);
@@ -25,6 +26,7 @@ body {
 
 .navbar {
   background-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
   z-index: 1000;
 }
@@ -58,7 +60,7 @@ body {
 }
 
 .navbar-nav .nav-link:hover {
-  color: #327ceb !important;
+  color: var(--primary-color) !important;
 }
 
 .navbar-toggler {
@@ -261,13 +263,10 @@ body {
   }
 }
 
-
 /*  Style rsultats.html.twig  */
-
-
 
 .chauffeur-photo img {
   object-fit: cover;
   border: 3px solid #327ceb;
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
