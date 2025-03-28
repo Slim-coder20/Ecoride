@@ -1,24 +1,60 @@
 {
-    "devDependencies": {
-        "@babel/core": "^7.17.0",
-        "@babel/preset-env": "^7.16.0",
-        "@symfony/webpack-encore": "^5.0.0",
-        "core-js": "^3.38.0",
-        "regenerator-runtime": "^0.13.9",
-        "webpack": "^5.74.0",
-        "webpack-cli": "^5.1.0",
-        "webpack-notifier": "^1.15.0"
-    },
-    "license": "UNLICENSED",
-    "private": true,
-    "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "./node_modules/.bin/encore dev ",
-        "watch": "./node_modules/.bin/encore dev --watch",
-        "build": "./node_modules/.bin/encore production --progress"
-    },
-    "dependencies": {
-        "aos": "^2.3.4",
-        "bootstrap": "^5.3.3"
-    }
+
+  "name": "ecoride",
+
+  "version": "1.0.0",
+
+  "description": "Projet ECF d'une application de covoiturage écologique",
+
+  "main": "index.js",
+
+  "directories": {
+
+    "test": "tests"
+
+  },
+
+  "devDependencies": {
+
+    "vite": "^6.2.3",
+
+    "vite-plugin-symfony": "^8.0.2"
+
+  },
+
+  "scripts": {
+
+    "dev": "vite",
+
+    "build": "vite build"
+
+   
+
+  },
+
+  "repository": {
+
+    "type": "git",
+
+    "url": "git+https://github.com/Slim-coder20/Ecoride.git"
+
+  },
+
+  "keywords": [],
+
+  "author": "",
+
+  "license": "ISC",
+
+  "type": "commonjs",
+
+  "bugs": {
+
+    "url": "https://github.com/Slim-coder20/Ecoride/issues"
+
+  },
+
+  "homepage": "https://github.com/Slim-coder20/Ecoride#readme"
+
 }
+
