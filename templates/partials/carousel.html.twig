@@ -1,4 +1,4 @@
-<section id="hero" class="position-relative ">
+<section id="hero" class="position-relative full-width">
 	<!-- Carrousel Bootstrap -->
 	<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
 		<div class="carousel-inner">
@@ -23,11 +23,11 @@
 	</div>
 
 	<!-- Formulaire en superposition -->
-	<div class="hero-overlay  text-center text-white">
+	<div class="hero-overlay text-center text-white">
 		<h1 class="display-4">Voyagez écologique avec EcoRide</h1>
 		<p class="lead">Trouvez ou proposez des trajets en covoiturage et contribuez à réduire l’empreinte carbone</p>
 
-		<form class="row g-2 justify-content-center mt-4" action="{{path('covoiturage_resultats')}}" method="GET">
+		<form class="row g-2 justify-content-center mt-4" action="{{ path('covoiturage_resultats') }}" method="GET">
 			<div class="col-md-3">
 				<input type="text" class="form-control" name="depart" placeholder="Ville de départ">
 			</div>
@@ -37,9 +37,6 @@
 			<div class="col-md-2">
 				<input type="date" class="form-control" name="date">
 			</div>
-			{# <div class="col-md-1">
-				<input type="number" class="form-control" name="places" min="1" placeholder="1">
-			</div> #}
 			<div class="col-md-2">
 				<button type="submit" class="btn btn-success w-100">Rechercher</button>
 			</div>

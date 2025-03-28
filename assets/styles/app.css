@@ -1,7 +1,7 @@
 :root {
   --primary-color: #77df0f;
   --secondary-color: #d2f4b0;
-  --color-body: #c0f1c0;
+  --color-body: #bfdabf;
   --text-color: #0b0a0a;
   --title-color: #327ceb;
   --font-family: "Roboto", sans-serif;
@@ -20,13 +20,14 @@ body {
   padding: 0;
   box-sizing: border-box;
   color: var(--text-color);
+  overflow-x: hidden;
 }
 
 /* NavBar  */
 
 .navbar {
   background-color: var(--primary-color);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   padding: 10px 20px;
   z-index: 1000;
 }
@@ -86,12 +87,32 @@ body {
 
 /* Home Page  */
 
+
 /* Carrousel pleine largeur  */
+
+#hero{
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+
 #heroCarousel {
   position: relative;
   width: 100%;
-  height: 60vh; /* Réduire la hauteur */
-  overflow: hidden;
+  height: 60vh;
+  overflow-x: hidden;
+
+}
+
+.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  max-width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow-x: hidden;
 }
 
 /* Ajustement des images du carrousel */
@@ -150,6 +171,27 @@ body {
   max-width: 100%;
   height: auto;
   border: 1px solid #327ceb;
+}
+
+
+/* Page d'accueil à Propos home.html.twig  */
+
+.section-title{
+
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position:relative;
+}
+
+.section-title::after{
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-body);
+    margin: 10px auto 0 ;
+    border-radius: 2px;
 }
 
 /* Page Resultats.html.twig  */
