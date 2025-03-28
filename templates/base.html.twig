@@ -1,98 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}EcoRide{% endblock %}</title>
-    {# <link rel="stylesheet" href="/build/app.css"> #}
-    
-    {{ encore_entry_link_tags('app') }}
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}EcoRide
+			{% endblock %}
+		</title>
+		{# <link rel="stylesheet" href="/build/app.css"> #}
 
-   
+		{{ encore_entry_link_tags('app') }}
 
-    {% block stylesheets %}{% endblock %}
-</head>
 
-<body>
-    <!-- ✅ NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success w-100">
-        <div class="container">
-            <a class="navbar-brand text-white fw-bold" href="{{ path('app_home') }}">
-                <i class="fa-solid fa-car"></i> EcoRide
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ path('app_covoiturage') }}">Covoiturage</a></li>
+		{% block stylesheets %}{% endblock %}
+		{{ encore_entry_link_tags('app') }}
 
-                    {% if app.user %}
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ path('app_user_dashboard') }}"><i class="fas fa-user"></i> Mon compte</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ path('app_login') }}"><i class="fas fa-user"></i> Connexion</a></li>
-                    {% endif %}
+	</head>
 
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ path('app_contact') }}">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+	<body>
+		<!-- ✅ NAVBAR -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-success w-100">
+			<div class="container">
+				<a class="navbar-brand text-white fw-bold" href="{{ path('app_home') }}">
+					<i class="fa-solid fa-car"></i>
+					EcoRide
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_covoiturage') }}">Covoiturage</a>
+						</li>
 
-    <!-- ✅ FLASH MESSAGES -->
-    <div class="container mt-3">
-        {% for type, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endfor %}
-    </div>
+						{% if app.user %}
+							<li class="nav-item">
+								<a class="nav-link text-white" href="{{ path('app_user_dashboard') }}">
+									<i class="fas fa-user"></i>
+									Mon compte</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-white" href="{{ path('app_logout') }}">
+									<i class="fas fa-sign-out-alt"></i>
+									Déconnexion</a>
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a class="nav-link text-white" href="{{ path('app_login') }}">
+									<i class="fas fa-user"></i>
+									Connexion</a>
+							</li>
+						{% endif %}
 
-    <!-- ✅ CONTENU -->
-    <div class="container mt-4">
-        {% block body %}{% endblock %}
-    </div>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_contact') }}">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 
-    <!-- ✅ FOOTER -->
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-        <div class="row">
-            <div class="col-md-4">
-                <h5 class="fw-bold"><i class="fa-solid fa-car"></i> EcoRide</h5>
-                <hr>
-                <p class="my-5">&copy; 2025 EcoRide. Tous droits réservés.</p>
-            </div>
-            <div class="col-md-4">
-                <h5 class="fw-bold">Liens rapides</h5>
-                <ul class="list-unstyled">
-                    <li><a href="{{ path('app_home') }}" class="text-white text-decoration-none">Accueil</a></li>
-                    <li><a href="{{ path('app_covoiturage') }}" class="text-white text-decoration-none">Rechercher un trajet</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Proposer un trajet</a></li>
-                    <li><a href="{{ path('app_contact') }}" class="text-white text-decoration-none">Contact</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5 class="fw-bold">Contact</h5>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Rue de Charonne, 75011 Paris</p>
-                <p><i class="fas fa-phone"></i> +33 1 23 45 67 89</p>
-                <p><i class="fas fa-envelope"></i> contact.ecoride9@gmail.com</p>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col text-center">
-                <a href="#" class="text-white text-decoration-none me-3">Mentions légales</a>
-                <a href="#" class="text-white text-decoration-none me-3">Politique de confidentialité</a>
-                <a href="#" class="text-white text-decoration-none">CGU</a>
-            </div>
-        </div>
-    </footer>
+		<!-- ✅ FLASH MESSAGES -->
+		<div class="container mt-3">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
 
-    {{ encore_entry_script_tags('app') }}
+		<!-- ✅ CONTENU -->
+		<div class="container mt-4"> {% block body %}{% endblock %}
+			</div>
 
-    {% block javascripts %}{% endblock %}
-</body>
-</html>
+			<!-- ✅ FOOTER -->
+			<footer class="bg-dark text-white text-center py-4 mt-5">
+				<div class="row">
+					<div class="col-md-4">
+						<h5 class="fw-bold">
+							<i class="fa-solid fa-car"></i>
+							EcoRide</h5>
+						<hr>
+						<p class="my-5">&copy; 2025 EcoRide. Tous droits réservés.</p>
+					</div>
+					<div class="col-md-4">
+						<h5 class="fw-bold">Liens rapides</h5>
+						<ul class="list-unstyled">
+							<li>
+								<a href="{{ path('app_home') }}" class="text-white text-decoration-none">Accueil</a>
+							</li>
+							<li>
+								<a href="{{ path('app_covoiturage') }}" class="text-white text-decoration-none">Rechercher un trajet</a>
+							</li>
+							<li>
+								<a href="#" class="text-white text-decoration-none">Proposer un trajet</a>
+							</li>
+							<li>
+								<a href="{{ path('app_contact') }}" class="text-white text-decoration-none">Contact</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-4">
+						<h5 class="fw-bold">Contact</h5>
+						<p>
+							<i class="fas fa-map-marker-alt"></i>
+							123 Rue de Charonne, 75011 Paris</p>
+						<p>
+							<i class="fas fa-phone"></i>
+							+33 1 23 45 67 89</p>
+						<p>
+							<i class="fas fa-envelope"></i>
+							contact.ecoride9@gmail.com</p>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col text-center">
+						<a href="#" class="text-white text-decoration-none me-3">Mentions légales</a>
+						<a href="#" class="text-white text-decoration-none me-3">Politique de confidentialité</a>
+						<a href="#" class="text-white text-decoration-none">CGU</a>
+					</div>
+				</div>
+			</footer>
+
+			{{ encore_entry_script_tags('app') }}
+
+			{% block javascripts %}{% endblock %}
+			{{ encore_entry_script_tags('app') }}
+		</body>
+	</html>
