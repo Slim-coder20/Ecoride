@@ -17,8 +17,9 @@ use App\Entity\User;
 class VehiculeController extends AbstractController
 {
     #[Route('/vehicule/ajouter', name: 'vehicule_ajouter')]
-    public function index(Request $request, EntityManagerInterface $em ): Response
-    {
+    public function index(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    {  
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
         // l'utilisateur doit être connecté pour accéder à cette page // 
@@ -38,36 +39,30 @@ class VehiculeController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            
-            /** @var UploadedFile $photoFile */
-            
-            $photoFile = $form->get('photoFile')->getData();
-
+            $photoFile = $form->get('photo')->getData();
+        
             if($photoFile){
-            
-                    $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
-
-
-                    //deplacer le fichier vers le répertoire où les photos sont stockées //
-
-                    $photoFile->move(
-                        $this->getParameter('photo_directory'),
-                        $newFilename
-                    );
-
-                    // Enregistrer le nom de l'entité // 
-
-                    $vehicule->setPhoto($newFilename);
-                }
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
+        
+                $photoFile->move(
+                    $this->getParameter('photo_directory'),
+                    $newFilename
+                );
+        
+                $vehicule->setPhoto($newFilename);
             }
+        
             $em->persist($vehicule);
             $em->flush();
-
-         
-            return $this->render('vehicule/ajouter.html.twig', [
+        
+            $this->addFlash('success', '🚗 Véhicule enregistré avec succès.');
+            return $this->redirectToRoute('app_user_dashboard');
+        }
+        
+        return $this->render('vehicule/ajouter.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
+    }   
 }
