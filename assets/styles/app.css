@@ -194,6 +194,18 @@ body {
     border-radius: 2px;
 }
 
+.img-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+
+.img-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
 /* Page Resultats.html.twig  */
 
 .results-section {

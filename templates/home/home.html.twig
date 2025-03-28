@@ -10,22 +10,20 @@
 		<h2 class="secrtion-title">À propos de EcoRide</h2>
 		<p class="lead mt-3">
 			EcoRide est une plateforme de covoiturage dédiée à la promotion de la mobilité durable. 
-			            Notre mission est de réduire l'empreinte carbone en facilitant le partage de trajets entre particuliers. 
-			            Rejoignez notre communauté et contribuez à un avenir plus vert en partageant vos trajets quotidiens.
+			Notre mission est de réduire l'empreinte carbone en facilitant le partage de trajets entre particuliers. 
+			Rejoignez notre communauté et contribuez à un avenir plus vert en partageant vos trajets quotidiens.
 		</p>
 	</div>
 
 	<div class="container mb-5">
 		<div class="row g-4">
-			<div class="col-md-4">
-				<img src="{{ asset('images/eco_ride_1.jpg') }}" class="img-fluid" alt="Ecoride image 1">
-			</div>
-			<div class="col-md-4">
-				<img src="{{ asset('images/eco_ride_2.jpg') }}" class="img-fluid" alt="Ecoride image 2">
-			</div>
-			<div class="col-md-4">
-				<img src="{{ asset('images/eco_ride_3.jpg') }}" class="img-fluid" alt="Ecoride image 3">
-			</div>
+			{% for image in ['eco_ride_1.jpg', 'eco_ride_2.jpg', 'eco_ride_3.jpg'] %}
+				<div class="col-md-4">
+					<div class="img-card shadow-sm">
+						<img src="{{ asset('images/' ~ image) }}" class="img-fluid rounded" alt="EcoRide image">
+					</div>
+				</div>
+			{% endfor %}
 		</div>
 		<div class="text-center mt-3">
 			<a href="{{path('app_covoiturage')}}" class="btn btn-success btn-lg mt-3">
