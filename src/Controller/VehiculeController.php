@@ -23,7 +23,6 @@ class VehiculeController extends AbstractController
         $user = $this->getUser();
 
         // l'utilisateur doit être connecté pour accéder à cette page // 
-
         if(!$user || !$user->getChauffeur()){
             $this->addFlash('danger', 'Vous devez être chauffeur pour accéder à cette page');
             return $this->redirectToRoute('app_user_dashboard');
