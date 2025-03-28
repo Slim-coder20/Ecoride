@@ -118,13 +118,13 @@ final class UserController extends AbstractController
         }
 
         $trajet = new Trajet();
-        $trajet->setChauffeur($user->getChauffeur());
+        $trajet->setChauffeur($user);
 
         $form = $this->createForm(TrajetType::class, $trajet);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trajet->setChauffeur($user->getChauffeur());
+            $trajet->setChauffeur($user);
 
             $em->persist($trajet);
             $em->flush();
