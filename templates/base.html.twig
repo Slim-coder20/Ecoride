@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}EcoRide{% endblock %}</title>
+    {# <link rel="stylesheet" href="/build/app.css"> #}
+    
+    {{ encore_entry_link_tags('app') }}
 
-    {# ✅ Import CSS via Vite #}
-    {{ vite_entry_link_tags('app') }}
-
-    {# Font Awesome (toujours depuis CDN) #}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+   
 
     {% block stylesheets %}{% endblock %}
 </head>
@@ -92,8 +91,7 @@
         </div>
     </footer>
 
-    <!-- ✅ Vite JS loader -->
-    {{ vite_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
 
     {% block javascripts %}{% endblock %}
 </body>
