@@ -6,20 +6,48 @@
 {% block body %}
 
 	{% include 'partials/carousel.html.twig' %}
-	<div class="container mt-5 mb-5 text-center " id="apropos">
-		<h2 class="secrtion-title">À propos de EcoRide</h2>
-		<p class="lead mt-3">
-			EcoRide est une plateforme de covoiturage dédiée à la promotion de la mobilité durable. 
-			Notre mission est de réduire l'empreinte carbone en facilitant le partage de trajets entre particuliers. 
-			Rejoignez notre communauté et contribuez à un avenir plus vert en partageant vos trajets quotidiens.
-		</p>
+	<div class="container mt-5 mb-5" id="apropos">
+		<div class="about-section text-center p-5 rounded shadow">
+			<h2 class="section-title text-success">🌱 À propos de
+				<span class="fw-bold">EcoRide</span>
+			</h2>
+			<p class="lead mt-4">
+				EcoRide est une
+				<strong>plateforme de covoiturage</strong>
+				dédiée à la promotion de la
+				<strong>mobilité durable</strong>.<br>
+				Notre mission est de
+				<span class="text-primary">réduire l'empreinte carbone</span>
+				en facilitant le partage de trajets entre particuliers.<br>
+				Rejoignez notre communauté et contribuez à un avenir plus vert 🌍.
+			</p>
+			<div class="row justify-content-center mt-5 fade-in">
+				<div class="col-md-3 text-center">
+					<div class="value-icon mb-2">🌿</div>
+					<h5 class="fw-bold">Écologie</h5>
+					<p>Réduisez votre empreinte carbone en partageant vos trajets.</p>
+				</div>
+				<div class="col-md-3 text-center">
+					<div class="value-icon mb-2">🤝</div>
+					<h5 class="fw-bold">Partage</h5>
+					<p>Créez du lien social tout en économisant vos frais.</p>
+				</div>
+				<div class="col-md-3 text-center">
+					<div class="value-icon mb-2">🚗</div>
+					<h5 class="fw-bold">Simplicité</h5>
+					<p>Une interface claire pour proposer ou trouver un trajet facilement.</p>
+				</div>
+			</div>
+
+		</div>
 	</div>
+
 
 	<div class="container mb-5">
 		<div class="row g-4">
 			{% for image in ['eco_ride_1.jpg', 'eco_ride_2.jpg', 'eco_ride_3.jpg'] %}
 				<div class="col-md-4">
-					<div class="img-card shadow-sm">
+					<div class="img-card fade-in shadow-sm">
 						<img src="{{ asset('images/' ~ image) }}" class="img-fluid rounded" alt="EcoRide image">
 					</div>
 				</div>
