@@ -21,42 +21,61 @@
 				en facilitant le partage de trajets entre particuliers.<br>
 				Rejoignez notre communauté et contribuez à un avenir plus vert 🌍.
 			</p>
-			<div class="row justify-content-center mt-5 fade-in">
-				<div class="col-md-3 text-center">
-					<div class="value-icon mb-2">🌿</div>
-					<h5 class="fw-bold text-succes">Écologie</h5>
-					<p>Réduisez votre empreinte carbone en partageant vos trajets.</p>
-				</div>
-				<div class="col-md-3 text-center">
-					<div class="value-icon mb-2">🤝</div>
-					<h5 class="fw-bold text-success">Partage</h5>
-					<p>Créez du lien social tout en économisant vos frais.</p>
-				</div>
-				<div class="col-md-3 text-center">
-					<div class="value-icon mb-2">🚗</div>
-					<h5 class="fw-bold text-success">Simplicité</h5>
-					<p>Une interface claire pour proposer ou trouver un trajet facilement.</p>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-
-	<div class="container mb-5">
-		<div class="row g-4">
-			{% for image in ['eco_ride_1.jpg', 'eco_ride_2.jpg', 'eco_ride_3.jpg'] %}
-				<div class="col-md-4">
-					<div class="img-card fade-in shadow-sm">
-						<img src="{{ asset('images/' ~ image) }}" class="img-fluid rounded" alt="EcoRide image">
-					</div>
-				</div>
-			{% endfor %}
-		</div>
-		<div class="text-center mt-3">
+				<div class="text-center mt-3">
 			<a href="{{path('app_covoiturage')}}" class="btn btn-success btn-lg mt-3">
 				Trouver un trajet
 			</a>
 		</div>
+			
+			</div>
+
+		</div>
+	
+	</div>
+
+
+	<div class="container my-5">
+  <div class="row g-4 justify-content-center">
+
+    {# Première carte  #}
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 fade-in">
+        <img src="{{ asset('images/eco_ride_1.jpg') }}" class="card-img-top" alt="Écologie">
+        <div class="card-body text-center">
+          <div class="value-icon mb-2">🌿</div>
+          <h5 class="card-title fw-bold text-success">Écologie</h5>
+          <p class="card-text">Réduisez votre empreinte carbone en partageant vos trajets.</p>
+        </div>
+      </div>
+    </div>
+
+    {# 2 ème carte  #}
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 fade-in">
+        <img src="{{ asset('images/eco_ride_2.jpg') }}" class="card-img-top" alt="Partage">
+        <div class="card-body text-center">
+          <div class="value-icon mb-2">🤝</div>
+          <h5 class="card-title fw-bold text-success">Partage</h5>
+          <p class="card-text">Créez du lien social tout en économisant vos frais.</p>
+        </div>
+      </div>
+    </div>
+
+    {# 3e carte #}
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 fade-in">
+        <img src="{{ asset('images/eco_ride_3.jpg') }}" class="card-img-top" alt="Simplicité">
+        <div class="card-body text-center">
+          <div class="value-icon mb-2">🚗</div>
+          <h5 class="card-title fw-bold text-success">Simplicité</h5>
+          <p class="card-text">Une interface claire pour proposer ou trouver un trajet facilement.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+		
 	</div>
 {% endblock %}
