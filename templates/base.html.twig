@@ -62,9 +62,17 @@ fadeElements.forEach(el => observer.observe(el));
 									Mon compte</a>
 							</li>
 							<li class="nav-item">
+
 								<a class="nav-link text-white" href="{{ path('app_logout') }}">
 									<i class="fas fa-sign-out-alt"></i>
 									Déconnexion</a>
+
+							</li>
+							<li class="nav-item">
+								<span class="nav-link text-white fw-bold">
+									<i class="fas fa-user"></i>
+									{{ app.user.pseudo }}
+								</span>
 							</li>
 						{% else %}
 							<li class="nav-item">
@@ -76,6 +84,7 @@ fadeElements.forEach(el => observer.observe(el));
 
 						<li class="nav-item">
 							<a class="nav-link text-white" href="{{ path('app_contact') }}">Contact</a>
+
 						</li>
 					</ul>
 				</div>
@@ -99,31 +108,41 @@ fadeElements.forEach(el => observer.observe(el));
 			</div>
 
 			<!--FOOTER -->
-<footer class="footer-custom text-dark mt-5 pt-4 pb-4">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <h5 class="fw-bold text-white">EcoRide</h5>
-        <p class="small mb-0 text-white">© {{ "now"|date("Y") }} EcoRide. Tous droits réservés.</p>
-      </div>
-      <div class="col-md-4 mb-3">
-        <h5 class="fw-bold text-white">Liens rapides</h5>
-        <ul class="list-unstyled">
-          <li><a href="{{ path('app_home') }}" class="footer-link">Accueil</a></li>
-          <li><a href="{{ path('app_covoiturage') }}" class="footer-link">Rechercher un trajet</a></li>
-          <li><a href="#" class="footer-link">Proposer un trajet</a></li>
-          <li><a href="{{ path('app_contact') }}" class="footer-link">Contact</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4 mb-3">
-        <h5 class="fw-bold text-white">Contact</h5>
-        <p class="small mb-1 text-white">123 Rue de Charonne, 75011 Paris</p>
-        <p class="small mb-1 text-white">+33 1 23 45 67 89</p>
-        <p class="small text-white">contact.ecoride9@gmail.com</p>
-      </div>
-    </div>
-  </div>
-</footer>
+			<footer class="footer-custom text-dark mt-5 pt-4 pb-4">
+				<div class="container text-center">
+					<div class="row">
+						<div class="col-md-4 mb-3">
+							<h5 class="fw-bold text-white">EcoRide</h5>
+							<p class="small mb-0 text-white">©
+								{{ "now"|date("Y") }}
+								EcoRide. Tous droits réservés.</p>
+						</div>
+						<div class="col-md-4 mb-3">
+							<h5 class="fw-bold text-white">Liens rapides</h5>
+							<ul class="list-unstyled">
+								<li>
+									<a href="{{ path('app_home') }}" class="footer-link">Accueil</a>
+								</li>
+								<li>
+									<a href="{{ path('app_covoiturage') }}" class="footer-link">Rechercher un trajet</a>
+								</li>
+								<li>
+									<a href="#" class="footer-link">Proposer un trajet</a>
+								</li>
+								<li>
+									<a href="{{ path('app_contact') }}" class="footer-link">Contact</a>
+								</li>
+							</ul>
+						</div>
+						<div class="col-md-4 mb-3">
+							<h5 class="fw-bold text-white">Contact</h5>
+							<p class="small mb-1 text-white">123 Rue de Charonne, 75011 Paris</p>
+							<p class="small mb-1 text-white">+33 1 23 45 67 89</p>
+							<p class="small text-white">contact.ecoride9@gmail.com</p>
+						</div>
+					</div>
+				</div>
+			</footer>
 
 
 			{{ encore_entry_script_tags('app') }}

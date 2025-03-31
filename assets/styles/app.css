@@ -367,3 +367,19 @@ body.home-page {
   border: 3px solid #327ceb;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
+
+/* Espace Abooné Tableau de recap  */
+
+.table thead th {
+  background-color: #f8f9fa;
+  color: #333;
+  font-weight: 600;
+}
+.table tbody td,
+.table tbody th {
+  vertical-align: middle;
+}
+
+.btn-outline-success {
+  font-weight: 500;
+}

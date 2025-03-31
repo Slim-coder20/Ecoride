@@ -4,31 +4,94 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class="text-success">Bienvenue
-		{{user.pseudo}}</h1>
-	<p class="text-success">Email :
-		{{user.email}}</p>
-	<p class="text-success">{{user.credits}}</p>
-	
-{% if app.session.get('trajet_selected') %}
-    <div class="alert alert-info d-flex justify-content-between align-items-center">
-        <div>
-            🚗 Vous avez un trajet sélectionné en attente. 
-            <a href="{{ path('covoiturage_details', { id: app.session.get('trajet_selected') }) }}" class="alert-link text-decoration-none btn btn-success">
-                Voir le trajet
-            </a>
-        </div>
-        <form method="post" action="{{ path('clear_selected_trajet') }}">
-            <button class="btn btn-sm btn-outline-danger">✖ Annuler</button>
-        </form>
-    </div>
-{% endif %}
+	<div class="container my-5 py-5">
+		<div
+			class="row g-4">
+			<!-- Carte infos utilisateur -->
+			<div class="col-lg-4">
+				<div class="bg-white p-4 rounded-4 shadow text-center h-100 d-flex flex-column justify-content-center">
+					<h2 class="text-success mb-3">👋 Bienvenue
+						{{ user.pseudo }}</h2>
+					<p class="mb-1 text-success">📧
+						<strong>Email :</strong>
+						{{ user.email }}</p>
+					<p class="mb-0 text-success">💰
+						<strong>Crédit :</strong>
+						{{ user.credits }}</p>
+				</div>
+			</div>
 
-	<div class="mt-4">
-		<a href="{{ path('app_become_driver') }}" class="btn btn-success">🚗 Chauffeur</a>
-		<a href="{{ path('espace_passager')}}" class="btn btn-success">🧍 Passager</a>
-		<a href="{{ path('espace_passager_chauffeur')}}" class="btn btn-success">🚗🧍Les deux</a>
-        <a href="{{ path('app_user_create_trajet')}}" class="btn btn-success">🚗 Créer un trajet</a >
+			<!-- Tableau des trajets -->
+			<div class="col-lg-8">
+				<div class="bg-white p-4 rounded-4 shadow">
+					<h4 class="mb-4 text-success">🧾 Vos trajets</h4>
+					<div class="table-responsive">
+						<table class="table table-hover align-middle">
+							<thead class="table-success">
+								<tr>
+
+									<th class="text-success">Trajets</th>
+									<th class="text-success">Réalisés</th>
+									<th class="text-success">Chauffeur</th>
+									<th class="text-success">Passager</th>
+									<th class="text-success">À valider</th>
+									<th class="text-success">Annuler</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>1</th>
+									<td>Paris - Lyon</td>
+									<td>Lyon - Paris</td>
+									<td>1</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<th>2</th>
+									<td>Amiens - Paris</td>
+									<td>Paris - Amiens
+									</td>
+									<td>1</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<th>3</th>
+									<td>Lile - Paris</td>
+									<td>Paris - lile</td>
+									<td>1</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Alerte de trajet sélectionné -->
+		{% if app.session.get('trajet_selected') %}
+			<div class="alert alert-info d-flex justify-content-between align-items-center mt-4">
+				<div>
+					🚗 Trajet sélectionné en attente.
+					<a href="{{ path('covoiturage_details', { id: app.session.get('trajet_selected') }) }}" class="alert-link btn btn-outline-success btn-sm ms-2">
+						Voir le trajet
+					</a>
+				</div>
+				<form method="post" action="{{ path('clear_selected_trajet') }}" class="mb-0">
+					<button class="btn btn-sm btn-outline-danger">✖ Annuler</button>
+				</form>
+			</div>
+		{% endif %}
+
+		<!-- Boutons d'action -->
+		<div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+			<a href="{{ path('app_become_driver') }}" class="btn btn-outline-success">🚗 Chauffeur</a>
+			<a href="{{ path('espace_passager') }}" class="btn btn-outline-success">🧍 Passager</a>
+			<a href="{{ path('espace_passager_chauffeur') }}" class="btn btn-outline-success">🚗🧍 Les deux</a>
+			<a href="{{ path('app_user_create_trajet') }}" class="btn btn-success">➕ Créer un trajet</a>
+		</div>
 	</div>
-
 {% endblock %}
