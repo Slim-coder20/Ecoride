@@ -27,6 +27,9 @@ class Participation
     #[ORM\Column]
     private ?bool $confirmation = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $Status = 'En attente';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Participation
     public function setConfirmation(bool $confirmation): static
     {
         $this->confirmation = $confirmation;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->Status;
+    }
+
+    public function setStatus(string $Status): static
+    {
+        $this->Status = $Status;
 
         return $this;
     }
