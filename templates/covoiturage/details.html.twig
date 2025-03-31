@@ -1,61 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du trajet{% endblock %}
+{% block title %}Détails du trajet
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1>📝 Détails du trajet</h1>
+	<div
+		class="container my-5">
 
-    <p><strong>Chauffeur :</strong> {{ trajet.chauffeur.pseudo }}</p>
-    <p><strong>Note :</strong> {{ trajet.chauffeur.note ?? 'Non noté' }}</p>
+		<!-- Détails chauffeur -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<h3 class="card-title text-success">📝 Détails du trajet</h3>
+				<p>
+					<strong>Chauffeur :</strong>
+					{{ trajet.chauffeur.pseudo }}</p>
+				<p>
+					<strong>Note :</strong>
+					{{ trajet.chauffeur.note ?? 'Non noté' }}</p>
+			</div>
+		</div>
 
-    {% set vehicule = trajet.chauffeur.chauffeur.vehicules|first %}
+		<!-- Véhicule -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<h4 class="card-title text-success">🚗 Véhicule</h4>
+				{% set vehicule = trajet.chauffeur.chauffeur.vehicules|first %}
+				{% if vehicule %}
+					<p>
+						<strong>Marque :</strong>
+						{{ vehicule.brand }}</p>
+					<p>
+						<strong>Modèle :</strong>
+						{{ vehicule.model }}</p>
+					<p>
+						<strong>Énergie :</strong>
+						{{ vehicule.energie }}</p>
+					<p>
+						<strong>Écologique :</strong>
+						{{ vehicule.ecologique ? 'Oui' : 'Non' }}</p>
+					{% if vehicule.photo %}
+						<img src="{{ asset('uploads/vehicules/' ~ vehicule.photo) }}" alt="Photo véhicule" class="img-fluid rounded shadow-sm mt-3" style="max-width: 250px;">
+					{% endif %}
+				{% else %}
+					<p>Aucun véhicule associé.</p>
+				{% endif %}
+			</div>
+		</div>
 
-    <h2>🚗 Véhicule</h2>
-    {% if vehicule %}
-        <p><strong>Marque :</strong> {{ vehicule.brand }}</p>
-        <p><strong>Modèle :</strong> {{ vehicule.model }}</p>
-        <p><strong>Énergie :</strong> {{ vehicule.energie }}</p>
-        <p><strong>Écologique :</strong> {{ vehicule.ecologique ? 'Oui' : 'Non' }}</p>
+		<!-- Préférences -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<h4 class="card-title text-success">📋 Préférences du conducteur</h4>
+				<ul>
+					{% for pref in trajet.chauffeur.chauffeur.preferences %}
+						<li>{{ pref }}</li>
+					{% else %}
+						<li>Aucune préférence renseignée.</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
 
-        {% if vehicule.photo %}
-            <img src="{{ asset('uploads/vehicules/' ~ vehicule.photo) }}" alt="Photo véhicule" width="200" class="rounded shadow">
-        {% endif %}
-    {% else %}
-        <p>Aucun véhicule associé.</p>
-    {% endif %}
+		<!-- Avis -->
+		<div class="card shadow mb-4">
+			<div class="card-body">
+				<h4 class="card-title text-success">🌟 Avis du conducteur</h4>
+				<ul>
+					{% for avis in trajet.chauffeur.avis %}
+						<li>{{ avis.commentaire }}
+							-
+							<strong>Note :</strong>
+							{{ avis.note }}</li>
+					{% else %}
+						<li>Aucun avis pour ce conducteur.</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
 
-    <h2>📋 Préférences du conducteur</h2>
-    <ul>
-        {% for pref in trajet.chauffeur.chauffeur.preferences %}
-            <li>{{ pref }}</li>
-        {% else %}
-            <li>Aucune préférence renseignée.</li>
-        {% endfor %}
-    </ul>
+		<!-- Boutons -->
+		<div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+			{% if app.user %}
+				{% if trajet.placesRestantes > 0 and app.user.credits >= 1 %}
+					<form action="#" method="POST">
+						<button type="submit" class="btn btn-success">🚀 Participer</button>
+					</form>
+				{% else %}
+					<p class="text-danger">Vous n'avez pas assez de crédits ou il n'y a plus de places disponibles.</p>
+				{% endif %}
+			{% else %}
+				<a href="{{ path('app_user_dashboard') }}" class="btn btn-outline-success">Mon espace abonné</a>
+				<a href="{{ path('app_registration') }}" class="btn btn-success">Inscrivez-vous pour participer</a>
+			{% endif %}
+			<a href="{{ path('app_covoiturage') }}" class="btn btn-secondary">Retour à la recherche</a>
+		</div>
 
-    <h2>🌟 Avis du conducteur</h2>
-    <ul>
-        {% for avis in trajet.chauffeur.avis %}
-            <li>{{ avis.commentaire }} - Note : {{ avis.note }}</li>
-        {% else %}
-            <li>Aucun avis pour ce conducteur.</li>
-        {% endfor %}
-    </ul>
+	</div>
 
-    {% if app.user %}
-        {% if trajet.placesRestantes > 0 and app.user.credits >= 1 %}
-            <form action="#" method="POST">
-                <button type="submit" class="btn btn-success">Participer</button>
-            </form>
-        {% else %}
-            <p class="text-danger">Vous n'avez pas assez de crédits ou il n'y a plus de places disponibles.</p>
-        {% endif %}
-    {% else %}
-        <a href="{{ path('app_user_dashboard') }}" class="btn btn-success mt-3">Mon espace abonné</a>
-        <a href="{{ path('app_registration') }}" class="btn btn-success">Inscrivez-vous pour participer</a>
-    {% endif %}
 
-    <a href="{{ path('app_covoiturage') }}" class="btn btn-success mt-3">Retour à la recherche</a>
-</div>
 {% endblock %}
