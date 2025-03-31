@@ -45,8 +45,7 @@ class Trajet
     #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'trajet')]
     private Collection $participations;
 
-    #[ORM\Column(length: 50)]
-    private ?string $status = null;
+   
 
     public function __construct()
     {
@@ -170,15 +169,5 @@ class Trajet
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
+   
 }
