@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Participation;
 use App\Entity\Trajet;
+use App\Services\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ class ParticipationController extends AbstractController
     // cette route permet de valiser une participation depuis l'espace utilisateur //
     
     #[Route('/participation/{id}/valider', name: 'valider_participation', methods: ['POST'])]
-    public function valider(Participation $participation, EntityManagerInterface $em): Response
+    public function valider(Participation $participation, EntityManagerInterface $em, EmailService $emailService): Response
     {   
          // Vérifie si l'utilisateur est connecté pour sécurisé la participation
         // et éviter les participations anonymes
@@ -27,6 +28,14 @@ class ParticipationController extends AbstractController
         $participation->setConfirmation(true);
 
         $em->flush();
+
+        // Envoi d'un email de notification à l'utilisateur//
+        $emailService->sendNotificationEmail(
+            $participation->getUser()->getEmail(),
+            'Participation validée',
+            ' Bonjour votre participation au trajet a été validée.'
+        );
+
 
         $this->addFlash('success', 'Participation validée avec succès.');
         return $this->redirectToRoute('app_user_dashboard');
@@ -55,6 +64,14 @@ class ParticipationController extends AbstractController
         $trajet->setPlacesRestantes($trajet->getPlacesRestantes() + 1);
 
         $em->flush();
+
+        // Envoi d'un email de notification à l'utilisateur//
+        
+        $emailService->sendNotificationEmail(
+            $user->getEmail(),
+            'Participation annulée',
+            'Bonjour, votre participation au trajet du ' . $trajet->getDateTrajet()->format('d/m/Y') . ' a été annulée Vos crédits ont été remboursés.'
+        );
 
         $this->addFlash('info', 'Participation annulée.');
         return $this->redirectToRoute('app_user_dashboard');
