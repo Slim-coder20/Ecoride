@@ -54,4 +54,11 @@ class ParticipationController extends AbstractController
         $this->addFlash('info', 'Participation annulée.');
         return $this->redirectToRoute('app_user_dashboard');
     }
+
+    
+
+
+
+
+
 }
