@@ -10,7 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ParticipationController extends AbstractController
-{
+{   
+    // cette route permet de valiser une participation depuis l'espace utilisateur //
+    
     #[Route('/participation/{id}/valider', name: 'valider_participation', methods: ['POST'])]
     public function valider(Participation $participation, EntityManagerInterface $em): Response
     {
@@ -26,6 +28,8 @@ class ParticipationController extends AbstractController
         $this->addFlash('success', 'Participation validée avec succès.');
         return $this->redirectToRoute('app_user_dashboard');
     }
+
+    // cette route nous pemet d'annuler une participation après l'avoir selectionné lors de la recherche de trajet depuis l'espace utilisateur // 
 
     #[Route('/participation/{id}/annuler', name: 'annuler_participation', methods: ['POST'])]
     public function annuler(Participation $participation, EntityManagerInterface $em): Response
@@ -49,6 +53,8 @@ class ParticipationController extends AbstractController
         $this->addFlash('info', 'Participation annulée.');
         return $this->redirectToRoute('app_user_dashboard');
     }
+
+    // 
 
     #[Route('/participer/{id}', name: 'app_participer', methods: ['POST'])]
     public function participer(Trajet $trajet, EntityManagerInterface $em): Response
@@ -79,6 +85,7 @@ class ParticipationController extends AbstractController
         $participation->setTrajet($trajet);
         $participation->setStatus('En attente');
         $participation->setConfirmation(false);
+        $participation->setdateParticipation(new \DateTime());
 
         $trajet->setPlacesRestantes($trajet->getPlacesRestantes() - 1);
         $user->setCredits($user->getCredits() - 1);
