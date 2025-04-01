@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TrajetController extends AbstractController
 {
-    #[Route('/trajet/{id}/annuler', name: 'trajet_annuler')]
+    #[Route('/trajet/{id}/annuler', name: 'trajet_annuler', methods: ['POST'])]
     public function annulerTrajet(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
     {
         

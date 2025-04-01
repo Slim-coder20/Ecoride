@@ -31,57 +31,55 @@
 								<tr>
 
 									<th class="text-success">Trajets</th>
-									<th class="text-success">Réalisés</th>
-									<th class="text-success">Chauffeur</th>
-									<th class="text-success">Passager</th>
+									<th class="text-success">Selectionné</th>
+									<th class="text-success">date de depart</th>
+									<th class="text-success">date d'arrivé</th>
+									<th class="text-success">Prix</th>
 									<th class="text-success">Valider</th>
 									<th class="text-success">Annuler</th>
+									<th class="text-success">Statut</th>
+
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th>1</th>
-									<td>Paris - Lyon</td>
-									<td>Lyon - Paris</td>
-									<td>1</td>
-									<td>
-										<a class="btn btn-success">valider</a>
-									</td>
-									<td>
-										<a class="btn btn-success">Annuler</a>
-									</td>
+								{% for participation in user.participations %}
+									{% set trajet = participation.trajet %}
+									{% if trajet %}
+										<tr>
+											<th>{{ loop.index }}</th>
+											<td>{{ trajet.depart }}
+												-
+												{{ trajet.arrivee }}</td>
+											<td>{{ trajet.dateDepart|date('d/m/Y H:i') }}</td>
+											<td>{{ trajet.dateArrivee|date('d/m/Y H:i') }}</td>
+											<td>{{ trajet.prix }}€</td>
 
+											<td>
+												{% if participation.status == 'En attente' %}
+													<form method="post" action="{{ path('valider_participation', { id: participation.id }) }}">
+														<button class="btn btn-success btn-sm">Valider</button>
+													</form>
+												{% else %}
+													<span class="text-muted">✔ Validé</span>
+												{% endif %}
+											</td>
 
-								</tr>
-								<tr>
-									<th>2</th>
-									<td>Amiens - Paris</td>
-									<td>Paris - Amiens
-									</td>
-									<td>1</td>
-									<td>
-										<a class="btn btn-success">valider</a>
-									</td>
-									<td>
-										<a class="btn btn-success">Annuler</a>
-									</td>
+											<td>
+												{% if participation.status != 'Annulé' %}
+													<form method="post" action="{{ path('annuler_participation', { id: participation.id }) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette participation ?');">
+														<button class="btn btn-danger btn-sm">Annuler</button>
+													</form>
+												{% else %}
+													<span class="badge bg-danger">Annulé</span>
+												{% endif %}
+											</td>
 
-								</tr>
-								<tr>
-									<th>3</th>
-									<td>Lile - Paris</td>
-									<td>Paris - lile</td>
-									<td>1</td>
-									<td>
-										<a class="btn btn-success">valider</a>
-									</td>
-									<td>
-										<a class="btn btn-success">Annuler</a>
-									</td>
-
-								</tr>
-
+											<td>{{ participation.status }}</td>
+										</tr>
+									{% endif %}
+								{% endfor %}
 							</tbody>
+
 						</table>
 					</div>
 				</div>
