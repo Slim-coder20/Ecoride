@@ -15,7 +15,10 @@ class ParticipationController extends AbstractController
     
     #[Route('/participation/{id}/valider', name: 'valider_participation', methods: ['POST'])]
     public function valider(Participation $participation, EntityManagerInterface $em): Response
-    {
+    {   
+         // Vérifie si l'utilisateur est connecté pour sécurisé la participation
+        // et éviter les participations anonymes
+        
         if ($participation->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException("Accès refusé.");
         }
@@ -35,7 +38,10 @@ class ParticipationController extends AbstractController
     public function annuler(Participation $participation, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-
+        
+        // Vérifie si l'utilisateur est connecté pour sécurisé la participation
+        // et éviter les participations anonymes
+        
         if ($participation->getUser() !== $user) {
             throw $this->createAccessDeniedException("Ce trajet ne vous appartient pas.");
         }
@@ -54,13 +60,14 @@ class ParticipationController extends AbstractController
         return $this->redirectToRoute('app_user_dashboard');
     }
 
-    // 
+    //cette route 
 
     #[Route('/participer/{id}', name: 'app_participer', methods: ['POST'])]
     public function participer(Trajet $trajet, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-
+        // Vérifie si l'utilisateur est connecté pour sécurisé la participation
+        // et éviter les participations anonymes
         if (!$user) {
             $this->addFlash('error', 'Vous devez être connecté pour participer à un trajet.');
             return $this->redirectToRoute('app_login');
