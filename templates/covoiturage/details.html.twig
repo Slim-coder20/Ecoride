@@ -82,7 +82,7 @@
 		<div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
 			{% if app.user %}
 				{% if trajet.placesRestantes > 0 and app.user.credits >= 1 %}
-					<form action="#" method="POST">
+					<form action="{{path ('app_participer', {id : trajet.id})}}" method="POST">
 						<button type="submit" class="btn btn-success">🚀 Participer</button>
 					</form>
 				{% else %}
