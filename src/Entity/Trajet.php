@@ -45,6 +45,9 @@ class Trajet
     #[ORM\OneToMany(targetEntity: Participation::class, mappedBy: 'trajet')]
     private Collection $participations;
 
+    #[ORM\Column]
+    private ?bool $isCancelled = false;
+
    
 
     public function __construct()
@@ -166,6 +169,18 @@ class Trajet
                 $participation->setTrajet(null);
             }
         }
+        return $this;
+    }
+
+    public function isCancelled(): ?bool
+    {
+        return $this->isCancelled;
+    }
+
+    public function setIsCancelled(bool $isCancelled): static
+    {
+        $this->isCancelled = $isCancelled;
+
         return $this;
     }
 
