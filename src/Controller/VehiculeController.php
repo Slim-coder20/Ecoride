@@ -17,7 +17,7 @@ use App\Entity\User;
 class VehiculeController extends AbstractController
 {
     #[Route('/vehicule/ajouter', name: 'vehicule_ajouter')]
-    public function index(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function index(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadedFile $uploadeFile): Response
     {  
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
