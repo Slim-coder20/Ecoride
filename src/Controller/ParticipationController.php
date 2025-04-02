@@ -44,7 +44,7 @@ class ParticipationController extends AbstractController
     // cette route nous pemet d'annuler une participation après l'avoir selectionné lors de la recherche de trajet depuis l'espace utilisateur // 
 
     #[Route('/participation/{id}/annuler', name: 'annuler_participation', methods: ['POST'])]
-    public function annuler(Participation $participation, EntityManagerInterface $em): Response
+    public function annuler(Participation $participation, EntityManagerInterface $em, EmailService $emailService): Response
     {
         $user = $this->getUser();
         
@@ -116,6 +116,13 @@ class ParticipationController extends AbstractController
 
         $em->persist($participation);
         $em->flush();
+
+        // envoi d'un email de notification à l'utilisateur// 
+        $emailService->sendNotificationEmail(
+            $user->getEmail(),
+            'Participation au trajet',
+            'Bonjour, vous avez rejoint le trajet du ' . $trajet->getDateTrajet()->format('d/m/Y') . '.'
+        );
 
         $this->addFlash('success', 'Vous avez rejoint le trajet.');
         return $this->redirectToRoute('app_user_dashboard');
