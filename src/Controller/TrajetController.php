@@ -6,6 +6,7 @@ use App\Entity\Trajet;
 use App\Services\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -88,12 +89,18 @@ final class TrajetController extends AbstractController
     // cette route va servire à terminer le trajet si l'utilisateur est le chauffeur du trajet ddepuis le dashboard avec un envoie de notification au passager //
     
     #[Route('/trajet/{id}/terminer', name: 'trajet_terminer', methods: ['POST'])]
-    public function terminerTrajet(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
+    public function terminerTrajet(Request $request, Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
 {
     $user = $this->getUser();
 
     // Vérifie si c’est bien le chauffeur et que le trajet est en cours
     if ($trajet->getChauffeur() !== $user || $trajet->getStatut() !== 'En cours') {
+        throw $this->createAccessDeniedException("Action non autorisée.");
+    }
+
+    // securité contre les attaques CSRF// 
+    $submittedToken = $request->request->get('_token');
+    if (!$this->isCsrfTokenValid('terminer_'. $trajet->getId(), $submittedToken)) {
         throw $this->createAccessDeniedException("Action non autorisée.");
     }
 
