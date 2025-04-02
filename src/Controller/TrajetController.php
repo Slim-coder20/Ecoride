@@ -48,4 +48,85 @@ final class TrajetController extends AbstractController
         return $this->redirectToRoute('app_user_dashboard');
         
     }
+
+    // cette route va servire à demarrer le trajet si l'utilisateur est le chauffeur du trajet ddepuis le dashboard // 
+    
+    #[Route('/trajet/{id}/demarrer', name: 'trajet_demarrer', methods: ['POST'])]
+    public function demarrerTrajet(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
+    {
+        
+        // Vérifier que l'utilisateur connecté est le chauffeur du trajet // 
+        $user = $this->getUser();
+        if ($trajet->getChauffeur() !== $user) {
+            throw $this->createAccessDeniedException("Vous n'êtes pas autorisé à annuler ce trajet.");
+        }
+        
+        
+        
+        // Notifier et Remboursser le participant // 
+        foreach ($trajet->getParticipations() as $participation) {
+            $passager = $participation->getUser();
+
+            
+        }
+        ;
+
+        $this->addFlash('success', 'Le trajet a été démarrer avec succès un mail a été envoiyé au passager.');
+
+        return $this->redirectToRoute('app_user_dashboard');
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

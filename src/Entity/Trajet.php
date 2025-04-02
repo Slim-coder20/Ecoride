@@ -48,6 +48,9 @@ class Trajet
     #[ORM\Column]
     private ?bool $isCancelled = false;
 
+    #[ORM\Column(length: 50)]
+    private ?string $statut = 'prévu';
+
    
 
     public function __construct()
@@ -180,6 +183,18 @@ class Trajet
     public function setIsCancelled(bool $isCancelled): static
     {
         $this->isCancelled = $isCancelled;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        $this->statut = $statut;
 
         return $this;
     }
