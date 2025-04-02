@@ -70,7 +70,7 @@ class ParticipationController extends AbstractController
         $emailService->sendNotificationEmail(
             $user->getEmail(),
             'Participation annulée',
-            'Bonjour, votre participation au trajet du ' . $trajet->getDateTrajet()->format('d/m/Y') . ' a été annulée Vos crédits ont été remboursés.'
+            'Bonjour, votre participation au trajet du ' . $trajet->getDateDepart()->format('d/m/Y') . ' a été annulée Vos crédits ont été remboursés.'
         );
 
         $this->addFlash('info', 'Participation annulée.');
@@ -121,7 +121,7 @@ class ParticipationController extends AbstractController
         $emailService->sendNotificationEmail(
             $user->getEmail(),
             'Participation au trajet',
-            'Bonjour, vous avez rejoint le trajet du ' . $trajet->getDateTrajet()->format('d/m/Y') . '.'
+            'Bonjour, vous avez rejoint le trajet du ' . $trajet->getDateDepart()->format('d/m/Y') . '.'
         );
 
         $this->addFlash('success', 'Vous avez rejoint le trajet.');

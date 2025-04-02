@@ -5,6 +5,7 @@ use App\Entity\User;
 use App\Entity\Vehicule;
 use App\Entity\Chauffeur;
 use App\Entity\Trajet;
+
 use App\Form\VehiculeType;
 use App\Form\TrajetType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,8 +29,20 @@ final class UserController extends AbstractController
             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
         }
 
+        // Récupérer les trajets créé en tant que chauffeur //
+
+        $trajetsChauffeur = []; 
+        if ($user->getChauffeur()) {
+            $trajetsChauffeur = $em->getRepository(Trajet::class)->findBy(['chauffeur' => $user->getChauffeur()]);
+        }
+
+        // Participations en tant que passager //
+        $participations = $user->getParticipations();
+
         return $this->render('user/dashboard.html.twig', [
             'user' => $user,
+            'trajetsChauffeur' => $trajetsChauffeur,
+            'participations' => $participations,
         ]);
     }
 

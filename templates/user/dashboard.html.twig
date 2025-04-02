@@ -21,24 +21,21 @@
 				</div>
 			</div>
 
-			<!-- Tableau des trajets -->
+			<!-- Tableau des participations passager -->
 			<div class="col-md-9">
 				<div class="bg-white p-4 rounded-4 shadow">
-					<h4 class="mb-4 text-success">🧾 Vos trajets</h4>
+					<h4 class="mb-4 text-success">🧾 Vos trajets en tant que passager</h4>
 					<div class="table-responsive">
 						<table class="table table-hover align-middle">
 							<thead class="table-success">
 								<tr>
-
-									<th class="text-success">Trajets</th>
-									<th class="text-success">Selectionné</th>
-									<th class="text-success">date de depart</th>
-									<th class="text-success">date d'arrivé</th>
-									<th class="text-success">Prix</th>
-									<th class="text-success">Valider</th>
-									<th class="text-success">Annuler</th>
-									<th class="text-success">Statut</th>
-
+									<th>Trajet</th>
+									<th>Départ</th>
+									<th>Arrivée</th>
+									<th>Prix</th>
+									<th>Valider</th>
+									<th>Annuler</th>
+									<th>Statut</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -46,69 +43,106 @@
 									{% set trajet = participation.trajet %}
 									{% if trajet %}
 										<tr>
-											<th>{{ loop.index }}</th>
-											<td>{{ trajet.depart }}
-												-
-												{{ trajet.arrivee }}</td>
-											<td>{{ trajet.dateDepart|date('d/m/Y H:i') }}</td>
-											<td>{{ trajet.dateArrivee|date('d/m/Y H:i') }}</td>
+											<td>{{ loop.index }}</td>
+											<td>{{ trajet.depart }}</td>
+											<td>{{ trajet.arrivee }}</td>
 											<td>{{ trajet.prix }}€</td>
-
 											<td>
 												{% if participation.status == 'En attente' %}
 													<form method="post" action="{{ path('valider_participation', { id: participation.id }) }}">
 														<button class="btn btn-success btn-sm">Valider</button>
 													</form>
 												{% else %}
-													<span class="text-muted">✔ Valider</span>
+													<span class="text-muted">✔ Validée</span>
 												{% endif %}
 											</td>
-
 											<td>
-												{% if participation.status != 'Annulé' %}
-													<form method="post" action="{{ path('annuler_participation', { id: participation.id }) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette participation ?');">
+												{% if participation.status != 'Annulée' %}
+													<form method="post" action="{{ path('annuler_participation', { id: participation.id }) }}" onsubmit="return confirm('Annuler cette participation ?');">
 														<button class="btn btn-danger btn-sm">Annuler</button>
 													</form>
 												{% else %}
-													<span class="badge bg-danger">Annulé</span>
+													<span class="badge bg-danger btn-sm">Annulée</span>
 												{% endif %}
 											</td>
-
 											<td>{{ participation.status }}</td>
 										</tr>
 									{% endif %}
+								{% else %}
+									<tr>
+										<td colspan="7" class="text-center">Aucune participation trouvée.</td>
+									</tr>
 								{% endfor %}
 							</tbody>
-
 						</table>
 					</div>
 				</div>
 			</div>
-			<!-- véhicules utilisé  -->
-			<div-col-md-2></div>
-		</div>
 
-		<!-- Alerte de trajet sélectionné -->
-		{% if app.session.get('trajet_selected') %}
-			<div class="alert alert-info d-flex justify-content-between align-items-center mt-4">
-				<div>
-					🚗 Trajet sélectionné en attente.
-					<a href="{{ path('covoiturage_details', { id: app.session.get('trajet_selected') }) }}" class="alert-link btn btn-outline-success btn-sm ms-2">
-						Voir le trajet
-					</a>
+			<!-- Tableau des trajets chauffeur -->
+			<div class="col-12 mt-4">
+				<div class="bg-white p-4 rounded-4 shadow">
+					<h4 class="mb-4 text-success">🚗 Vos trajets en tant que chauffeur</h4>
+					<div class="table-responsive">
+						<table class="table table-hover align-middle">
+							<thead class="table-success">
+								<tr>
+									<th>#</th>
+									<th>Départ</th>
+									<th>Arrivée</th>
+									<th>Date de départ</th>
+									<th>Places restantes</th>
+									<th>Prix</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for trajet in trajetsChauffeur %}
+									<tr>
+										<td>{{ loop.index }}</td>
+										<td>{{ trajet.depart }}</td>
+										<td>{{ trajet.arrivee }}</td>
+										<td>{{ trajet.dateDepart|date('d/m/Y H:i') }}</td>
+										<td>{{ trajet.placesRestantes }}</td>
+										<td>{{ trajet.prix }}€</td>
+										<td>
+											<!-- futur bouton démarrer / terminer -->
+											<a href="#" class="btn btn-outline-primary btn-sm disabled">À venir</a>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="7" class="text-center">Aucun trajet en tant que chauffeur.</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</div>
-				<form method="post" action="{{ path('clear_selected_trajet') }}" class="mb-0">
-					<button class="btn btn-sm btn-outline-danger">✖ Annuler</button>
-				</form>
 			</div>
-		{% endif %}
 
-		<!-- Boutons d'action -->
-		<div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-			<a href="{{ path('app_become_driver') }}" class="btn btn-outline-success">🚗 Chauffeur</a>
-			<a href="{{ path('espace_passager') }}" class="btn btn-outline-success">🧍 Passager</a>
-			<a href="{{ path('espace_passager_chauffeur') }}" class="btn btn-outline-success">🚗🧍 Les deux</a>
-			<a href="{{ path('app_user_create_trajet') }}" class="btn btn-success">➕ Créer un trajet</a>
+			<!-- Alerte de trajet sélectionné -->
+			{% if app.session.get('trajet_selected') %}
+				<div class="alert alert-info d-flex justify-content-between align-items-center mt-4">
+					<div>
+						🚗 Trajet sélectionné en attente.
+						<a href="{{ path('covoiturage_details', { id: app.session.get('trajet_selected') }) }}" class="alert-link btn btn-outline-success btn-sm ms-2">
+							Voir le trajet
+						</a>
+					</div>
+					<form method="post" action="{{ path('clear_selected_trajet') }}" class="mb-0">
+						<button class="btn btn-sm btn-outline-danger">✖ Annuler</button>
+					</form>
+				</div>
+			{% endif %}
+
+			<!-- Boutons d'action -->
+			<div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+				<a href="{{ path('app_become_driver') }}" class="btn btn-outline-success">🚗 Chauffeur</a>
+				<a href="{{ path('espace_passager') }}" class="btn btn-outline-success">🧍 Passager</a>
+				<a href="{{ path('espace_passager_chauffeur') }}" class="btn btn-outline-success">🚗🧍 Les deux</a>
+				<a href="{{ path('app_user_create_trajet') }}" class="btn btn-success">➕ Créer un trajet</a>
+			</div>
 		</div>
 	</div>
 {% endblock %}
