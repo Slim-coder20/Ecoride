@@ -106,8 +106,14 @@
 										<td>{{ trajet.placesRestantes }}</td>
 										<td>{{ trajet.prix }}€</td>
 										<td>
-											<!-- futur bouton démarrer / terminer -->
-											<a href="#" class="btn btn-outline-primary btn-sm disabled">À venir</a>
+											{% if trajet.statut == 'En cours' %}
+												<form methods="post" action="{{ path('trajet_terminer', {id : trajet.id})}}">
+													<input type="hidden" name="_token" value="{{ csrf_token('terminer_' ~ trajet.id) }}">
+													<button class="btn btn-success btn-sm">🛑 Terminer</button>
+												</form>
+
+
+											{% endif %}
 										</td>
 									</tr>
 								{% else %}
@@ -121,7 +127,7 @@
 				</div>
 			</div>
 
-			<!-- Alerte de trajet sélectionné -->
+			<!-- Alerte de trajet sélectionné une fois connecté l'utilisateur pourra voir le trjet qu'il a déjà selectionné avant de se connecter a son compte ou même après inscription -->
 			{% if app.session.get('trajet_selected') %}
 				<div class="alert alert-info d-flex justify-content-between align-items-center mt-4">
 					<div>

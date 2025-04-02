@@ -60,47 +60,66 @@ final class TrajetController extends AbstractController
         if ($trajet->getChauffeur() !== $user) {
             throw $this->createAccessDeniedException("Vous n'êtes pas autorisé à annuler ce trajet.");
         }
-        
-        
-        
-        // Notifier et Remboursser le participant // 
+
+        // change le statut du trajet à en cours //
+        $trajet->setStatut('En cours');
+
+        $em->flush();
+
+        // Notifier les passagers //
         foreach ($trajet->getParticipations() as $participation) {
             $passager = $participation->getUser();
-
+            $emailService->sendNotificationEmail(
+                $passager->getEmail(),
+                'Trajet en cours',
+                "Bonjour {$passager->getPseudo()},\n\nLe trajet {$trajet->getDepart()}  {$trajet->getArrivee()} a été démarré par le chauffeur.\n\nL’équipe EcoRide vous souhaite un bon voyage 🌱"
+            );
             
+   
         }
-        ;
-
-        $this->addFlash('success', 'Le trajet a été démarrer avec succès un mail a été envoiyé au passager.');
-
+        $this->addFlash('success', 'Le trajet a bien été démarré.');
         return $this->redirectToRoute('app_user_dashboard');
+    
+
+    
         
     }
 
+    // cette route va servire à terminer le trajet si l'utilisateur est le chauffeur du trajet ddepuis le dashboard avec un envoie de notification au passager //
+    
+    #[Route('/trajet/{id}/terminer', name: 'trajet_terminer', methods: ['POST'])]
+    public function terminerTrajet(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
+{
+    $user = $this->getUser();
 
+    // Vérifie si c’est bien le chauffeur et que le trajet est en cours
+    if ($trajet->getChauffeur() !== $user || $trajet->getStatut() !== 'En cours') {
+        throw $this->createAccessDeniedException("Action non autorisée.");
+    }
 
+    // Mise à jour du statut du trajet
+    $trajet->setStatut('Terminé');
 
+    // Envoie un mail à chaque passager
+    foreach ($trajet->getParticipations() as $participation) {
+        $passager = $participation->getUser();
 
+        $emailService->sendNotificationEmail(
+            $passager->getEmail(),
+            'Trajet terminé - Donnez votre avis',
+            "Bonjour {$passager->getPseudo()},\n\nLe trajet {$trajet->getDepart()}  {$trajet->getArrivee()} est terminé.\nMerci de vous rendre dans votre espace pour valider l’expérience et noter le chauffeur.\n\nL'équipe EcoRide 🌱"
+        );
+    }
 
+    // Sauvegarde
+    $em->flush();
 
+    // redirection
+    $this->addFlash('success', 'Trajet terminé. Les passagers ont été notifiés.');
+    return $this->redirectToRoute('app_user_dashboard');
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
