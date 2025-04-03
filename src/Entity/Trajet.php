@@ -51,11 +51,18 @@ class Trajet
     #[ORM\Column(length: 50)]
     private ?string $statut = 'Prévu';
 
+    /**
+     * @var Collection<int, Avis>
+     */
+    #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'trajet')]
+    private Collection $avis;
+
    
 
     public function __construct()
     {
         $this->participations = new ArrayCollection();
+        $this->avis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,6 +202,36 @@ class Trajet
     public function setStatut(string $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Avis>
+     */
+    public function getAvis(): Collection
+    {
+        return $this->avis;
+    }
+
+    public function addAvi(Avis $avi): static
+    {
+        if (!$this->avis->contains($avi)) {
+            $this->avis->add($avi);
+            $avi->setTrajet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvi(Avis $avi): static
+    {
+        if ($this->avis->removeElement($avi)) {
+            // set the owning side to null (unless already changed)
+            if ($avi->getTrajet() === $this) {
+                $avi->setTrajet(null);
+            }
+        }
 
         return $this;
     }
