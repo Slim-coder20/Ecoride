@@ -55,7 +55,7 @@ final class TrajetController extends AbstractController
     #[Route('/trajet/{id}/demarrer', name: 'trajet_demarrer', methods: ['POST'])]
     public function demarrerTrajet(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService, Request $request): Response
     {
-        
+       
         // Vérifier que l'utilisateur connecté est le chauffeur du trajet avec l'envoie de notification par mail au passager // 
         $user = $this->getUser();
         if ($trajet->getChauffeur() !== $user) {
@@ -75,6 +75,7 @@ final class TrajetController extends AbstractController
         $em->flush();
 
         // Notifier les passagers //
+        
         foreach ($trajet->getParticipations() as $participation) {
             $passager = $participation->getUser();
             $emailService->sendNotificationEmail(

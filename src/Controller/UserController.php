@@ -129,7 +129,7 @@ final class UserController extends AbstractController
     
         //  Création du trajet
         $trajet = new Trajet();
-        $trajet->setChauffeur($user); // Associer le trajet au chauffeur
+        $trajet->setChauffeur($user); // Associer le trajet a un User // 
     
         $form = $this->createForm(TrajetType::class, $trajet);
         $form->handleRequest($request);

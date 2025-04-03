@@ -80,7 +80,7 @@ class ParticipationController extends AbstractController
     //cette route 
 
     #[Route('/participer/{id}', name: 'app_participer', methods: ['POST'])]
-    public function participer(Trajet $trajet, EntityManagerInterface $em): Response
+    public function participer(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
     {
         $user = $this->getUser();
         // Vérifie si l'utilisateur est connecté pour sécurisé la participation
