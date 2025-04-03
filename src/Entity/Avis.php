@@ -32,7 +32,11 @@ class Avis
     private ?\DateTimeInterface $dateCreation = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $status = null;
+    private ?string $status = 'en attente';
+    public function __construct()
+    {
+        $this->dateCreation = new \DateTime();
+    }
 
     public function getId(): ?int
     {
