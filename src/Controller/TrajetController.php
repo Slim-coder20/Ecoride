@@ -36,7 +36,7 @@ final class TrajetController extends AbstractController
             $emailService->sendNotificationEmail(
                 $passager->getEmail(),
                 'Trajet annulé',
-               "Bonjour {$passager->getPseudo()},\n\nLe trajet {$trajet->getDepart()} ➡️ {$trajet->getArrivee()} a été annulé par le chauffeur.\nVous avez été remboursé d’un crédit.\n\nL’équipe EcoRide 🌱"
+               "Bonjour {$passager->getPseudo()},\n\nLe trajet {$trajet->getDepart()}  {$trajet->getArrivee()} a été annulé par le chauffeur.\nVous avez été remboursé d’un crédit.\n\nL’équipe EcoRide 🌱"
             );
 
             $em->persist($passager);
@@ -50,19 +50,26 @@ final class TrajetController extends AbstractController
         
     }
 
-    // cette route va servire à demarrer le trajet si l'utilisateur est le chauffeur du trajet ddepuis le dashboard // 
+    // cette route va servire à demarrer le trajet si l'utilisateur est le chauffeur du trajet depuis le dashboard // 
     
     #[Route('/trajet/{id}/demarrer', name: 'trajet_demarrer', methods: ['POST'])]
-    public function demarrerTrajet(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
+    public function demarrerTrajet(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService, Request $request): Response
     {
         
-        // Vérifier que l'utilisateur connecté est le chauffeur du trajet // 
+        // Vérifier que l'utilisateur connecté est le chauffeur du trajet avec l'envoie de notification par mail au passager // 
         $user = $this->getUser();
         if ($trajet->getChauffeur() !== $user) {
             throw $this->createAccessDeniedException("Vous n'êtes pas autorisé à annuler ce trajet.");
         }
 
-        // change le statut du trajet à en cours //
+        // mise de la sécurité contre les attaques CSRF //
+         $submittedToken = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('demarrer_' . $trajet->getId(), $submittedToken)) {
+            throw $this->createAccessDeniedException("Token CSRF invalide.");
+        }
+        
+
+        // change le statut du trajet de prévu à en cours //
         $trajet->setStatut('En cours');
 
         $em->flush();
@@ -86,7 +93,7 @@ final class TrajetController extends AbstractController
         
     }
 
-    // cette route va servire à terminer le trajet si l'utilisateur est le chauffeur du trajet ddepuis le dashboard avec un envoie de notification au passager //
+    // cette route va servire à terminer le trajet si l'utilisateur est le chauffeur du trajet depuis le dashboard avec un envoie de notification au passager //
     
     #[Route('/trajet/{id}/terminer', name: 'trajet_terminer', methods: ['POST'])]
     public function terminerTrajet(Request $request, Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
@@ -99,10 +106,11 @@ final class TrajetController extends AbstractController
     }
 
     // securité contre les attaques CSRF// 
-    $submittedToken = $request->request->get('_token');
-    if (!$this->isCsrfTokenValid('terminer_'. $trajet->getId(), $submittedToken)) {
-        throw $this->createAccessDeniedException("Action non autorisée.");
-    }
+       $submittedToken = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('terminer_' . $trajet->getId(), $submittedToken)) {
+            throw $this->createAccessDeniedException("Token CSRF invalide.");
+        }
+    
 
     // Mise à jour du statut du trajet
     $trajet->setStatut('Terminé');

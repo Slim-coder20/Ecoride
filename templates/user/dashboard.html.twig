@@ -106,13 +106,18 @@
 										<td>{{ trajet.placesRestantes }}</td>
 										<td>{{ trajet.prix }}€</td>
 										<td>
-											{% if trajet.statut == 'En cours' %}
-												<form methods="post" action="{{ path('trajet_terminer', {id : trajet.id})}}">
-													<input type="hidden" name="_token" value="{{ csrf_token('terminer_' ~ trajet.id) }}">
-													<button class="btn btn-success btn-sm">🛑 Terminer</button>
+											{% if trajet.statut == 'Prévu' %}
+												<form method="post" action="{{ path('trajet_demarrer', { id: trajet.id }) }}">
+													<input type="hidden" name="_token" value="{{ csrf_token('demarrer_' ~ trajet.id) }}">
+													<button class="btn btn-success btn-sm">▶️ Démarrer</button>
 												</form>
-
-
+											{% elseif trajet.statut == 'En cours' %}
+												<form method="post" action="{{ path('trajet_terminer', { id: trajet.id }) }}">
+													<input type="hidden" name="_token" value="{{ csrf_token('terminer_' ~ trajet.id) }}">
+													<button class="btn btn-warning btn-sm">🛑 Terminer</button>
+												</form>
+											{% else %}
+												<span class="text-muted">✅ Terminé</span>
 											{% endif %}
 										</td>
 									</tr>
@@ -121,6 +126,8 @@
 										<td colspan="7" class="text-center">Aucun trajet en tant que chauffeur.</td>
 									</tr>
 								{% endfor %}
+
+
 							</tbody>
 						</table>
 					</div>

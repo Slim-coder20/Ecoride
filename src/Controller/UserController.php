@@ -112,16 +112,6 @@ final class UserController extends AbstractController
     
     // c'est une route qui nous permet de selectionner le trajet selectionner par l'utilisateur avant de se connecter //
 
-    #[Route('/mon-espace/clear-trajet', name: 'clear_selected_trajet', methods: ['POST'])]
-    public function clearSelectedTrajet(SessionInterface $session): Response
-    {
-        $session->remove('trajet_selectionne');
-        $this->addFlash('info', 'Trajet sélectionné annulé.');
-        return $this->redirectToRoute('app_user_dashboard');
-    }
-    
-    
-    // c'est une route qui va servire a créé un trajet depuis le dashboard de l'utilisateur// 
     #[Route('/mon-espace/creer-trajet', name: 'app_user_create_trajet')]
     public function createTrajet(Request $request, EntityManagerInterface $em): Response
     {
@@ -129,28 +119,32 @@ final class UserController extends AbstractController
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
         }
-
+    
+        //  Vérifie que l’utilisateur est bien un chauffeur
+        $chauffeur = $user->getChauffeur();
+        if (!$chauffeur) {
+            $this->addFlash('warning', 'Vous devez d’abord devenir chauffeur avant de créer un trajet.');
+            return $this->redirectToRoute('app_become_driver');
+        }
+    
+        //  Création du trajet
         $trajet = new Trajet();
-        $trajet->setChauffeur($user);
-
+        $trajet->setChauffeur($user); // Associer le trajet au chauffeur
+    
         $form = $this->createForm(TrajetType::class, $trajet);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            $trajet->setChauffeur($user);
-
             $em->persist($trajet);
             $em->flush();
-
-            $this->addFlash('success', 'Trajet enregistré avec succès.');
+    
+            $this->addFlash('success', '🚗 Trajet enregistré avec succès.');
             return $this->redirectToRoute('app_user_dashboard');
         }
-
+    
         return $this->render('user/create_trajet.html.twig', [
             'form' => $form->createView(),
         ]);
-
-        
     }
     
     

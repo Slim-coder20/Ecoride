@@ -49,7 +49,7 @@ class Trajet
     private ?bool $isCancelled = false;
 
     #[ORM\Column(length: 50)]
-    private ?string $statut = 'prévu';
+    private ?string $statut = 'Prévu';
 
    
 
