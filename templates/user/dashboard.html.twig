@@ -114,7 +114,7 @@
 											{% elseif trajet.statut == 'En cours' %}
 												<form method="post" action="{{ path('trajet_terminer', { id: trajet.id }) }}">
 													<input type="hidden" name="_token" value="{{ csrf_token('terminer_' ~ trajet.id) }}">
-													<button class="btn btn-warning btn-sm">🛑 Terminer</button>
+													<button class="btn btn-warning btn-sm">🛑 Arrivé a destination</button>
 												</form>
 											{% else %}
 												<span class="text-muted">✅ Terminé</span>
