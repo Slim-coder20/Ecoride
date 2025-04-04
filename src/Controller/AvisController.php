@@ -22,7 +22,7 @@ final class AvisController extends AbstractController
         // sécurité : seul un passager ayant participer au trajet peut soumettre un avis //  
 
         $participation = $trajet->getParticipations()->filter(fn ($p) => $p->getUser() === $user)->first();
-        if(!$participation || $trajet->getStatus() !== 'Terminé') {
+        if(!$participation || $trajet->getStatut() !== 'Terminé') {
             throw $this->createAccessDeniedException('Vous ne pouvez pas soumettre un avis pour ce trajet.');
         }
 
