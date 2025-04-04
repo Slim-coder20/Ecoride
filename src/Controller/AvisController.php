@@ -22,14 +22,12 @@ final class AvisController extends AbstractController
         // sécurité : seul un passager ayant participer au trajet peut soumettre un avis //  
 
         $participation = $trajet->getParticipations()->filter(fn ($p) => $p->getUser() === $user)->first();
-        if(!participation || $trajet->getStatus() !== 'Terminé') {
+        if(!$participation || $trajet->getStatus() !== 'Terminé') {
             throw $this->createAccessDeniedException('Vous ne pouvez pas soumettre un avis pour ce trajet.');
         }
 
         // Créer un nouvel avis // 
         $avis = new Avis();
-        $avis->setNote($request->request->get('note'));
-        $avis->setCommentaire($request->request->get('commentaire'));
         $avis->setdateCreation(new \DateTime());
         $avis->setStatus('en attente');
            
@@ -42,14 +40,16 @@ final class AvisController extends AbstractController
             $avis->setUtilisateur($user);
             $avis->setTrajet($trajet);
 
-            // Enregistrer l'avis dans la base de données
+            
+            // Enregistrer l'avis dans la base de données // 
             $em->persist($avis);
             $em->flush();
-
+            
+            $this->addFlash('success', 'Votre avis a été soumis avec succès ! Il sera examiné par notre équipe.');
+            return $this->redirectToRoute('app_user_dashboard');
             
             
-           
-        }
+}
         return $this->render('avis/submit.html.twig', [
             'form' => $form->createView(),
             'trajet' => $trajet,
