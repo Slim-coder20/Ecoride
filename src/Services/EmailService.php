@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mime\Email;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class EmailService
@@ -21,32 +21,40 @@ class EmailService
 
     public function sendContactEmail(string $from, string $subject, string $message): void
     {
-        $email = (new Email())
+        $email = (new TemplatedEmail())
             ->from($this->params->get('CONTACT_EMAIL'))
             ->replyTo($from)
             ->to($this->params->get('CONTACT_EMAIL'))
             ->subject($subject)
             ->text($message);
+
         $this->mailer->send($email);
     }
 
     public function sendNotificationEmail(string $to, string $subject, string $message, string $htmlMessage = null): void
     {
-        $email = (new Email())
+        $email = (new TemplatedEmail())
             ->from($this->params->get('CONTACT_EMAIL'))
             ->to($to)
             ->subject($subject)
             ->text($message);
-        $this->mailer->send($email);
 
-        if($htmlMessage){
-            $email->html($htmlMessage); // Ajout du contenu HTML 
-        } else {
-            $email->text($message); // Ajout du contenu texte par defaut 
-            
-        
+        if ($htmlMessage) {
+            $email->html($htmlMessage);
         }
-        $this->mailer->send($email); // envoie de l'email // 
-    
+
+        $this->mailer->send($email);
+    }
+
+    public function sendTemplatedEmail(string $to, string $subject, string $template, array $context): void
+    {
+        $email = (new TemplatedEmail())
+            ->from($this->params->get('CONTACT_EMAIL'))
+            ->to($to)
+            ->subject($subject)
+            ->htmlTemplate($template)
+            ->context($context);
+
+        $this->mailer->send($email);
     }
 }

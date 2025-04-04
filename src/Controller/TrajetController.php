@@ -132,8 +132,12 @@ class TrajetController extends AbstractController
             $emailService->sendNotificationEmail(
                 $passager->getEmail(),
                 'Trajet terminé - Donnez votre avis',
-                "Le trajet de {$trajet->getDepart()} à {$trajet->getArrivee()} est terminé. Cliquez sur le lien suivant pour donner votre avis : {$lienAvis}",
-                $htmlMessage
+                'emails/avis_notification.txt.twig', // chemin vers le template notification avis passager // 
+                [
+                    'passager' => $passager,
+                    'trajet' => $trajet,
+                    'lienAvis' => $lienAvis,
+                ]
             );
         }
 
