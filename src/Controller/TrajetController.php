@@ -29,14 +29,17 @@ class TrajetController extends AbstractController
         foreach ($trajet->getParticipations() as $participation) {
             $passager = $participation->getUser();
 
-            // Rembourser le passager
-            $passager->setCredits($passager->getCredits() + 1);
-            $emailService->sendNotificationEmail(
+            $emailService->sendTemplatedEmail(
                 $passager->getEmail(),
                 'Trajet annulé',
-                "Bonjour {$passager->getPseudo()},\n\nLe trajet {$trajet->getDepart()}  {$trajet->getArrivee()} a été annulé par le chauffeur.\nVous avez été remboursé d’un crédit.\n\nL’équipe EcoRide 🌱"
+                'emails/trajet_annule.html.twig', // Nouveau template Twig
+                [
+                    'passager' => $passager,
+                    'trajet' => $trajet,
+                ]
             );
 
+            $passager->setCredits($passager->getCredits() + 1);
             $em->persist($passager);
         }
         $em->persist($trajet);
@@ -71,10 +74,15 @@ class TrajetController extends AbstractController
         // Notifier les passagers
         foreach ($trajet->getParticipations() as $participation) {
             $passager = $participation->getUser();
-            $emailService->sendNotificationEmail(
+
+            $emailService->sendTemplatedEmail(
                 $passager->getEmail(),
                 'Trajet en cours',
-                "Bonjour {$passager->getPseudo()},\n\nLe trajet {$trajet->getDepart()}  {$trajet->getArrivee()} a été démarré par le chauffeur.\n\nL’équipe EcoRide vous souhaite un bon voyage 🌱"
+                'emails/trajet_demarrer.html.twig', // Nouveau template Twig
+                [
+                    'passager' => $passager,
+                    'trajet' => $trajet,
+                ]
             );
         }
         $this->addFlash('success', 'Le trajet a bien été démarré.');
@@ -115,24 +123,11 @@ class TrajetController extends AbstractController
                 'id' => $trajet->getId(),
             ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-            // Contenu HTML de l'email
-            $htmlMessage = "
-                <h1>Votre trajet est terminé</h1>
-                <p>Bonjour {$passager->getPseudo()},</p>
-                <p>Le trajet de {$trajet->getDepart()} à {$trajet->getArrivee()} s'est terminé. Nous vous invitons à donner votre avis sur ce trajet.</p>
-                <p>
-                    <a href='{$lienAvis}' style='display: inline-block; padding: 10px 15px; background-color: #77df0f; color: white; text-decoration: none; border-radius: 5px;'>
-                        Donnez votre avis
-                    </a>
-                </p>
-                <p>Merci pour votre participation avec EcoRide !</p>
-            ";
-
-            // Envoyer l'email
+            // Envoyer l'email avec l'utillisation du template twig // 
             $emailService->sendNotificationEmail(
                 $passager->getEmail(),
                 'Trajet terminé - Donnez votre avis',
-                'emails/avis_notification.txt.twig', // chemin vers le template notification avis passager // 
+                'emails/avis_notification.html.twig', // chemin vers le template notification avis passager // 
                 [
                     'passager' => $passager,
                     'trajet' => $trajet,
