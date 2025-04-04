@@ -30,7 +30,7 @@ class EmailService
         $this->mailer->send($email);
     }
 
-    public function sendNotificationEmail(string $to, string $subject, string $message): void
+    public function sendNotificationEmail(string $to, string $subject, string $message, string $htmlMessage = null): void
     {
         $email = (new Email())
             ->from($this->params->get('CONTACT_EMAIL'))
@@ -38,5 +38,15 @@ class EmailService
             ->subject($subject)
             ->text($message);
         $this->mailer->send($email);
+
+        if($htmlMessage){
+            $email->html($htmlMessage); // Ajout du contenu HTML 
+        } else {
+            $email->text($message); // Ajout du contenu texte par defaut 
+            
+        
+        }
+        $this->mailer->send($email); // envoie de l'email // 
+    
     }
 }

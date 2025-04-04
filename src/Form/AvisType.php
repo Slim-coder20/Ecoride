@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 
 class AvisType extends AbstractType
@@ -19,12 +21,13 @@ class AvisType extends AbstractType
             ->add('note', IntegerType::class, [
                 'label' => 'Note (1 à 5)',
                 'attr' => [
+                    'placeholder' => 'Votre commentaire',
                     'min' => 1,
                     'max' => 5,
                 ],
                 
                 'constraints' => [
-                    new Assert\NotBlanck(),
+                    new Assert\NotBlank(),
                     new Assert\Range([
                         'min' => 1,
                         'max' => 5,
