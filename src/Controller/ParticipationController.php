@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use App\Entity\Participation;
 use App\Entity\Trajet;
 use App\Services\EmailService;
@@ -55,7 +55,8 @@ class ParticipationController extends AbstractController
 
         $participation->setStatus('Annulée');
         $participation->setConfirmation(false);
- 
+        
+        /** @var \App\Entity\User $user */
         $user->setCredits($user->getCredits() + 1);
 
         $trajet = $participation->getTrajet();
@@ -89,8 +90,10 @@ class ParticipationController extends AbstractController
             $this->addFlash('error', 'Vous devez être connecté pour participer à un trajet.');
             return $this->redirectToRoute('app_login');
         }
-
-        foreach ($user->getParticipations() as $participation) {
+   
+         
+        /** @var \App\Entity\User $user */
+         foreach ($user->getParticipations() as $participation) {
             if ($participation->getTrajet() === $trajet) {
                 $this->addFlash('warning', 'Vous participez déjà à ce trajet.');
                 return $this->redirectToRoute('app_user_dashboard');
@@ -108,13 +111,15 @@ class ParticipationController extends AbstractController
         $participation->setStatus('En attente');
         $participation->setConfirmation(false);
         $participation->setdateParticipation(new \DateTime());
-
+        
+        /** @var \App\Entity\User $user */
         $trajet->setPlacesRestantes($trajet->getPlacesRestantes() - 1);
         $user->setCredits($user->getCredits() - 1);
 
         $em->persist($participation);
         $em->flush();
 
+        
         try {
             $emailService->sendTemplatedEmail(
                 $user->getEmail(),
