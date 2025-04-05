@@ -1,0 +1,14 @@
+<div class="card">
+	<div class="card-body">
+		<h1 class="text-success text-center">Participation Validée</h1>
+		<p>Bonjour
+			{{ participation.user.pseudo }}</p>
+		<p>Vous avez validé le trajet de
+			<strong>{{ participation.trajet.depart }}</strong>
+			à
+			<strong>{{ participation.trajet.arrivee }}</strong>, prévu à la date du
+			<strong>{{ participation.trajet.dateDepart|date('d/m/Y H:i') }}</strong>.</p>
+		<p>L’équipe d'<span class="text-success">EcoRide 🌱</span>
+			vous remercie d'avoir choisi notre application et vous souhaite un bon voyage.</p>
+	</div>
+</div>

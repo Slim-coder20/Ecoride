@@ -124,7 +124,7 @@ class TrajetController extends AbstractController
             ], UrlGeneratorInterface::ABSOLUTE_URL);
 
             // Envoyer l'email avec l'utillisation du template twig // 
-            $emailService->sendNotificationEmail(
+            $emailService->sendTemplatedEmail(
                 $passager->getEmail(),
                 'Trajet terminé - Donnez votre avis',
                 'emails/avis_notification.html.twig', // chemin vers le template notification avis passager // 

@@ -14,12 +14,13 @@ class Participation
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(targetEntity: Trajet::class, inversedBy: 'participations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Trajet $trajet = null;
+
     #[ORM\ManyToOne(inversedBy: 'participations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    #[ORM\ManyToOne]
-    private ?Trajet $trajet = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateParticipation = null;
