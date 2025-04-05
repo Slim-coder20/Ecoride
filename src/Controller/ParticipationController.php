@@ -9,11 +9,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Psr\Log\LoggerInterface;
 
 class ParticipationController extends AbstractController
 {
     #[Route('/participation/{id}/valider', name: 'valider_participation', methods: ['POST'])]
-    public function valider(Participation $participation, EntityManagerInterface $em, EmailService $emailService): Response
+    public function valider(Participation $participation, EntityManagerInterface $em, EmailService $emailService, LoggerInterface $logger): Response
     {
         if ($participation->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException("Accès refusé.");
@@ -23,9 +24,6 @@ class ParticipationController extends AbstractController
         $participation->setConfirmation(true);
 
         $em->flush();
-
-        // Test des données avant l'envoi de l'email
-   
 
         try {
             $emailService->sendTemplatedEmail(
@@ -37,6 +35,7 @@ class ParticipationController extends AbstractController
                 ]
             );
         } catch (\Exception $e) {
+            $logger->error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
             $this->addFlash('error', 'Erreur lors de l\'envoi de l\'email.');
         }
 
@@ -45,7 +44,7 @@ class ParticipationController extends AbstractController
     }
 
     #[Route('/participation/{id}/annuler', name: 'annuler_participation', methods: ['POST'])]
-    public function annuler(Participation $participation, EntityManagerInterface $em, EmailService $emailService): Response
+    public function annuler(Participation $participation, EntityManagerInterface $em, EmailService $emailService, LoggerInterface $logger): Response
     {
         $user = $this->getUser();
 
@@ -74,6 +73,7 @@ class ParticipationController extends AbstractController
                 ]
             );
         } catch (\Exception $e) {
+            $logger->error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
             $this->addFlash('error', 'Erreur lors de l\'envoi de l\'email.');
         }
 
@@ -82,7 +82,7 @@ class ParticipationController extends AbstractController
     }
 
     #[Route('/participer/{id}', name: 'app_participer', methods: ['POST'])]
-    public function participer(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService): Response
+    public function participer(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService, LoggerInterface $logger): Response
     {
         $user = $this->getUser();
 
@@ -119,7 +119,6 @@ class ParticipationController extends AbstractController
         $em->persist($participation);
         $em->flush();
 
-        
         try {
             $emailService->sendTemplatedEmail(
                 $user->getEmail(),
@@ -130,6 +129,7 @@ class ParticipationController extends AbstractController
                 ]
             );
         } catch (\Exception $e) {
+            $logger->error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
             $this->addFlash('error', 'Erreur lors de l\'envoi de l\'email.');
         }
 
