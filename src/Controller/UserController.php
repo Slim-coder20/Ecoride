@@ -120,7 +120,8 @@ final class UserController extends AbstractController
             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
         }
     
-        //  Vérifie que l’utilisateur est bien un chauffeur
+        //  Vérifie que l’utilisateur est bien un chauffeur// 
+         /** @var \App\Entity\User $user */
         $chauffeur = $user->getChauffeur();
         if (!$chauffeur) {
             $this->addFlash('warning', 'Vous devez d’abord devenir chauffeur avant de créer un trajet.');
@@ -146,7 +147,16 @@ final class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    
-    
-   
+
+    #[Route('/mon-compte', name: 'app_account')]
+    public function account(): Response
+    {
+        $user = $this->getUser();
+
+        if (in_array('ROLE_EMPLOYE', $user->getRoles())) {
+            return $this->redirectToRoute('app_employe'); // Dashboard employé
+        }
+
+        return $this->redirectToRoute('app_user_dashboard'); // Dashboard utilisateur
+    }
 }
