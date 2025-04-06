@@ -13,10 +13,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class EmployeController extends AbstractController
 {
     #[Route('/employe', name: 'app_employe')]
-    public function index(): Response
+    public function index(AvisRepository $avisRepository, TrajetRepository $trajetRepository): Response
     {
-        return $this->render('employe/index.html.twig', [
-            'controller_name' => 'EmployeController',
+        $pendingReviews = $avisRepository->findBy(['status' => 'en attente']);
+        $problematicRides = $trajetRepository->findProblematicRides();
+
+        return $this->render('employe/dashboard.html.twig', [
+            'pendingReviews' => $pendingReviews,
+            'problematicRides' => $problematicRides,
         ]);
     }
 
