@@ -15,7 +15,10 @@ class ParticipationController extends AbstractController
 {
     #[Route('/participation/{id}/valider', name: 'valider_participation', methods: ['POST'])]
     public function valider(Participation $participation, EntityManagerInterface $em, EmailService $emailService, LoggerInterface $logger): Response
-    {
+    
+    {   
+
+        // ON verifie d'abord si l'utilisateur est connecté //
         if ($participation->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException("Accès refusé.");
         }
@@ -24,7 +27,8 @@ class ParticipationController extends AbstractController
         $participation->setConfirmation(true);
 
         $em->flush();
-
+        
+        // on met le try catch pour l'envoi de l'email pour eviter les erreurs et les exceptions // 
         try {
             $emailService->sendTemplatedEmail(
                 $participation->getUser()->getEmail(),
@@ -38,19 +42,27 @@ class ParticipationController extends AbstractController
             $logger->error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
             $this->addFlash('error', 'Erreur lors de l\'envoi de l\'email.');
         }
-
+         
+        // On envoie un message de succés ç l'utilisateur //
+        
         $this->addFlash('success', 'Participation validée avec succès.');
         return $this->redirectToRoute('app_user_dashboard');
     }
+
+    // C'est une route qui permet d'annuler une participation depuis le dashboard du user // 
 
     #[Route('/participation/{id}/annuler', name: 'annuler_participation', methods: ['POST'])]
     public function annuler(Participation $participation, EntityManagerInterface $em, EmailService $emailService, LoggerInterface $logger): Response
     {
         $user = $this->getUser();
 
+        // Vérification si l'utilisateur est connecté // 
+
         if ($participation->getUser() !== $user) {
             throw $this->createAccessDeniedException("Ce trajet ne vous appartient pas.");
         }
+
+        
 
         $participation->setStatus('Annulée');
         $participation->setConfirmation(false);
@@ -80,6 +92,8 @@ class ParticipationController extends AbstractController
         $this->addFlash('info', 'Participation annulée.');
         return $this->redirectToRoute('app_user_dashboard');
     }
+
+    // C'est une route qui permet de participer à un trajet depuis le dashboard du user //
 
     #[Route('/participer/{id}', name: 'app_participer', methods: ['POST'])]
     public function participer(Trajet $trajet, EntityManagerInterface $em, EmailService $emailService, LoggerInterface $logger): Response
