@@ -47,12 +47,18 @@ final class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Rediriger après l'inscription
-            return $this->redirectToRoute('app_home');
+            // Vérifier si l'utilisateur a le rôle ROLE_EMPLOYE
+            if (in_array('ROLE_EMPLOYE', $roles)) {
+                return $this->redirectToRoute('app_employe'); // Redirige vers le dashboard employé
+            }
+
+            // Sinon, rediriger par défaut vers le dashboard utilisateur
+            return $this->redirectToRoute('app_user_dashboard'); // Redirige vers le dashboard utilisateur
         }
 
-        return $this->render('registration/registeration.html.twig', [
+        return $this->render('registration/registration.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
 }
+
