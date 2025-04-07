@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Employé
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-success text-center">Espace Employé</h1>
+
+	<div class="container mt-4">
+		<div
+			class="row">
+			<!-- Section des avis en attente -->
+			<div class="col-md-12">
+				<h2 class="text-success">📋 Avis en attente de validation</h2>
+				<table class="table table-striped">
+					<thead class="table-success">
+						<tr>
+							<th>ID</th>
+							<th>Passager</th>
+							<th>Commentaire</th>
+							<th>Note</th>
+							<th>Date de création</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for avis in pendingReviews %}
+							<tr>
+								<td>{{ avis.id }}</td>
+								<td>{{ avis.utilisateur.pseudo }}</td>
+								<td>{{ avis.commentaire }}</td>
+								<td>{{ avis.note }}</td>
+								<td>{{ avis.dateCreation|date('d/m/Y H:i') }}</td>
+								<td>
+									<a href="{{ path('employe_validate_review', { id: avis.id }) }}" class="btn btn-success btn-sm">Valider</a>
+									<a href="{{ path('employe_reject_review', { id: avis.id }) }}" class="btn btn-danger btn-sm">Refuser</a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="6" class="text-center">Aucun avis en attente.</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div
+			class="row mt-5">
+			<!-- Section des trajets problématiques -->
+			<div class="col-md-12">
+				<h2 class="text-success">🚨 Trajets Problématiques</h2>
+				<table class="table table-striped">
+					<thead class="table-success">
+						<tr>
+							<th>ID</th>
+							<th>Conducteur</th>
+							<th>Passager</th>
+							<th>Départ</th>
+							<th>Arrivée</th>
+							<th>Date de départ</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for trajet in problematicRides %}
+							<tr>
+								<td>{{ trajet.id }}</td>
+								<td>{{ trajet.chauffeur.pseudo }}</td>
+								<td>
+									{% for participation in trajet.participations %}
+										{{ participation.user.pseudo }}<br>
+									{% endfor %}
+								</td>
+								<td>{{ trajet.depart }}</td>
+								<td>{{ trajet.arrivee }}</td>
+								<td>{{ trajet.dateDepart|date('d/m/Y H:i') }}</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="6" class="text-center">Aucun trajet problématique.</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -57,6 +57,9 @@ class Trajet
     #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'trajet')]
     private Collection $avis;
 
+    #[ORM\Column]
+    private ?bool $problematic = null;
+
    
 
     public function __construct()
@@ -232,6 +235,18 @@ class Trajet
                 $avi->setTrajet(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isProblematic(): ?bool
+    {
+        return $this->problematic;
+    }
+
+    public function setProblematic(bool $problematic): static
+    {
+        $this->problematic = $problematic;
 
         return $this;
     }

@@ -57,9 +57,15 @@ fadeElements.forEach(el => observer.observe(el));
 
 						{% if app.user %}
 							<li class="nav-item">
-								<a class="nav-link text-white" href="{{ path('app_user_dashboard') }}">
-									<i class="fas fa-user"></i>
-									Mon compte</a>
+								{% if 'ROLE_EMPLOYE' in app.user.roles %}
+									<a class="nav-link text-white" href="{{ path('app_employe') }}">
+										<i class="fas fa-user"></i>
+										Mon compte</a>
+								{% else %}
+									<a class="nav-link text-white" href="{{ path('app_user_dashboard') }}">
+										<i class="fas fa-user"></i>
+										Mon compte</a>
+								{% endif %}
 							</li>
 							<li class="nav-item">
 

@@ -35,12 +35,17 @@ class TrajetRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    
 
-
-
-
-
+    public function findProblematicRides(): array
+    {
+        // Récupérer les trajets marqués comme problématiques
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.problematic = :problematic')
+            ->setParameter('problematic', true)
+            ->orderBy('t.dateDepart', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return Trajet[] Returns an array of Trajet objects

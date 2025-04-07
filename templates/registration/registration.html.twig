@@ -9,12 +9,12 @@
 			<div class="col-md-6">
 				<h2 class="text-success">Créer un compte</h2>
 
-				{{ form_start(registerForm) }}
-				{{ form_row(registerForm.pseudo) }}
-				{{ form_row(registerForm.email) }}
-				{{ form_row(registerForm.plainPassword) }}
+				{{ form_start(registrationForm) }}
+				{{ form_row(registrationForm.pseudo) }}
+				{{ form_row(registrationForm.email) }}
+				{{ form_row(registrationForm.plainPassword) }}
 				<button class="btn btn-success">S'inscrire</button>
-				{{ form_end(registerForm) }}
+				{{ form_end(registrationForm) }}
 
 				<a href="{{ path('app_login') }}" class="text-decoration-none text-success p-1">Déjà inscrit ? Connectez-vous</a>
 			</div>

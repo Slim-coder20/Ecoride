@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Employe;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -65,6 +66,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Vehicule::class, mappedBy: 'chauffeur')]
     private Collection $vehicules;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Employe::class, cascade: ['persist', 'remove'])]
+    private ?Employe $employe = null;
 
     public function __construct()
     {
@@ -218,6 +222,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($vehicule->getChauffeur() === $this) {
                 $vehicule->setChauffeur(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getEmploye(): ?Employe
+    {
+        return $this->employe;
+    }
+
+    public function setEmploye(?Employe $employe): static
+    {
+        $this->employe = $employe;
+
+        // Assure que la relation est bidirectionnelle
+        if ($employe !== null && $employe->getUser() !== $this) {
+            $employe->setUser($this);
         }
 
         return $this;
