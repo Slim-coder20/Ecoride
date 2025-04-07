@@ -58,7 +58,7 @@ class Trajet
     private Collection $avis;
 
     #[ORM\Column]
-    private ?bool $problematic = null;
+    private ?bool $problematic = false;
 
    
 

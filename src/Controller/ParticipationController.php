@@ -28,7 +28,7 @@ class ParticipationController extends AbstractController
 
         $em->flush();
         
-        // on met le try catch pour l'envoi de l'email pour eviter les erreurs et les exceptions // 
+        // on met le try catch pour vérifier si le mail est bien envoyé au passager  // 
         try {
             $emailService->sendTemplatedEmail(
                 $participation->getUser()->getEmail(),
