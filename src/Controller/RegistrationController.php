@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType; 
+use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,39 +13,52 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class RegistrationController extends AbstractController
 {
-    #[Route('/inscription', name: 'app_registration')]
-    public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher): Response
+    #[Route('/register', name: 'app_register')]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user); 
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          
-           $plainPassword = $form->get('plainPassword')->getData();
-            
-            // Hashage du mot de passe
-            if($plainPassword){
-                $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
-                $user->setPassword($hashedPassword);
-            
+            // Hash the password
+            $user->setPassword(
+                $passwordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            // Récupérer les rôles sélectionnés dans le formulaire
+            $roles = $form->get('roles')->getData();
+            $validRoles = ['ROLE_USER', 'ROLE_EMPLOYE'];
+
+            // Filtrer les rôles pour ne garder que ceux qui sont valides
+            $roles = array_filter($roles, fn($role) => in_array($role, $validRoles));
+
+            // Si aucun rôle n'est sélectionné, attribuer ROLE_USER par défaut
+            if (empty($roles)) {
+                $roles[] = 'ROLE_USER';
             }
-        
 
-            // Sauvegarde en base de données
-            $em->persist($user);
-            $em->flush();
+            $user->setRoles($roles);
 
-            // Ajout d'un message flash
-            $this->addFlash('success', 'Votre compte a été créé avec succès. Connectez-vous pour accéder à votre espace personnel.');
+            // Sauvegarder l'utilisateur
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-            // Redirection vers la page de connexion
-            return $this->redirectToRoute('app_login');
+            // Vérifier si l'utilisateur a le rôle ROLE_EMPLOYE
+            if (in_array('ROLE_EMPLOYE', $roles)) {
+                return $this->redirectToRoute('app_employe'); // Redirige vers le dashboard employé
+            }
+
+            // Sinon, rediriger par défaut vers le dashboard utilisateur
+            return $this->redirectToRoute('app_user_dashboard'); // Redirige vers le dashboard utilisateur
         }
 
-        // Affichage du formulaire d'inscription
         return $this->render('registration/registration.html.twig', [
-            'registerForm' => $form->createView(),
+            'registrationForm' => $form->createView(),
         ]);
     }
 }
+
