@@ -17,8 +17,8 @@ class CovoiturageType extends AbstractType
     {
         $builder
             
-        ->add('depart', TextType::class, ['label' => 'Adresse de départ'])
-        ->add('arrivee', TextType::class, ['label' => 'Adresse d’arrivée'])
+        ->add('depart', TextType::class, ['label' => 'Ville de départ'])
+        ->add('arrivee', TextType::class, ['label' => 'Ville d’arrivée'])
         ->add('date', DateType::class, [
             'widget' => 'single_text',
             'label' => 'Date du voyage'
