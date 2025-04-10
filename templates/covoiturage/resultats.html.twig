@@ -60,37 +60,37 @@
 							<div>
 								<p class="mb-0">
 									🚗
-									<strong>Trajet proposé par</strong>
+									<strong class="text-success">Trajet proposé par</strong>
 									<span class="text-primary fw-bold">{{ trajet.chauffeur.pseudo }}</span>
 								</p>
 							</div>
 						</div>
 
 						<p>
-							<strong>🪑 Places restantes :</strong>
+							<strong class="text-success">🪑 Places restantes :</strong>
 							{{ trajet.placesRestantes }}</p>
 						<p>
-							<strong>💰 Prix :</strong>
+							<strong class="text-success">💰 Prix :</strong>
 							{{ trajet.prix }}
 							€</p>
 						<p>
-							<strong>📅 Départ :</strong>
+							<strong class="text-success">📅 Départ :</strong>
 							{{ trajet.dateDepart|date('d/m/Y H:i') }}</p>
 						<p>
-							<strong>🛬 Arrivée :</strong>
+							<strong class="text-success">🛬 Arrivée :</strong>
 							{{ trajet.dateArrivee|date('d/m/Y H:i') }}</p>
 						{% if vehicule %}
 							<p>
-								<strong>🌱 Écologique :</strong>
+								<strong class="text-success">🌱 Écologique :</strong>
 								{{ vehicule.ecologique ? 'Oui' : 'Non' }}</p>
 							<p>
-								<strong>⚡ Confort :</strong>
+								<strongclass="text-success">⚡ Confort :</strong>
 								{{ vehicule.energie }}</p>
 						{% else %}
 							<p>
-								<strong>🌱 Écologique :</strong>
+								<strong class="text-success">🌱 Écologique :</strong>
 								Non renseigné</p>
-							<p>
+							<p class="text-success">
 								<strong>⚡ Confort :</strong>
 								Non renseigné</p>
 						{% endif %}

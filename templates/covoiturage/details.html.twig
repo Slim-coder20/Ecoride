@@ -12,10 +12,10 @@
 			<div class="card-body">
 				<h3 class="card-title text-success">📝 Détails du trajet</h3>
 				<p>
-					<strong>Chauffeur :</strong>
+					<strong class="text-success">Chauffeur :</strong>
 					{{ trajet.chauffeur.pseudo }}</p>
 				<p>
-					<strong>Note :</strong>
+					<strong class="text-success">Note :</strong>
 					{{ trajet.chauffeur.note ?? 'Non noté' }}</p>
 			</div>
 		</div>
@@ -27,15 +27,15 @@
 				{% set vehicule = trajet.chauffeur.chauffeur.vehicules|first %}
 				{% if vehicule %}
 					<p>
-						<strong>Marque :</strong>
+						<strong class="text-success">Marque :</strong>
 						{{ vehicule.brand }}</p>
 					<p>
-						<strong>Modèle :</strong>
+						<strong class="text-success">Modèle :</strong>
 						{{ vehicule.model }}</p>
 					<p>
-						<strong>Énergie :</strong>
+						<strong class="text-success">Énergie :</strong>
 						{{ vehicule.energie }}</p>
-					<p>
+					<p class="text-success">
 						<strong>Écologique :</strong>
 						{{ vehicule.ecologique ? 'Oui' : 'Non' }}</p>
 					{% if vehicule.photo %}
@@ -64,7 +64,7 @@
 		<!-- Avis -->
 		<div class="card shadow mb-4">
 			<div class="card-body">
-				<h4 class="card-title text-success">🌟 Avis du conducteur</h4>
+				<h4 class="card-title text-success">🌟 Avis du passager</h4>
 				<ul>
 					{% for avis in trajet.chauffeur.avis %}
 						<li>{{ avis.commentaire }}
