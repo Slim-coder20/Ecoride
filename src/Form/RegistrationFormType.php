@@ -18,15 +18,21 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('pseudo', TextType::class, [
                 'label' => "Nom d'utilisateur",
-                'attr' => [
+                'label_attr' => [
                     'class' => "text-success",
                 ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
+                'label_attr' => [
+                    'class' => "text-success",
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
+                'label_attr' => [
+                    'class' => "text-success",
+                ],
             ]);
            
             
