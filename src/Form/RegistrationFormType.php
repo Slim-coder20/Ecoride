@@ -18,22 +18,19 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('pseudo', TextType::class, [
                 'label' => "Nom d'utilisateur",
+                'attr' => [
+                    'class' => "text-success",
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
-            ])
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'Utilisateur' => 'ROLE_USER',
-                    'Employé' => 'ROLE_EMPLOYE',
-                ],
-                'expanded' => true,
-                'multiple' => true,
-                'label' => 'Rôles',
             ]);
+           
+            
+           
     }
 
     public function configureOptions(OptionsResolver $resolver): void

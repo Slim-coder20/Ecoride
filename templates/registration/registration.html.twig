@@ -13,13 +13,19 @@
 				{{ form_row(registrationForm.pseudo) }}
 				{{ form_row(registrationForm.email) }}
 				{{ form_row(registrationForm.plainPassword) }}
-				<button class="btn btn-success">S'inscrire</button>
+				<select name="roles[]" class="form-select mt-5">
+
+					<option value="ROLE_USER">Utilisateur</option>
+					<option value="ROLE_EMPLOYE">Employé</option>
+				</select>
+				<button class="btn btn-success my-3">S'inscrire</button>
+
 				{{ form_end(registrationForm) }}
 
 				<a href="{{ path('app_login') }}" class="text-decoration-none text-success p-1">Déjà inscrit ? Connectez-vous</a>
 			</div>
 			<div class="col-md-6 ">
-				<img src="{{ asset('images/eco_ride_2.jpg') }}" alt="Image d'inscription" class="img-fluid">
+				<img src="{{ asset('images/eco_ride_2.jpg') }}" alt="Image d'inscription" class="img-fluid rounded-5">
 
 			</div>
 		</div>
