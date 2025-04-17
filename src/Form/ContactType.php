@@ -16,30 +16,45 @@ class ContactType extends AbstractType
         $builder
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
+                'label_attr' => [
+                    'class' => 'text-success',
+                ],
                 'attr' => [
                     'placeholder' => 'Votre prénom',
                 ],  
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'Nom',
+                'label_attr' => [
+                    'class' => 'text-success',
+                ],
                 'attr' => [
                     'placeholder' => 'Votre nom',
                 ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
+                'label_attr' => [
+                    'class' => 'text-success',
+                ],
                 'attr' => [
                     'placeholder' => 'Votre email',
                 ],
             ])
             ->add('subject', TextType::class, [
                 'label' => 'Sujet',
+                'label_attr' => [
+                    'class' => 'text-success',
+                ],
                 'attr' => [
                     'placeholder' => 'Sujet de votre message',
                 ],
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Message',
+                'label_attr' => [
+                    'class' => 'text-success',
+                ],
             ])
             ;
     }
