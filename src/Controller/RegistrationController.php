@@ -29,13 +29,18 @@ final class RegistrationController extends AbstractController
                 )
             );
 
-            // Récupérer les rôles sélectionnés dans le formulaire
-            $roles = $form->get('roles')->getData();
+            // Récupérer les rôles sélectionnés dans la balise select du template HTML // 
+            $roles = $request->request->all('roles') ?? [];
+            
+            // Valider les rôles selectionnés //
             $validRoles = ['ROLE_USER', 'ROLE_EMPLOYE'];
 
             // Filtrer les rôles pour ne garder que ceux qui sont valides
             $roles = array_filter($roles, fn($role) => in_array($role, $validRoles));
 
+            // Assigner les rôles à l'utilisateur // 
+            $user ->setRoles($roles);
+            
             // Si aucun rôle n'est sélectionné, attribuer ROLE_USER par défaut
             if (empty($roles)) {
                 $roles[] = 'ROLE_USER';

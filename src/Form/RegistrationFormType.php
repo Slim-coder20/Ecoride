@@ -34,7 +34,7 @@ class RegistrationFormType extends AbstractType
                     'class' => "text-success",
                 ],
             ]);
-           
+            
             
            
     }
