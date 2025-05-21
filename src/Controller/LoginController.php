@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Controller;
-use App\Form\ResetPasswordRequestFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use App\Repository\UserRepository;
+
 
 final class LoginController extends AbstractController
 {
