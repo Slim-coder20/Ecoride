@@ -3,13 +3,12 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
-use App\Services\EmailService; // Ensure this class exists in the specified namespace
+use App\Service\EmailService; // Ensure this class exists in the specified namespace
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mailer\MailerInterface;
+
 
 final class ContactController extends AbstractController
 {
@@ -20,7 +19,7 @@ final class ContactController extends AbstractController
         $this->emailService = $emailService;
     }
     #[Route('/contact', name: 'app_contact')]
-    public function index(Request $request, MailerInterface $mailer): Response
+    public function index(Request $request): Response
     {
         // Création du formulaire de contact à partir de la classe ContactType
         $form = $this->createForm(ContactType::class);
@@ -32,10 +31,21 @@ final class ContactController extends AbstractController
             $data = $form->getData();
             // Envoi du mail
            
-            $this->emailService->sendContactEmail(
-                $data['email'],
-                $data['subject'],
-                $data['message']
+            $this->emailService->sendTemplatedEmail(
+                
+                'contact.ecoride9@gmail.com',
+                'Message via le formulaire de contact',
+                'emails/contact.html.twig',
+                [
+                    'firstname' => $data['firstname'],
+                    'lastname' => $data['lastname'],
+                    'senderEmail' => $data['email'],
+                    'subject' => $data['subject'],
+                    'message' => $data['message'],
+                ]
+                
+                
+              
             );
 
             // Ajout d'un message flash
